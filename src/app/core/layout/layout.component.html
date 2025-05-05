@@ -1,0 +1,59 @@
+<mat-toolbar color="primary">
+  <a routerLink="/" class="logo-link" style="color: white; display: flex; align-items: center;">
+    <mat-icon>shopping_cart</mat-icon>
+    <strong style="margin-left: 5px;">AShop</strong>
+  </a>
+
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="/" style="color: white">
+    <mat-icon>home</mat-icon>
+    Inicio
+  </a>
+
+  <a mat-button routerLink="/productos" style="color: white">
+    <mat-icon>category</mat-icon>
+    Productos
+  </a>
+
+
+
+  <ng-container *ngIf="!isLoading; else loading">
+
+    <ng-container *ngIf="userNickname; else guestLinks">
+
+      <a *ngIf="authService.hasRole('ADMIN')" mat-button routerLink="/a-shop-ctrl-984-panel" style="color: white">
+      <mat-icon>admin_panel_settings</mat-icon>
+        Admin
+      </a>
+
+      <a mat-button routerLink="/account" style="color: white">
+        <mat-icon>person</mat-icon>
+        {{ userNickname }}
+      </a>
+      <a mat-button routerLink="/car" style="color: white">
+        <mat-icon>shopping_bag</mat-icon>
+        Carrito
+      </a>
+      <button mat-button style="color: white" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Salir
+      </button>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #guestLinks>
+    <a mat-button routerLink="/login" style="color: white">
+      <mat-icon>login</mat-icon>
+      Iniciar sesión
+    </a>
+    <a mat-button routerLink="/register" style="color: white">
+      <mat-icon>person_add</mat-icon>
+      Registrarse
+    </a>
+  </ng-template>
+
+  <ng-template #loading>
+    <mat-spinner diameter="30" color="accent"></mat-spinner>
+  </ng-template>
+</mat-toolbar>

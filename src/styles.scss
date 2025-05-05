@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+
+.mat-drawer-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;       /* permite que crezca más allá de la pantalla si es necesario */
+  overflow-x: hidden;      /* oculta scroll horizontal si quieres */
+  overflow-y: auto;        /* permite scroll vertical */
+}
+
+

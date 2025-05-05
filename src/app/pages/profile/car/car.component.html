@@ -1,0 +1,107 @@
+<div class="cart-container">
+  <!-- Sidebar -->
+  <aside class="account-sidebar">
+    <div class="sidebar-header">
+      <h3 class="username">Tu Carrito</h3>
+    </div>
+    <nav class="sidebar-menu">
+      <button mat-button class="sidebar-button" (click)="abrirCarritosGuardados()">
+        <mat-icon>bookmark</mat-icon><span>Guardados</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <section class="cart-content">
+    <h2 class="cart-title">🛒 Tu carrito</h2>
+
+    <mat-card class="user-info-card" *ngIf="user">
+      <h3>Información de envío</h3>
+      <p><strong>Nombre:</strong> {{ user.name }}</p>
+      <p><strong>Teléfono:</strong> {{ user.phone }}</p>
+
+      <mat-form-field appearance="outline" class="address-selector">
+        <mat-label>Dirección de entrega</mat-label>
+        <mat-select [(value)]="selectedAddress">
+          <mat-option *ngIf="user.address" [value]="user.address">{{ user.address }}</mat-option>
+          <mat-option *ngIf="user.address2" [value]="user.address2">{{ user.address2 }}</mat-option>
+          <mat-option *ngIf="user.address3" [value]="user.address3">{{ user.address3 }}</mat-option>
+          <mat-option *ngIf="user.address4" [value]="user.address4">{{ user.address4 }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <p *ngIf="selectedAddress"><strong>Seleccionada:</strong> {{ selectedAddress }}</p>
+    </mat-card>
+
+    <!-- Vista principal del carrito -->
+    <ng-container *ngIf="section === 'carrito'">
+      <div *ngIf="cart.length === 0" class="empty-cart">
+        <p>No tienes productos en el carrito.</p>
+      </div>
+
+      <ng-container *ngIf="cart.length > 0">
+        <div class="cart-grid">
+          <mat-card *ngFor="let item of cart" class="cart-item-card">
+            <div class="cart-image">
+              <img [src]="item.product.image" [alt]="item.product.name" />
+            </div>
+            <mat-card-content class="cart-details">
+              <h3>{{ item.product.name }}</h3>
+              <p>{{ item.product.description }}</p>
+              <p class="price">Precio unitario: ${{ item.product.price }}</p>
+              <p>Cantidad: {{ item.quantity }}</p>
+            </mat-card-content>
+            <mat-card-actions class="cart-actions">
+              <div class="quantity-controls">
+                <button mat-mini-fab color="primary" (click)="decreaseQuantity(item)">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <button mat-mini-fab color="accent" (click)="increaseQuantity(item)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <button mat-stroked-button color="warn" (click)="removeFromCart(item.product.id)">Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="total-actions">
+          <div class="cart-total">
+            <p>Total: <strong>${{ getTotal() }}</strong></p>
+          </div>
+
+          <div class="cart-buttons">
+            <button mat-stroked-button color="primary" (click)="guardarCompra()">Guardar compra para después</button>
+            <button mat-raised-button color="primary" (click)="procederAlPago()">Proceder al pago</button>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+
+    <ng-container *ngIf="section === 'guardados'">
+      <h3 class="section-title">Carritos guardados</h3>
+
+      <div class="saved-carts-table" *ngIf="savedCarts.length > 0; else noGuardados">
+        <div class="saved-cart-row" *ngFor="let saved of savedCarts">
+          <div class="cart-info">
+            <strong>{{ saved.name }}</strong>
+            <span class="date">{{ saved.createdAt | date:'short' }}</span>
+          </div>
+
+          <div class="cart-actions">
+            <button mat-stroked-button color="primary" (click)="cargarCarrito(saved)">Cargar</button>
+            <button mat-icon-button color="warn" (click)="eliminarCarrito(saved.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noGuardados>
+        <p>No hay carritos guardados.</p>
+      </ng-template>
+    </ng-container>
+
+  </section>
+</div>

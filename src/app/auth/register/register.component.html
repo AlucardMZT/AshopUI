@@ -1,0 +1,90 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2 class="login-title">Crear cuenta en AShop</h2>
+
+    <!-- Mensaje de error o éxito -->
+    <div class="mensaje" [ngClass]="{ error: esError, success: !esError }" *ngIf="mensaje">
+      {{ mensaje }}
+    </div>
+
+    <form #registerForm="ngForm" (ngSubmit)="onRegister()" class="register-grid">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre completo*</mat-label>
+        <input matInput name="name" required [(ngModel)]="name">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario (nickname)*</mat-label>
+        <input matInput required [(ngModel)]="nickname" name="nickname">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email*</mat-label>
+        <input matInput name="email" type="email" required email [(ngModel)]="email" #emailModel="ngModel">
+        <mat-error *ngIf="emailModel.invalid && emailModel.touched">Ingresa un correo válido.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Contraseña*</mat-label>
+        <input matInput type="password" required [(ngModel)]="password" name="password">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Teléfono*</mat-label>
+        <input matInput required [(ngModel)]="phone" name="phone">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Dirección principal*</mat-label>
+        <input matInput required [(ngModel)]="address" name="address">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Código postal*</mat-label>
+        <input matInput required [(ngModel)]="postalCode" name="postalCode">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Estado*</mat-label>
+        <input matInput required [(ngModel)]="state" name="state">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Municipio / Delegación*</mat-label>
+        <input matInput required [(ngModel)]="municipality" name="municipality">
+      </mat-form-field>
+
+      <!-- Opcionales -->
+      <mat-form-field appearance="fill" class="full-row">
+        <mat-label>Dirección adicional 1 (opcional)</mat-label>
+        <input matInput [(ngModel)]="address2" name="address2">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-row">
+        <mat-label>Dirección adicional 2 (opcional)</mat-label>
+        <input matInput [(ngModel)]="address3" name="address3">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-row">
+        <mat-label>Dirección adicional 3 (opcional)</mat-label>
+        <input matInput [(ngModel)]="address4" name="address4">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-row">
+        <mat-label>Descripción de la casa*</mat-label>
+        <textarea matInput rows="3" required [(ngModel)]="houseDescription" name="houseDescription"></textarea>
+      </mat-form-field>
+
+      <div class="full-row">
+        <button mat-raised-button color="primary" class="full-width" [disabled]="registerForm.invalid">
+          Registrarse
+        </button>
+      </div>
+    </form>
+
+    <div class="login-links">
+      ¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a>
+    </div>
+  </div>
+</div>

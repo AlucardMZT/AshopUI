@@ -1,0 +1,53 @@
+<div class="pedido-container" *ngIf="!loading">
+  <ng-container *ngIf="order; else errorTpl">
+    <h2 class="titulo">🧾 Pedido realizado</h2>
+
+    <div class="card">
+      <div class="fila">
+        <div class="campo">
+          <label>Número de pedido:</label>
+          <input [value]="order.orderNumber" disabled />
+        </div>
+        <div class="campo">
+          <label>Estado:</label>
+          <input [value]="order.status" disabled />
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>Fecha:</label>
+          <input [value]="order.createdAt | date: 'short'" disabled />
+        </div>
+        <div class="campo">
+          <label>Total:</label>
+          <input [value]="'$' + order.total.toFixed(2)" disabled />
+        </div>
+      </div>
+
+      <div class="envio-info">
+        <h3>📦 Enviado a:</h3>
+        <p><strong>Nombre:</strong> {{ order.nombre || 'N/A' }}</p>
+        <p><strong>Teléfono:</strong> {{ order.telefono || 'N/A' }}</p>
+        <p><strong>Dirección:</strong> {{ order.direccion || 'N/A' }}</p>
+      </div>
+
+      <div class="productos">
+        <h3>Productos:</h3>
+        <div *ngFor="let item of order.items" class="fila-producto">
+          <div class="producto-nombre">{{ item.productName }}</div>
+          <div class="producto-detalle">x{{ item.quantity }} • ${{ item.unitPrice.toFixed(2) }} = <strong>${{ (item.quantity * item.unitPrice).toFixed(2) }}</strong></div>
+        </div>
+      </div>
+
+      <div class="acciones">
+        <button mat-stroked-button color="primary" routerLink="/productos">Seguir comprando</button>
+        <button mat-stroked-button color="primary" routerLink="/orders">Pagar Pedidos</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #errorTpl>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </ng-template>
+</div>

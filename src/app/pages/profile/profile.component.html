@@ -1,0 +1,17 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-nav-list>
+      <a mat-list-item routerLink="account" routerLinkActive="active">👤 Mi cuenta</a>
+      <a mat-list-item routerLink="orders" routerLinkActive="active">📦 Mis pedidos</a>
+      <a mat-list-item routerLink="history" routerLinkActive="active">🛒 Historial</a>
+      <a mat-list-item routerLink="settings" routerLinkActive="active">⚙️ Configuración</a>
+      <a mat-list-item routerLink="car" routerLinkActive="active">🛒 Carrito</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+

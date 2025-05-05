@@ -1,0 +1,43 @@
+<h2>📜 Historial de Compras</h2>
+
+<div *ngIf="orders.length === 0">
+  <p>No has realizado compras aún.</p>
+</div>
+
+<div *ngFor="let order of orders" class="order-history-card">
+  <h3>Pedido #{{ order.orderNumber }} - {{ order.createdAt | date: 'short' }}</h3>
+  <p><strong>Total:</strong> ${{ order.total.toFixed(2) }}</p>
+
+  <table class="history-table">
+    <thead>
+    <tr>
+      <th>Image</th>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th>Subtotal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of order.items">
+      <td>{{ item.image }}</td>
+      <td>{{ item.productName }}</td>
+      <td class="center">{{ item.quantity }}</td>
+      <td class="center">${{ item.unitPrice.toFixed(2) }}</td>
+      <td class="center">${{ (item.unitPrice * item.quantity).toFixed(2) }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+
+  <mat-divider></mat-divider>
+  <!-- Botón Ver pedido -->
+  <div class="ver-pedido-btn order-actions">
+    <button mat-stroked-button color="primary"
+            [routerLink]="['/ver-pedido']"
+            [queryParams]="{ numero: order.orderNumber }">
+      Ver pedido
+    </button>
+  </div>
+
+</div>

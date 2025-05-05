@@ -1,0 +1,45 @@
+mat-toolbar {
+  background: linear-gradient(90deg, #1976d2, #1565c0) !important;
+  color: white;
+}
+mat-toolbar a.mat-button {
+  color: white !important;
+}
+
+mat-toolbar a.mat-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.logo-link {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+mat-toolbar a.mat-button.active {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+}
+
+::ng-deep mat-toolbar a.mat-button {
+  color: white !important;
+}
+
+
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.content-container {
+  padding: 24px;
+  background-color: #f7f7f7;
+  min-height: 100vh;
+}

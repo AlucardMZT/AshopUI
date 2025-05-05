@@ -1,0 +1,52 @@
+<h2>📦 Tus pedidos</h2>
+
+<mat-form-field appearance="fill">
+  <mat-label>Filtrar por estado</mat-label>
+  <mat-select [(value)]="filtroEstado" (selectionChange)="filtrarPedidos()">
+    <mat-option value="">Todos</mat-option>
+    <mat-option value="PENDIENTE">Pendiente</mat-option>
+    <mat-option value="PAGADO">Pagado</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<table mat-table [dataSource]="filteredOrders" class="mat-elevation-z8">
+
+  <!-- Número -->
+  <ng-container matColumnDef="orderNumber">
+    <th mat-header-cell *matHeaderCellDef>Número</th>
+    <td mat-cell *matCellDef="let order">#{{ order.orderNumber }}</td>
+  </ng-container>
+
+  <!-- Estado -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Estado</th>
+    <td mat-cell *matCellDef="let order">{{ order.status }}</td>
+  </ng-container>
+
+  <!-- Fecha -->
+  <ng-container matColumnDef="createdAt">
+    <th mat-header-cell *matHeaderCellDef>Fecha</th>
+    <td mat-cell *matCellDef="let order">{{ order.createdAt | date:'short' }}</td>
+  </ng-container>
+
+  <!-- Total -->
+  <ng-container matColumnDef="total">
+    <th mat-header-cell *matHeaderCellDef>Total</th>
+    <td mat-cell *matCellDef="let order">${{ order.total.toFixed(2) }}</td>
+  </ng-container>
+
+  <!-- Acciones -->
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let order">
+      <button mat-button color="primary" *ngIf="order.status === 'PENDIENTE'" (click)="marcarComoPagado(order.id)">Pagar</button>
+      <button mat-button color="accent" (click)="verPedido(order.orderNumber)">Ver pedido</button>
+      <button *ngIf="order?.status === 'PENDIENTE'" mat-button color="warn" (click)="eliminarPedido(order.id)">Eliminar</button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<p *ngIf="filteredOrders.length === 0" class="empty-msg">No hay pedidos con este filtro.</p>

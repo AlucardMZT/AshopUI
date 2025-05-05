@@ -1,0 +1,77 @@
+<form class="edit-form card-form" [formGroup]="profileForm" (ngSubmit)="onSave()" *ngIf="profileForm">
+  <h2 class="form-title">Editar perfil</h2>
+
+  <div class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre completo</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nickname</mat-label>
+      <input matInput formControlName="nickname" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phone">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="address">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Código postal</mat-label>
+      <input matInput formControlName="postalCode">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <input matInput formControlName="state">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Municipio</mat-label>
+      <input matInput formControlName="municipality">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-row">
+      <mat-label>Dirección adicional 1 (opcional)</mat-label>
+      <input matInput formControlName="address2" name="address2">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-row">
+      <mat-label>Dirección adicional 2 (opcional)</mat-label>
+      <input matInput formControlName="address3" name="address3">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-row">
+      <mat-label>Dirección adicional 3 (opcional)</mat-label>
+      <input matInput formControlName="address4" name="address4">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descripción de la casa</mat-label>
+      <textarea matInput formControlName="houseDescription"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nueva contraseña (opcional)</mat-label>
+      <input matInput type="password" formControlName="password">
+    </mat-form-field>
+  </div>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit">Guardar cambios</button>
+  </div>
+
+  <div class="success-message" *ngIf="message">{{ message }}</div>
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+</form>

@@ -1,0 +1,40 @@
+<div class="product-detail-container" *ngIf="product">
+  <!-- Zona de imágenes -->
+  <div class="product-images">
+    <img class="main-image" [src]="product.image" [alt]="product.name" />
+
+    <div class="thumbnail-list">
+      <!-- Aquí puedes replicar miniaturas si tu producto tiene varias imágenes -->
+      <img [src]="product.image" alt="Miniatura" />
+      <img [src]="product.image" alt="Miniatura" />
+      <img [src]="product.image" alt="Miniatura" />
+    </div>
+  </div>
+
+  <!-- Info del producto -->
+  <div class="product-info">
+    <h2>{{ product.name }}</h2>
+
+    <div class="ratings">
+      <span class="stars">
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        <mat-icon>star_half</mat-icon>
+        <mat-icon>star_border</mat-icon>
+      </span>
+      <span>1,231 calificaciones</span>
+    </div>
+
+    <p class="price">${{ product.price }}</p>
+
+    <p class="description">{{ product.description }}</p>
+
+    <p class="stock-status">Disponible</p>
+
+    <div class="buy-buttons">
+      <button mat-raised-button color="primary" (click)="addToCart()">Agregar al carrito</button>
+      <button mat-stroked-button color="accent" routerLink="/productos">Volver a productos</button>
+    </div>
+  </div>
+</div>

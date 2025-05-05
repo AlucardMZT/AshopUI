@@ -1,0 +1,17 @@
+<div class="catalog-container" *ngFor="let section of categories">
+  <h2 class="section-title">{{ section.title }}</h2>
+
+  <owl-carousel-o [options]="carouselOptions">
+    <ng-container *ngFor="let product of section.products">
+      <ng-template carouselSlide>
+        <mat-card class="product-card">
+          <img mat-card-image [src]="product.image" alt="{{ product.name }}">
+          <mat-card-content>
+            <h3>{{ product.name }}</h3>
+            <p class="price">${{ product.price }}</p>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
+    </ng-container>
+  </owl-carousel-o>
+</div>

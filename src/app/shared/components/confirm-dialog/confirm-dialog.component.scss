@@ -1,0 +1,27 @@
+mat-dialog-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  button {
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 14px;
+    text-transform: none;
+  }
+
+  button[mat-button] {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #0d47a1;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+
+  button[color="warn"] {
+    color: white;
+  }
+}

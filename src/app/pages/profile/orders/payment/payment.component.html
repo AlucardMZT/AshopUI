@@ -1,0 +1,49 @@
+<div class="payment-container">
+  <div class="payment-inner">
+  <mat-card class="summary-card">
+    <mat-card-title>
+      🧾 <span>Resumen del pedido</span>
+    </mat-card-title>
+    <mat-card-content *ngIf="order">
+      <mat-list>
+        <mat-list-item><strong>Número:</strong> {{ order.orderNumber }}</mat-list-item>
+        <mat-list-item><strong>Total:</strong> ${{ order.total }}</mat-list-item>
+        <mat-list-item><strong>Estado:</strong> {{ order.status }}</mat-list-item>
+        <mat-list-item><strong>Fecha:</strong> {{ order.createdAt | date: 'short' }}</mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="payment-methods">
+    <!-- Stripe Card -->
+    <mat-card class="method-card">
+      <mat-card-title>💳 Pagar con tarjeta (Stripe)</mat-card-title>
+      <mat-card-content>
+        <form id="payment-form">
+          <div id="card-element" class="card-box"></div>
+          <div class="action-right">
+            <button mat-flat-button color="primary" type="submit">
+              Pagar ahora
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Divider -->
+    <div class="divider-container">
+      <div class="divider-line"></div>
+      <div class="divider-text">O</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- PayPal -->
+    <mat-card class="method-card">
+      <mat-card-title>🅿️ Pagar con PayPal</mat-card-title>
+      <mat-card-content>
+        <div id="paypal-button-container" class="paypal-box"></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  </div>
+</div>

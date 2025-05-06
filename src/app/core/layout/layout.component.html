@@ -22,10 +22,6 @@
 
     <ng-container *ngIf="userNickname; else guestLinks">
 
-      <a *ngIf="authService.hasRole('ADMIN')" mat-button routerLink="/a-shop-ctrl-984-panel" style="color: white">
-      <mat-icon>admin_panel_settings</mat-icon>
-        Admin
-      </a>
 
       <a mat-button routerLink="/account" style="color: white">
         <mat-icon>person</mat-icon>
@@ -39,6 +35,11 @@
         <mat-icon>logout</mat-icon>
         Salir
       </button>
+
+      <a *ngIf="authService.hasRole('ADMIN')" mat-button routerLink="/a-shop-ctrl-984-panel" style="color: white">
+        <mat-icon>admin_panel_settings</mat-icon>
+        Admin
+      </a>
     </ng-container>
   </ng-container>
 

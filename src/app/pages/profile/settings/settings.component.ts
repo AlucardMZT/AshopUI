@@ -1,10 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user.model';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
+import {catchError, map, Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -31,11 +39,18 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getProfile().subscribe(user => {
       this.user = user;
-      console.log(this.user, 'user')
       this.profileForm = this.fb.group({
         name: [user.name],
-        email: [user.email, [Validators.required, Validators.email]],
-        nickname: [user.nickname, Validators.required],
+        email: [user.email, {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.emailExistsValidator.bind(this)],
+          updateOn: 'blur' // solo valida cuando se deja el campo
+        }],
+        nickname: [user.nickname, {
+          validators: [Validators.required],
+          asyncValidators: [this.nicknameExistsValidator.bind(this)],
+          updateOn: 'blur'
+        }],
         phone: [user.phone],
         address: [user.address],
         address2: [user.address2],
@@ -45,7 +60,7 @@ export class SettingsComponent implements OnInit {
         state: [user.state],
         municipality: [user.municipality],
         houseDescription: [user.houseDescription],
-        password: ['']  // opcional
+        password: ['']
       });
     });
   }
@@ -67,4 +82,26 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+
+  emailExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    const email = control.value;
+    if (!email || email === this.user?.email) return of(null); // No valida si es su mismo email
+
+    return this.authService.checkEmailExists(email).pipe(
+      map(exists => exists ? { emailExists: true } : null),
+      catchError(() => of(null))
+    );
+  }
+
+// Nickname validator
+  nicknameExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    const nickname = control.value;
+    if (!nickname || nickname === this.user?.nickname) return of(null);
+
+    return this.authService.checkNicknameExists(nickname).pipe(
+      map(exists => exists ? { nicknameExists: true } : null),
+      catchError(() => of(null))
+    );
+  }
+
 }

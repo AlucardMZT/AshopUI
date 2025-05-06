@@ -39,7 +39,9 @@
   <ng-container matColumnDef="acciones">
     <th mat-header-cell *matHeaderCellDef>Acciones</th>
     <td mat-cell *matCellDef="let order">
-      <button mat-button color="primary" *ngIf="order.status === 'PENDIENTE'" (click)="marcarComoPagado(order.id)">Pagar</button>
+      <button *ngIf="order.status === 'PENDIENTE'" mat-button color="accent" (click)="irAPagar(order.id)">
+        Pagar
+      </button>
       <button mat-button color="accent" (click)="verPedido(order.orderNumber)">Ver pedido</button>
       <button *ngIf="order?.status === 'PENDIENTE'" mat-button color="warn" (click)="eliminarPedido(order.id)">Eliminar</button>
     </td>

@@ -12,6 +12,8 @@ import {CarComponent} from './pages/profile/car/car.component';
 import {ConfirmacionpedidoComponent} from './pages/profile/orders/confirmacionpedido/confirmacionpedido.component';
 import {VerPedidoComponent} from './pages/profile/orders/verpedido/verpedido.component';
 import {AdminProductFormComponent} from './admin-product-form/admin-product-form.component';
+import {AdminPanelLayoutComponent} from './admin-panel-layout/admin-panel-layout.component';
+import {AdminOrderListComponent} from './admin-order-list/admin-order-list.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -33,14 +35,20 @@ export const routes: Routes = [
     component: ProfileComponent,
     data: { role: 'USER' },
     children: [
-      {path: '', redirectTo: 'account', pathMatch: 'full'},
-      {path: 'account', component: AccountComponent},
-      {path: 'orders', component: OrdersComponent},
-      {path: 'history', component: HistoryComponent},
-      {path: 'settings', component: SettingsComponent},
-      {path: 'car', component: CarComponent},
-      {path: 'confirmacion-pedido', component: ConfirmacionpedidoComponent},
-      {path: 'ver-pedido', component: VerPedidoComponent}
+      { path: '', redirectTo: 'account', pathMatch: 'full' },
+      { path: 'account', component: AccountComponent },
+      { path: 'orders', component: OrdersComponent },
+      { path: 'history', component: HistoryComponent },
+      { path: 'settings', component: SettingsComponent },
+      { path: 'car', component: CarComponent },
+      { path: 'confirmacion-pedido', component: ConfirmacionpedidoComponent },
+      { path: 'ver-pedido', component: VerPedidoComponent },
+      {
+        path: 'pago/:orderId',
+        loadComponent: () => import('./pages/profile/orders/payment/payment.component')
+          .then(m => m.PaymentComponent),
+        canActivate: [AuthGuard],
+      }
     ]
   },
   {
@@ -51,9 +59,14 @@ export const routes: Routes = [
   },
   {
     path: 'a-shop-ctrl-984-panel',
-    component: AdminProductFormComponent,
+    component: AdminPanelLayoutComponent,
     canActivate: [AuthGuard],
-    data: { role: 'ADMIN' }
+    data: { role: 'ADMIN' },
+    children: [
+      { path: '', redirectTo: 'productos', pathMatch: 'full' },
+      { path: 'productos', component: AdminProductFormComponent },
+      { path: 'pedidos', component: AdminOrderListComponent }
+    ]
   },
-  {path: '**', redirectTo: '', pathMatch: 'full'}
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

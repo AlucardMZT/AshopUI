@@ -15,7 +15,7 @@ import {MatOption, MatSelect} from '@angular/material/select';
 export interface SavedCart {
   id: number;
   name: string;
-  itemsJson: string; // o items: CartItem[]
+  itemsJson: string;
   createdAt: string;
 }
 
@@ -37,11 +37,10 @@ export class CarComponent implements OnInit{
 
   ngOnInit(): void {
     this.cart = this.cartService.getCart();
-    console.log(this.cart);
     this.profiles.getProfile().subscribe({
       next: (data) => {
         this.user = data;
-        this.selectedAddress = data.address; // por defecto
+        this.selectedAddress = data.address;
       },
       error: (err) => console.error('Error cargando usuario', err)
     });
@@ -69,7 +68,7 @@ export class CarComponent implements OnInit{
 
       this.cart = parsedItems;
       this.section = 'carrito';
-      this.cartService.saveToLocal(); // 🔄 para persistirlo localmente también
+      this.cartService.saveToLocal();
     } catch (err) {
       alert('Error cargando carrito guardado');
     }

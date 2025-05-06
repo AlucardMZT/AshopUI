@@ -1,0 +1,38 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.logo {
+
+  font-size: 18px;
+}
+
+.active-link {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.admin-content {
+  padding-top: 80px;
+  padding: 2rem;
+}
+
+.admin-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #1976d2;
+  color: white;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+
+.admin-user {
+  font-size: 14px;
+  white-space: nowrap;
+}

@@ -22,8 +22,7 @@ export class LoginComponent {
 
   onLogin() {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (res) => {
-        console.log('LOGIN SUCCESS RESPONSE:', res);  // 👈 Ya presente
+      next: (res) => {// 👈 Ya presente
 
         this.authService.saveAuthData(res.token, res.nickname);
         if (res.nickname === 'admin') {

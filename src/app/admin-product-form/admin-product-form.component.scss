@@ -24,18 +24,19 @@
 .file-upload {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  flex: 1 1 100%; /* ✅ Ocupa toda la fila */
+  margin-top: 0.5rem;
   font-size: 14px;
 }
 
-button {
-  height: 40px;
-  align-self: flex-start;
+.form-actions {
+  margin-top: 1.5rem; /* ✅ Más espacio vertical */
 }
+
+
 
 /* Margen general del contenedor principal */
 .admin-wrapper {
-  padding: 3rem 2rem;
   max-width: 1200px;
   margin: auto;
 }
@@ -85,10 +86,5 @@ table {
 h2 {
   margin-top: 2rem;
   margin-bottom: 1rem;
-}
-
-/* Separación desde navbar */
-body, .admin-wrapper {
-  padding-top: 80px; /* ajusta si tu navbar es más alto o tiene posición fija */
 }
 

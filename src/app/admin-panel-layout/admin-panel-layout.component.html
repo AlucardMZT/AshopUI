@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" class="admin-navbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000;">
+  <span class="logo">Panel de administración</span>
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="productos"  style="color: #f6f6f6;">Crear Productos</a>
+  <a mat-button routerLink="pedidos"  style="color: #f6f6f6;">Pedidos</a>
+  <a mat-button routerLink="/productos" style="color: #f6f6f6;">Tienda</a>
+
+  <span class="admin-user" style="margin-left: 24px; color: #ffc107; font-weight: 500;">
+    Admin En Linea: {{ adminName }}
+  </span>
+</mat-toolbar>
+
+<div class="admin-content">
+  <router-outlet></router-outlet>
+</div>

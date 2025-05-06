@@ -56,12 +56,12 @@ export class CartService {
     if (index !== -1) {
       this.cart[index].quantity += 1;
       this.saveToLocal();
-      return false; // ya existía
+      return false;
     }
 
     this.cart.push({ product, quantity: 1 });
     this.saveToLocal();
-    return true; // nuevo producto
+    return true;
   }
 
   getCart(): any[] {

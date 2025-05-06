@@ -52,7 +52,7 @@ export class AuthService {
   saveAuthData(token: string, nickname: string) {
     localStorage.setItem('auth_token', token);
     localStorage.setItem('nickname', nickname);
-    this.authStatus.next(true); // ✅ Notificar login
+    this.authStatus.next(true);
   }
 
   getToken(): string | null {
@@ -72,12 +72,12 @@ export class AuthService {
   logout() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('nickname');
-    this.authStatus.next(false); // ✅ Notificar logout
+    this.authStatus.next(false);
     this.router.navigate(['']);
   }
 
   getCurrentUser(): any {
-    const token = this.getToken(); // ✅ usa el método correcto
+    const token = this.getToken();
     if (!token) return null;
 
     try {
@@ -100,5 +100,13 @@ export class AuthService {
   hasRole(role: string): boolean {
     const user = this.getCurrentUser();
     return user?.role?.toUpperCase() === role.toUpperCase();
+  }
+
+  checkEmailExists(email: string) {
+    return this.http.get<boolean>(`http://localhost:8080/api/auth/email-exists?email=${email}`);
+  }
+
+  checkNicknameExists(nickname: string) {
+    return this.http.get<boolean>(`http://localhost:8080/api/auth/nickname-exists?nickname=${nickname}`);
   }
 }

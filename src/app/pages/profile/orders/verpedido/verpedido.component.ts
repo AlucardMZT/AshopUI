@@ -49,17 +49,17 @@ export class VerPedidoComponent implements OnInit {
     if (!this.order) return;
     const cartItems = this.order.items.map(i => ({
       product: {
-        id: 0, // ⚠️ Si no guardas `productId` en OrderItem, debes ajustar
+        id: 0,
         name: i.productName,
         price: i.unitPrice,
-        image: i.image ?? '', // opcional si no tienes
+        image: i.image ?? '',
         description: '',
         category: { id: 0, name: '' }
       },
       quantity: i.quantity
     }));
 
-    localStorage.setItem('cart', JSON.stringify(cartItems)); // o usa `cartService`
+    localStorage.setItem('cart', JSON.stringify(cartItems));
     alert('Productos añadidos nuevamente al carrito.');
   }
 }

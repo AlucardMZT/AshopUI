@@ -43,14 +43,10 @@ interface Product {
     MatHeaderCellDef,
     MatCellDef,
     MatTable,
-    MatDivider,
     MatSelect,
     MatOption,
     NgForOf,
     NgIf,
-    MatToolbar,
-    MatAnchor,
-    RouterLink
   ]
 })
 export class AdminProductFormComponent implements OnInit {

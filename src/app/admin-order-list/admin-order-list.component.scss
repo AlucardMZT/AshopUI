@@ -1,0 +1,21 @@
+.paid {
+  color: green;
+  font-weight: bold;
+}
+
+.pending {
+  color: orange;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  margin-top: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+h2 {
+  margin-top: 2rem;
+}

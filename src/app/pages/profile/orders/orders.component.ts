@@ -83,7 +83,7 @@ export class OrdersComponent implements OnInit {
           ...order,
           createdAt: new Date(order.createdAt)
         }));
-        this.filtrarPedidos(); // aplica filtro después de cargar
+        this.filtrarPedidos();
       },
       error: err => console.error('Error al cargar pedidos:', err)
     });
@@ -93,6 +93,21 @@ export class OrdersComponent implements OnInit {
     this.filteredOrders = this.filtroEstado
       ? this.orders.filter(o => o.status === this.filtroEstado)
       : [...this.orders];
+  }
+
+  irAPagar(id: number) {
+    console.log('Redirigiendo al pago del pedido', id);
+    this.router.navigate(['/pago', id])
+      .then(success => {
+        if (success) {
+          console.log('✅ Navegación exitosa');
+        } else {
+          console.warn('⚠️ Falló la navegación');
+        }
+      })
+      .catch(err => {
+        console.error('❌ Error al navegar:', err);
+      });
   }
 
   marcarComoPagado(id: number) {

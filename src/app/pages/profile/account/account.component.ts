@@ -6,7 +6,6 @@ import { User } from '../../../models/user.model';
 import {NgIf, NgSwitch, NgSwitchCase} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-account',

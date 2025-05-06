@@ -6,21 +6,11 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import {MatAnchor, MatButton} from '@angular/material/button';
 import { MatColumnDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatHeaderRowDef, MatRowDef, MatHeaderCellDef, MatCellDef, MatTable } from '@angular/material/table';
 import { MatOption, MatSelect } from '@angular/material/select';
-import { Category } from '../models/category.model';
-import { CategoryService } from '../services/category.service';
-import { ProductService } from '../services/product.service';
-import { AdminProductService } from '../services/AdminProductService';
-import {MatToolbar} from '@angular/material/toolbar';
-import {RouterLink} from '@angular/router';
+import { Category } from '../../../models/category.model';
+import { CategoryService } from '../../../services/category.service';
+import { Product } from '../../../models/product.model';
+import { AdminProductService } from '../../../services/AdminProductService';
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: { id: number; name: string };
-}
 
 @Component({
   selector: 'app-admin-product-form',
@@ -51,7 +41,10 @@ interface Product {
 })
 export class AdminProductFormComponent implements OnInit {
   productForm: FormGroup;
-  imageBase64: string = '';
+  imageBase64_1: string = '';
+  imageBase64_2: string = '';
+  imageBase64_3: string = '';
+
   products: Product[] = [];
   editingProductId: number | null = null;
   categories: Category[] = [];
@@ -66,7 +59,8 @@ export class AdminProductFormComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       price: [0, Validators.required],
-      categoryId: ['', Validators.required]
+      categoryId: ['', Validators.required],
+      stock: [0, Validators.required]
     });
   }
 
@@ -75,25 +69,31 @@ export class AdminProductFormComponent implements OnInit {
     this.loadCategories();
   }
 
-  onFileSelected(event: any) {
+  onFileSelected(event: any, slot: number) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageBase64 = reader.result as string;
+        const result = reader.result as string;
+        if (slot === 1) this.imageBase64_1 = result;
+        if (slot === 2) this.imageBase64_2 = result;
+        if (slot === 3) this.imageBase64_3 = result;
       };
       reader.readAsDataURL(file);
     }
   }
 
   onSubmit() {
-    if (this.productForm.valid && this.imageBase64) {
+    if (this.productForm.valid && this.imageBase64_1) {
       const productRequest = {
         name: this.productForm.value.name,
         description: this.productForm.value.description,
         price: this.productForm.value.price,
         categoryId: this.productForm.value.categoryId,
-        image: this.imageBase64
+        stock: this.productForm.value.stock,
+        image: this.imageBase64_1,
+        image2: this.imageBase64_2 || null,
+        image3: this.imageBase64_3 || null
       };
 
       if (this.editingProductId) {
@@ -128,19 +128,26 @@ export class AdminProductFormComponent implements OnInit {
 
   editProduct(product: Product) {
     this.editingProductId = product.id;
+
     this.productForm.patchValue({
       name: product.name,
       description: product.description,
       price: product.price,
+      stock: product.stock,
       categoryId: product.category.id
     });
-    this.imageBase64 = product.image;
+
+    // Carga las imágenes si existen
+    this.imageBase64_1 = product.image || '';
+    this.imageBase64_2 = product.image2 || '';
+    this.imageBase64_3 = product.image3 || '';
   }
+
 
   resetForm() {
     this.editingProductId = null;
     this.productForm.reset();
-    this.imageBase64 = '';
+    this.imageBase64_1 = '';
   }
 
   loadProducts() {

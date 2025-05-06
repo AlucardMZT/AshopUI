@@ -10,7 +10,6 @@ export class PaymentService {
 
   getOrder(id: string) {
     const token = this.authService.getToken();
-    console.log(token)
     return this.http.get<any>(`${this.apiUrl}/order/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     });

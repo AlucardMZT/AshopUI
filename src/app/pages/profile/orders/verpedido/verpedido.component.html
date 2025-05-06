@@ -3,7 +3,8 @@
   <p><strong>Nombre:</strong> {{ order.nombre }}</p>
   <p><strong>Teléfono:</strong> {{ order.telefono }}</p>
   <p><strong>Dirección:</strong> {{ order.direccion }}</p>
-  <p><strong>Estado:</strong> {{ order.status }}</p>
+  <p><strong>Municipio:</strong> {{ order.user?.municipality }}</p>
+  <p><strong>Estado:</strong> {{ order.user?.state }}</p>
   <p><strong>Fecha:</strong> {{ order.createdAt | date: 'short' }}</p>
   <p><strong>Total:</strong> ${{ order.total.toFixed(2) }}</p>
 

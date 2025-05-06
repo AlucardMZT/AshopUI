@@ -127,11 +127,8 @@ export class CarComponent implements OnInit{
       return;
     }
 
-    // Mostrar el contenido del carrito
-    console.log('🛒 Carrito actual:', this.cart);
-
     const items = this.cart
-      .filter(item => item.product && item.product.id != null) // <-- SOLO válidos
+      .filter(item => item.product && item.product.id != null)
       .map(item => ({
         productId: item.product.id,
         productName: item.product.name,
@@ -145,24 +142,19 @@ export class CarComponent implements OnInit{
       return;
     }
 
-    // Mostrar ítems mapeados antes de enviar
-    console.log('📤 Ítems preparados para el pedido:', items);
-
     const pedido = {
       items,
       nombre: this.user.name,
       telefono: this.user.phone,
       direccion: this.selectedAddress,
+      municipality: this.user.municipality,
+      state: this.user.state,
       total: this.getTotal()
     };
-
-    // Mostrar el pedido completo que se enviará al backend
-    console.log('🚀 Pedido final a enviar:', pedido);
 
     this.orderService.crearOrden(pedido).subscribe({
       next: (response) => {
         const orderId = response.orderId;
-        console.log('✅ Pedido creado con ID:', orderId);
         this.cartService.clearCart();
         this.router.navigate(['/pago', orderId])
           .then(success => {
@@ -177,7 +169,8 @@ export class CarComponent implements OnInit{
           });
       },
       error: (err) => {
-        alert('No se pudo procesar el pedido');
+        const errorMsg = err?.error || 'No se pudo procesar el pedido';
+        alert(errorMsg);
         console.error('❌ Error al crear la orden:', err);
       }
     });

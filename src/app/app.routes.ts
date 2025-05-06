@@ -11,9 +11,10 @@ import {SettingsComponent} from './pages/profile/settings/settings.component';
 import {CarComponent} from './pages/profile/car/car.component';
 import {ConfirmacionpedidoComponent} from './pages/profile/orders/confirmacionpedido/confirmacionpedido.component';
 import {VerPedidoComponent} from './pages/profile/orders/verpedido/verpedido.component';
-import {AdminProductFormComponent} from './admin-product-form/admin-product-form.component';
-import {AdminPanelLayoutComponent} from './admin-panel-layout/admin-panel-layout.component';
-import {AdminOrderListComponent} from './admin-order-list/admin-order-list.component';
+import {AdminProductFormComponent} from './pages/admin/admin-product-form/admin-product-form.component';
+import {AdminPanelLayoutComponent} from './pages/admin/admin-panel-layout/admin-panel-layout.component';
+import {AdminOrderListComponent} from './pages/admin/admin-order-list/admin-order-list.component';
+import {CategoriaImageListComponent} from './pages/admin/categoria-image-list/categoria-image-list.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -65,7 +66,8 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'productos', pathMatch: 'full' },
       { path: 'productos', component: AdminProductFormComponent },
-      { path: 'pedidos', component: AdminOrderListComponent }
+      { path: 'pedidos', component: AdminOrderListComponent },
+      { path: 'categoria/upload', component: CategoriaImageListComponent }
     ]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }

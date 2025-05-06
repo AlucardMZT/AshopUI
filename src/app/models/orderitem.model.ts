@@ -20,7 +20,24 @@ export interface Order {
   nombre: string;
   telefono: string;
   direccion: string;
-  items: OrderItem[];
+  estado: string;
+  municipio: string;
+  items: OrderItem[]
+
+  user?: {
+    address: string;
+    address2?: string;
+    address3?: string;
+    address4?: string;
+    houseDescription?: string;
+    municipality?: string;
+    state?: string;
+    postalCode?: string;
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
+
 }
 
 export interface PlaceOrderRequest {

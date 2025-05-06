@@ -12,10 +12,10 @@ import {
   MatRow, MatRowDef, MatTable
 } from '@angular/material/table';
 import {NgClass, NgIf} from '@angular/common';
-import {AdminOrderService} from '../services/adminorder.service';
+import {AdminOrderService} from '../../../services/adminorder.service';
 import {MatFormField, MatLabel} from '@angular/material/input';
 
-import {Order} from '../models/orderitem.model';
+import {Order} from '../../../models/orderitem.model';
 import {MatOption, MatSelect} from '@angular/material/select';
 
 @Component({

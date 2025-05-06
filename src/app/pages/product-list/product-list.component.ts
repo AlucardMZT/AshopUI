@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Product} from '../../models/product.model';
 import {MatCard, MatCardActions, MatCardContent, MatCardImage} from '@angular/material/card';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {ProductService} from '../../services/product.service';
 import {Category} from '../../models/category.model';
@@ -29,6 +29,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     FormsModule,
     NgIf,
     MatProgressSpinner,
+    NgClass,
   ],
   styleUrls: ['./product-list.component.scss']
 })
@@ -64,8 +65,8 @@ export class ProductListComponent implements OnInit {
       const categoriaId = +params['categoria'];
 
       if (categoriaId) {
-        this.filterByCategory(categoriaId);        // 🔍 Aplica el filtro
-        this.selectedCategoryId = categoriaId;     // ✅ Resalta en la barra
+        this.filterByCategory(categoriaId);
+        this.selectedCategoryId = categoriaId;
       }
     });
 

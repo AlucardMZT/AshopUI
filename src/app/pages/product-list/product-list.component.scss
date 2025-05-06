@@ -76,11 +76,10 @@
       }
 
       img {
-        height: 180px;
-        object-fit: cover;
         width: 100%;
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
+        height: auto;
+        object-fit: contain;
+        display: block;
       }
 
       mat-card-content {
@@ -233,6 +232,18 @@
   }
   -ms-overflow-style: none;  // IE/Edge
   scrollbar-width: none;     // Firefox
+}
+
+
+.stock {
+  font-weight: bold;
+  margin: 1rem;
+  &.disponible {
+    color: green;
+  }
+  &.agotado {
+    color: red;
+  }
 }
 
 

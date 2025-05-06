@@ -1,9 +1,10 @@
 <section class="hero mat-elevation-z4">
   <!-- 🎥 Video de fondo -->
   <video autoplay muted loop playsinline class="video-bg">
-    <source src="assets/video.mp4" type="video/mp4" />
+    <source src="assets/smarhome.mp4" type="video/mp4" />
     Tu navegador no soporta el video.
   </video>
+
 
   <!-- ✨ Capa oscura y contenido -->
   <div class="hero-overlay"></div>
@@ -14,6 +15,18 @@
     <button mat-raised-button color="primary" routerLink="/productos">
       <mat-icon>storefront</mat-icon> Explorar tienda
     </button>
+  </div>
+</section>
+
+<section class="categories">
+  <h2>Categorías</h2>
+  <div class="category-grid">
+    <mat-card *ngFor="let cat of categorias" (click)="verCategoria(cat.id)" style="cursor: pointer;">
+      <img mat-card-image [src]="cat.image" alt="{{ cat.name }}">
+      <mat-card-content>
+        <h3>{{ cat.name }}</h3>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>
 
@@ -31,11 +44,15 @@
         <mat-card-content>
           <h3>{{ producto.name }}</h3>
           <p>${{ producto.price }}</p>
+          <span class="stock-status" [ngClass]="{ 'agotado': producto.stock === 0, 'disponible': producto.stock > 0 }">
+            {{ producto.stock === 0 ? 'Agotado' : 'Disponible: ' + producto.stock }}
+          </span>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
 </section>
+
 
 <section class="benefits">
   <mat-card class="benefit" *ngFor="let b of beneficios">
@@ -45,19 +62,7 @@
   </mat-card>
 </section>
 
-<section class="categories">
-  <h2>Categorías</h2>
-  <div class="category-grid">
-    <mat-card *ngFor="let cat of categorias" (click)="verCategoria(cat.id)" style="cursor: pointer;">
-      <img mat-card-image [src]="cat.image" alt="{{ cat.name }}">
-      <mat-card-content>
-        <h3>{{ cat.name }}</h3>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</section>
-
-<section class="cta">
+<section class="cta" *ngIf="!authService.isLoggedIn()">
   <h2>¡Listo para comprar!</h2>
   <button mat-stroked-button color="accent" routerLink="/register">Crear cuenta</button>
 </section>

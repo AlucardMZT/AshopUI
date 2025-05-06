@@ -154,9 +154,31 @@
       }
 
       img {
-        height: 140px;
-        object-fit: cover;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
       }
     }
   }
+}
+
+.stock-status {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: bold;
+
+  &.disponible {
+    color: #2e7d32;
+  }
+
+  &.agotado {
+    color: #c62828;
+  }
+}
+
+.category-grid mat-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(to bottom right, #ffffff, #f9f9f9);
 }

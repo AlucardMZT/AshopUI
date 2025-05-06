@@ -1,0 +1,43 @@
+.category-form {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .form-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+
+    mat-form-field {
+      flex: 1;
+      min-width: 250px;
+    }
+  }
+
+  .file-upload {
+    margin: 1rem 0;
+
+    input[type="file"] {
+      margin-bottom: 0.5rem;
+    }
+
+    .preview-image {
+      max-height: 100px;
+      border: 1px solid #ccc;
+    }
+  }
+}
+
+.full-width-table {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  th, td {
+    text-align: left;
+  }
+
+  img {
+    border-radius: 6px;
+  }
+}

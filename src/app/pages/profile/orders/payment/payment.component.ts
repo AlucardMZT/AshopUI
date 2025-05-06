@@ -7,7 +7,8 @@ import { Order } from '../../../../models/orderitem.model';
 import {PaymentService} from '../../../../services/payment.service';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {MatList, MatListItem} from '@angular/material/list';
-import {MatButton} from '@angular/material/button'; // ✅ Asegúrate que el path es correcto
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon'; // ✅ Asegúrate que el path es correcto
 
 @Component({
   selector: 'app-payment',
@@ -21,7 +22,8 @@ import {MatButton} from '@angular/material/button'; // ✅ Asegúrate que el pat
     MatList,
     MatCardContent,
     MatListItem,
-    MatButton
+    MatButton,
+    MatIcon
   ],
   standalone: true
 })

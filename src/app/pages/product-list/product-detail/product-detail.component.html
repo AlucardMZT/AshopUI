@@ -1,13 +1,12 @@
 <div class="product-detail-container" *ngIf="product">
   <!-- Zona de imágenes -->
   <div class="product-images">
-    <img class="main-image" [src]="product.image" [alt]="product.name" />
+    <img class="main-image" [src]="mainImage" [alt]="product.name" />
 
     <div class="thumbnail-list">
-      <!-- Aquí puedes replicar miniaturas si tu producto tiene varias imágenes -->
-      <img [src]="product.image" alt="Miniatura" />
-      <img [src]="product.image" alt="Miniatura" />
-      <img [src]="product.image" alt="Miniatura" />
+      <img *ngIf="product.image" [src]="product.image" (click)="product.image && setMainImage(product.image)" alt="Miniatura" />
+      <img *ngIf="product.image2" [src]="product.image2" (click)="setMainImage(product.image2)" alt="Miniatura" />
+      <img *ngIf="product.image3" [src]="product.image3" (click)="setMainImage(product.image3)" alt="Miniatura" />
     </div>
   </div>
 
@@ -30,11 +29,20 @@
 
     <p class="description">{{ product.description }}</p>
 
-    <p class="stock-status">Disponible</p>
+    <p class="stock-status" [ngClass]="{ 'agotado': product.stock === 0, 'disponible': product.stock > 0 }">
+      {{ product.stock === 0 ? 'Agotado' : 'Disponible: ' + product.stock }}
+    </p>
 
     <div class="buy-buttons">
-      <button mat-raised-button color="primary" (click)="addToCart()">Agregar al carrito</button>
-      <button mat-stroked-button color="accent" routerLink="/productos">Volver a productos</button>
+      <button mat-raised-button color="primary"
+              [disabled]="product.stock === 0"
+              (click)="addToCart()">
+        {{ product.stock === 0 ? 'Sin stock' : 'Agregar al carrito' }}
+      </button>
+
+      <button mat-stroked-button color="accent" routerLink="/productos">
+        Volver a productos
+      </button>
     </div>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,7 +7,7 @@ import { CartService } from '../../../services/car.service';
 import { AuthService } from '../../../services/auth.service';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
-import { NgIf } from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
@@ -16,7 +16,9 @@ import {MatIcon} from '@angular/material/icon';
   imports: [
     MatButton,
     NgIf,
-    MatIcon
+    MatIcon,
+    NgClass,
+    RouterLink
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
@@ -24,6 +26,7 @@ import {MatIcon} from '@angular/material/icon';
 export class ProductDetailComponent implements OnInit {
   product?: Product;
   loading = true;
+  mainImage: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +43,7 @@ export class ProductDetailComponent implements OnInit {
       this.productService.getProductById(+id).subscribe({
         next: product => {
           this.product = product;
+          this.mainImage = product.image;
           this.loading = false;
         },
         error: err => {
@@ -48,6 +52,10 @@ export class ProductDetailComponent implements OnInit {
         }
       });
     }
+  }
+
+  setMainImage(image: string) {
+    this.mainImage = image;
   }
 
   addToCart(): void {

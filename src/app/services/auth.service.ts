@@ -109,4 +109,8 @@ export class AuthService {
   checkNicknameExists(nickname: string) {
     return this.http.get<boolean>(`http://localhost:8080/api/auth/nickname-exists?nickname=${nickname}`);
   }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
 }

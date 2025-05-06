@@ -105,7 +105,6 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   }
 
   irAPagar(id: number) {
-    console.log('Redirigiendo al pago del pedido', id);
     this.router.navigate(['/pago', id])
       .then(success => {
         if (success) {

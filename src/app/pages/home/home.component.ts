@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import {Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
@@ -9,10 +9,11 @@ import {Product} from '../../models/product.model';
 import {ProductService} from '../../services/product.service';
 import {Category} from '../../models/category.model';
 import {CategoryService} from '../../services/category.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
-  imports: [CarouselModule, MatCard, NgForOf, MatCardContent, MatCardImage, RouterLink, MatButton, MatIcon, NgIf],
+  imports: [CarouselModule, MatCard, NgForOf, MatCardContent, MatCardImage, RouterLink, MatButton, MatIcon, NgIf, NgClass],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit{
   destacados: Product[] = [];
   categorias: Category[] = [];
 
-  constructor(private productService: ProductService,private router: Router,private categoryService: CategoryService) {}
+  constructor(private productService: ProductService,private router: Router,private categoryService: CategoryService,public authService: AuthService) {}
 
 
   ngOnInit(): void {

@@ -81,13 +81,20 @@
             <p>{{ product.description }}</p>
             <p class="price">${{ product.price.toFixed(2) }}</p>
           </mat-card-content>
+          <p
+            class="stock"
+            [ngClass]="{ 'agotado': product.stock === 0, 'disponible': product.stock > 0 }"
+          >
+            {{ product.stock === 0 ? 'Agotado' : 'Disponible' }}
+          </p>
           <mat-card-actions>
             <button
               mat-raised-button
               color="primary"
+              [disabled]="product.stock === 0"
               (click)="addToCart(product); $event.stopPropagation()"
             >
-              Agregar al carrito
+              {{ product.stock === 0 ? 'Sin stock' : 'Agregar al carrito' }}
             </button>
           </mat-card-actions>
         </mat-card>

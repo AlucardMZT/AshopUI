@@ -57,7 +57,10 @@ export class VerPedidoComponent implements OnInit {
         name: i.productName,
         price: i.unitPrice,
         image: i.image || '',
+        image1: i.image || '',
+        image2: i.image || '',
         description: '',
+        stock: 0, // 👈 se agrega para cumplir con la interfaz Product
         category: { id: 0, name: '' }
       },
       quantity: i.quantity

@@ -4,16 +4,20 @@
     <h3>Categorías</h3>
     <ul *ngIf="categories.length > 0; else noCategories">
       <li (click)="filterByCategory(null)" [class.active]="selectedCategoryId === null">Todas</li>
-      <li *ngFor="let cat of categories"
-          (click)="filterByCategory(cat.id)"
-          [class.active]="selectedCategoryId === cat.id">
-        {{ cat.name }}
-      </li>
+      <ng-container *ngFor="let cat of categories">
+        <li *ngIf="cat.id >= 6"
+            (click)="filterByCategory(cat.id)"
+            [class.active]="selectedCategoryId === cat.id">
+          {{ cat.name }}
+        </li>
+      </ng-container>
     </ul>
     <ng-template #noCategories>
       <p>No hay categorías disponibles.</p>
     </ng-template>
   </aside>
+
+
 
   <!-- PRODUCTOS -->
   <section class="catalog-content">
@@ -38,6 +42,29 @@
 
         <button mat-stroked-button class="filter-color" (click)="resetFilters()">Limpiar filtros</button>
       </div>
+
+      <div class="category-bar" *ngIf="categories.length > 0; else noCategories">
+        <button
+          mat-stroked-button
+          [class.active]="selectedCategoryId === null"
+          (click)="filterByCategory(null)">
+          Todas
+        </button>
+
+        <ng-container *ngFor="let cat of categories">
+          <button
+            mat-stroked-button
+            *ngIf="cat.name !== 'Electrónica' && cat.name !== 'Ropa' && cat.name !== 'Juguetes'"
+            (click)="filterByCategory(cat.id)"
+            [class.active]="selectedCategoryId === cat.id">
+            {{ cat.name }}
+          </button>
+        </ng-container>
+      </div>
+
+      <ng-template #noCategories>
+        <p style="padding-left: 10px;">No hay categorías disponibles.</p>
+      </ng-template>
 
       <h2 class="section-title">Todos los productos</h2>
 

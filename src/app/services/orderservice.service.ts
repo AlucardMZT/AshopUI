@@ -11,10 +11,10 @@ export class OrderService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  crearOrden(payload: PlaceOrderRequest): Observable<{ orderNumber: string }> {
+  crearOrden(payload: PlaceOrderRequest): Observable<{ orderId: number; orderNumber: string }> {
     const token = this.authService.getToken();
 
-    return this.http.post<{ orderNumber: string }>(
+    return this.http.post<{ orderId: number; orderNumber: string }>(
       `${this.API_URL}/create`,
       payload,
       {

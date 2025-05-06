@@ -9,7 +9,7 @@
   </mat-select>
 </mat-form-field>
 
-<table mat-table [dataSource]="filteredOrders" class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <!-- Número -->
   <ng-container matColumnDef="orderNumber">
@@ -51,4 +51,7 @@
 
 </table>
 
-<p *ngIf="filteredOrders.length === 0" class="empty-msg">No hay pedidos con este filtro.</p>
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+
+
+<p *ngIf="dataSource.data.length === 0" class="empty-msg">No hay pedidos con este filtro.</p>

@@ -13,11 +13,24 @@ import {NgIf} from '@angular/common';
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-  rutasSinFooter = ['/login', '/register'];
+  rutasSinFooter: (string | RegExp)[] = [
+    '/login',
+    '/register',
+    /^\/productos\/\d+$/  // Coincide con /productos/1, /productos/123, etc.
+  ];
 
   constructor(public router: Router) {}
 
   mostrarFooter(): boolean {
-    return !this.rutasSinFooter.includes(this.router.url);
+    const url = this.router.url;
+
+    return !this.rutasSinFooter.some((ruta) => {
+      if (typeof ruta === 'string') {
+        return ruta === url;
+      } else {
+        return ruta.test(url); // para rutas con RegExp
+      }
+    });
   }
+
 }

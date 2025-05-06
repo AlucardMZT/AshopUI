@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {AuthService} from './auth.service';
-import {data} from 'autoprefixer';
+import { BehaviorSubject } from 'rxjs';
 import {CartItem} from '../models/caritem.model';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private API_URL = 'http://localhost:8080/api/cart';
   private cart: any[] = [];
+  private cartSubject = new BehaviorSubject<CartItem[]>(this.cart);
+  cart$ = this.cartSubject.asObservable();
 
   constructor(private http: HttpClient, private authService: AuthService) {
 
@@ -55,13 +57,13 @@ export class CartService {
 
     if (index !== -1) {
       this.cart[index].quantity += 1;
-      this.saveToLocal();
-      return false;
+    } else {
+      this.cart.push({ product, quantity: 1 });
     }
 
-    this.cart.push({ product, quantity: 1 });
     this.saveToLocal();
-    return true;
+    this.cartSubject.next(this.cart); // ✅ Notificar cambio
+    return index === -1;
   }
 
   getCart(): any[] {
@@ -71,15 +73,18 @@ export class CartService {
   removeFromCart(productId: string | number) {
     this.cart = this.cart.filter(p => p.product.id !== productId);
     this.saveToLocal();
+    this.cartSubject.next(this.cart);
   }
 
   clearCart() {
     this.cart = [];
     localStorage.removeItem('cart');
+    this.cartSubject.next(this.cart);
   }
 
   saveToLocal() {
     localStorage.setItem('cart', JSON.stringify(this.cart));
+    this.cartSubject.next(this.cart);
   }
 
   procesarPago(cartItems: CartItem[]): Observable<string> {

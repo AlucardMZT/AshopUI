@@ -206,4 +206,33 @@
   }
 }
 
+////
+
+.category-bar {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+
+  button {
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-transform: none;
+  }
+
+  .active {
+    background-color: #1976d2 !important;
+    color: white !important;
+    border-color: #1976d2 !important;
+  }
+
+  /* Opcional: ocultar scrollbar pero permitir scroll */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;  // IE/Edge
+  scrollbar-width: none;     // Firefox
+}
+
 

@@ -28,8 +28,8 @@
         {{ userNickname }}
       </a>
       <a mat-button routerLink="/car" style="color: white">
-        <mat-icon>shopping_bag</mat-icon>
-        Carrito
+        🛒 Carrito
+        <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
       </a>
       <button mat-button style="color: white" (click)="logout()">
         <mat-icon>logout</mat-icon>

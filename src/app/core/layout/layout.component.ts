@@ -7,6 +7,8 @@ import {AuthService} from '../../services/auth.service';
 import {NgIf} from '@angular/common';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatIcon} from '@angular/material/icon';
+import { CartService } from '../../services/car.service';
+import {CartItem} from '../../models/caritem.model';
 
 @Component({
   selector: 'app-layout',
@@ -27,10 +29,15 @@ export class LayoutComponent implements OnInit{
   userNickname: string = '';
   isLoading = false;
   isAdmin = false;
+  cartCount = 0;
 
-  constructor(protected authService: AuthService, private router: Router) {}
+  constructor(protected authService: AuthService, private router: Router,  private cartService: CartService) {}
 
   ngOnInit() {
+    this.cartService.cart$.subscribe((cart: CartItem[]) => {
+      this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+    });
+
     this.authService.authStatus$.subscribe((isAuthenticated) => {
       if (isAuthenticated) {
         this.isLoading = true;

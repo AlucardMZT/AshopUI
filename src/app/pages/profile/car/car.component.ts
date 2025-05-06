@@ -127,13 +127,26 @@ export class CarComponent implements OnInit{
       return;
     }
 
-    const items = this.cart.map(item => ({
-      productId: item.product.id,
-      productName: item.product.name,
-      price: item.product.price,
-      quantity: item.quantity,
-      image: item.product.image
-    }));
+    // Mostrar el contenido del carrito
+    console.log('🛒 Carrito actual:', this.cart);
+
+    const items = this.cart
+      .filter(item => item.product && item.product.id != null) // <-- SOLO válidos
+      .map(item => ({
+        productId: item.product.id,
+        productName: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity,
+        image: item.product.image
+      }));
+
+    if (items.length === 0) {
+      alert('No hay productos válidos en el carrito.');
+      return;
+    }
+
+    // Mostrar ítems mapeados antes de enviar
+    console.log('📤 Ítems preparados para el pedido:', items);
 
     const pedido = {
       items,
@@ -143,20 +156,34 @@ export class CarComponent implements OnInit{
       total: this.getTotal()
     };
 
+    // Mostrar el pedido completo que se enviará al backend
+    console.log('🚀 Pedido final a enviar:', pedido);
+
     this.orderService.crearOrden(pedido).subscribe({
       next: (response) => {
-        const orderNumber = response.orderNumber;
+        const orderId = response.orderId;
+        console.log('✅ Pedido creado con ID:', orderId);
         this.cartService.clearCart();
-        this.router.navigate(['/confirmacion-pedido'], {
-          queryParams: { numero: orderNumber }
-        });
+        this.router.navigate(['/pago', orderId])
+          .then(success => {
+            if (success) {
+              console.log('🧭 Redirigido a pago del pedido:', orderId);
+            } else {
+              console.warn('⚠️ Navegación a pago fallida');
+            }
+          })
+          .catch(err => {
+            console.error('❌ Error redirigiendo al pago:', err);
+          });
       },
       error: (err) => {
         alert('No se pudo procesar el pedido');
-        console.error('Error al crear la orden:', err);
+        console.error('❌ Error al crear la orden:', err);
       }
     });
   }
+
+
 
 
 }

@@ -4,6 +4,12 @@ body, html {
   padding: 0;
   height: 100%;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  background-image: url('/assets/robot.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 

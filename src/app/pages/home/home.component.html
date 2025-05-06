@@ -1,0 +1,63 @@
+<section class="hero mat-elevation-z4">
+  <!-- 🎥 Video de fondo -->
+  <video autoplay muted loop playsinline class="video-bg">
+    <source src="assets/video.mp4" type="video/mp4" />
+    Tu navegador no soporta el video.
+  </video>
+
+  <!-- ✨ Capa oscura y contenido -->
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <h1>Bienvenido a <strong>A-Shop</strong></h1>
+    <p>Explora nuestros productos y vive una experiencia de compra diferente</p>
+    <button mat-raised-button color="primary" routerLink="/productos">
+      <mat-icon>storefront</mat-icon> Explorar tienda
+    </button>
+  </div>
+</section>
+
+<section class="featured">
+  <h2>🎯 Productos destacados</h2>
+  <div class="carousel-container">
+    <div class="carousel" *ngIf="destacados.length > 0">
+      <mat-card
+        class="carousel-item"
+        *ngFor="let producto of destacados"
+        (click)="verDetalle(producto.id)"
+        style="cursor: pointer;"
+      >
+        <img mat-card-image [src]="producto.image" alt="{{ producto.name }}">
+        <mat-card-content>
+          <h3>{{ producto.name }}</h3>
+          <p>${{ producto.price }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<section class="benefits">
+  <mat-card class="benefit" *ngFor="let b of beneficios">
+    <mat-icon>{{ b.icon }}</mat-icon>
+    <h3>{{ b.title }}</h3>
+    <p>{{ b.description }}</p>
+  </mat-card>
+</section>
+
+<section class="categories">
+  <h2>Categorías</h2>
+  <div class="category-grid">
+    <mat-card *ngFor="let cat of categorias" (click)="verCategoria(cat.id)" style="cursor: pointer;">
+      <img mat-card-image [src]="cat.image" alt="{{ cat.name }}">
+      <mat-card-content>
+        <h3>{{ cat.name }}</h3>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>¡Listo para comprar!</h2>
+  <button mat-stroked-button color="accent" routerLink="/register">Crear cuenta</button>
+</section>

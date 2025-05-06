@@ -9,7 +9,7 @@ import {CategoryService} from '../../services/category.service';
 import {FormsModule} from '@angular/forms';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CartService} from '../../services/car.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -39,7 +39,7 @@ export class ProductListComponent implements OnInit {
   selectedCategoryId: number | null = null;
 
 
-  productsPerPage = 6;
+  productsPerPage = 12;
   currentPage = 1;
   paginatedProducts: Product[] = [];
 
@@ -55,10 +55,20 @@ export class ProductListComponent implements OnInit {
     private categoryService: CategoryService,
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private cartService: CartService
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const categoriaId = +params['categoria'];
+
+      if (categoriaId) {
+        this.filterByCategory(categoriaId);        // 🔍 Aplica el filtro
+        this.selectedCategoryId = categoriaId;     // ✅ Resalta en la barra
+      }
+    });
+
     this.loadProducts();
     this.loadCategories();
   }

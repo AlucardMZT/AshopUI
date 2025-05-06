@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {OrderService} from '../../../../services/orderservice.service';
 import {MatButton} from '@angular/material/button';
 import {CommonModule, NgIf} from '@angular/common';
 import {Order} from '../../../../models/orderitem.model';
+import {CartItem} from '../../../../models/caritem.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-verpedido',
@@ -11,7 +13,6 @@ import {Order} from '../../../../models/orderitem.model';
     MatButton,
     CommonModule,
     NgIf,
-    RouterLink
   ],
   templateUrl: './verpedido.component.html',
   styleUrl: './verpedido.component.scss'
@@ -24,7 +25,9 @@ export class VerPedidoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -47,12 +50,13 @@ export class VerPedidoComponent implements OnInit {
 
   volverAComprar() {
     if (!this.order) return;
-    const cartItems = this.order.items.map(i => ({
+
+    const cartItems: CartItem[] = this.order.items.map(i => ({
       product: {
-        id: 0,
+        id: i.productId,
         name: i.productName,
         price: i.unitPrice,
-        image: i.image ?? '',
+        image: i.image || '',
         description: '',
         category: { id: 0, name: '' }
       },
@@ -60,7 +64,12 @@ export class VerPedidoComponent implements OnInit {
     }));
 
     localStorage.setItem('cart', JSON.stringify(cartItems));
-    alert('Productos añadidos nuevamente al carrito.');
+    alert('✅ Productos añadidos nuevamente al carrito.');
+    this.router.navigate(['/car']).then(() => {
+      window.location.reload();
+    });
   }
+
+
 }
 

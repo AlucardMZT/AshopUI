@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatCard, MatCardActions, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
@@ -15,7 +14,7 @@ import {
   MatHeaderRowDef,
   MatRowDef,
   MatHeaderCellDef,
-  MatCellDef
+  MatCellDef, MatTableDataSource
 } from '@angular/material/table';
 import { NgIf, NgForOf } from '@angular/common';
 import { OrderItem } from '../../../models/orderitem.model';
@@ -23,6 +22,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ConfirmDialogComponent} from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import {MatPaginator} from '@angular/material/paginator';
 
 export interface Order {
   id: number;
@@ -54,18 +54,25 @@ export interface Order {
     MatHeaderCellDef,
     MatCellDef,
     MatTable,
+    MatPaginator,
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, AfterViewInit {
   orders: Order[] = [];
-  filteredOrders: Order[] = [];
+  dataSource = new MatTableDataSource<Order>();
   filtroEstado: string = '';
   displayedColumns: string[] = ['orderNumber', 'status', 'createdAt', 'total', 'acciones'];
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   constructor(private http: HttpClient,private router: Router,  private dialog: MatDialog,
               private snackBar: MatSnackBar) {}
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
 
   ngOnInit(): void {
     this.fetchOrders();
@@ -90,9 +97,11 @@ export class OrdersComponent implements OnInit {
   }
 
   filtrarPedidos() {
-    this.filteredOrders = this.filtroEstado
+    const filtrados = this.filtroEstado
       ? this.orders.filter(o => o.status === this.filtroEstado)
       : [...this.orders];
+
+    this.dataSource.data = filtrados;
   }
 
   irAPagar(id: number) {

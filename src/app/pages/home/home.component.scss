@@ -1,0 +1,162 @@
+.hero {
+  position: relative;
+  height: 350px; // más pequeño
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  color: white;
+
+  .video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    filter: brightness(0.6);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    padding: 1rem;
+
+    h1 {
+      font-size: 2.2rem; // reducido aún más
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      font-weight: 600;
+    }
+  }
+}
+
+
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.benefits {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 3rem 0;
+  gap: 1.5rem;
+
+  .benefit {
+    flex: 1 1 200px;
+    text-align: center;
+    padding: 1rem;
+
+    mat-icon {
+      color: #1976d2;
+    }
+
+    h3 {
+      margin-top: 1rem;
+    }
+  }
+}
+
+.categories {
+  margin: 2rem 0;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .category-grid {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    mat-card {
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.3s;
+
+      img {
+        height: 140px;
+        object-fit: cover;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+.cta {
+  text-align: center;
+  margin: 3rem 0;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+}
+
+.featured {
+  margin: 3rem 0;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .carousel-container {
+    overflow-x: auto;
+    padding: 1rem;
+
+    .carousel {
+      display: flex;
+      gap: 1rem;
+      min-width: 100%;
+    }
+
+    .carousel-item {
+      min-width: 240px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      img {
+        height: 140px;
+        object-fit: cover;
+      }
+    }
+  }
+}

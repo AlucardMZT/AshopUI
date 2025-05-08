@@ -1,0 +1,43 @@
+.discount-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 600px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.discount-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.discount-card {
+  margin-bottom: 1rem;
+}
+
+mat-card {
+  background: #f9f9f9;
+}
+
+mat-card-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.mat-mdc-tab-body-content {
+  height: 100vh !important;
+}

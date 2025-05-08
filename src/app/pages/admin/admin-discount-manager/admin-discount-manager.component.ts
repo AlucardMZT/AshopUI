@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgForOf } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,9 +10,17 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import {CategoryDiscountRequestModel} from '../../../models/CategoryDiscountRequest.model';
+import {DiscountService} from '../../../services/DiscountService';
+import {MatDivider, MatList, MatListItem} from '@angular/material/list';
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import {CategoryService} from '../../../services/category.service';
-import { CategoryDiscount } from '../../../models/category-discount.model';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
+import {ProductDiscountRequest} from '../../../models/ProductDiscountRequest.model';
+import {ProductDiscountService} from '../../../services/ProductDiscountService';
 import {Category} from '../../../models/category.model';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-discount-manager',
@@ -29,30 +37,79 @@ import {Category} from '../../../models/category.model';
     MatOptionModule,
     MatButtonModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    FormsModule,
+
+    MatDatepicker,
+    MatDatepickerToggle,
+    MatDatepickerInput,
+    MatNativeDateModule,
+    MatTabGroup,
+    MatTab
   ]
 })
+
+
 export class AdminDiscountManagerComponent implements OnInit {
-  discountForm: FormGroup;
-  discounts: CategoryDiscount[] = [];
+  categoryDiscount: CategoryDiscountRequestModel = {} as CategoryDiscountRequestModel;
+  productDiscount: ProductDiscountRequest = {} as ProductDiscountRequest;
   categories: Category[] = [];
+  editing: boolean = false;
   editingId: number | null = null;
+  productosConDescuento: any[] = [];
+  columnasDescuento: string[] = ['name', 'originalPrice', 'finalPrice', 'hasDiscount', 'acciones'];
 
   constructor(
-    private fb: FormBuilder,
+    private discountService: DiscountService,
+    private productDiscountService: ProductDiscountService,
     private categoryService: CategoryService,
-  ) {
-    this.discountForm = this.fb.group({
-      categoryId: ['', Validators.required],
-      percentage: [0, Validators.required],
-      description: [''],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required]
+    private snackBar: MatSnackBar
+  ) {}
+
+  ngOnInit(): void {
+
+    this.loadCategories()
+    this.loadProductosConDescuento();
+  }
+
+  saveCategoryDiscount(): void {
+    if (!this.categoryDiscount.description) {
+      this.mostrarNotificacion('El motivo es obligatorio');
+      return;
+    }
+
+    this.discountService.create(this.categoryDiscount).subscribe({
+      next: () => {
+        this.mostrarNotificacion('Descuento aplicado correctamente');
+        this.categoryDiscount = {} as CategoryDiscountRequestModel;
+        this.loadProductosConDescuento();
+      },
+      error: err => {
+        console.error('Error real del backend:', err);
+        this.mostrarNotificacion('Error al aplicar descuento');
+      }
     });
   }
 
-  ngOnInit(): void {
-    this.loadCategories();
+  aplicarAhoraCategoria(): void {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    this.categoryDiscount.startDate = today.toISOString().substring(0, 10);
+    this.categoryDiscount.endDate = tomorrow.toISOString().substring(0, 10);
+  }
+
+  saveProductDiscount(): void {
+    this.productDiscountService.create(this.productDiscount).subscribe({
+      next: () => {
+        alert('Descuento por producto aplicado');
+        this.productDiscount = {} as ProductDiscountRequest;
+      },
+      error: err => {
+        alert(err.error || 'Error al aplicar descuento al producto');
+      }
+    });
   }
 
   loadCategories(): void {
@@ -62,28 +119,49 @@ export class AdminDiscountManagerComponent implements OnInit {
     });
   }
 
-
-  editDiscount(d: CategoryDiscount): void {
-    this.editingId = d.id;
-    this.discountForm.patchValue({
-      categoryId: d.category?.id ?? '', // ✅ segura
-      percentage: d.percentage,
-      description: d.description,
-      startDate: d.startDate,
-      endDate: d.endDate
+  loadProductosConDescuento(): void {
+    this.discountService.getProductosConDescuento().subscribe({
+      next: productos => this.productosConDescuento = productos,
+      error: err => console.error('Error al cargar productos', err)
     });
   }
 
-
-  cancelDiscount(): void {
-    this.discountForm.reset();
+  eliminarDescuento(product: any): void {
+    if (product.discountSource === 'PRODUCT') {
+      this.productDiscountService.delete(product.discountId).subscribe(() => {
+        alert('Descuento individual eliminado');
+        this.loadProductosConDescuento();
+      });
+    } else if (product.discountSource === 'CATEGORY') {
+      this.discountService.delete(product.discountId).subscribe(() => {
+        alert('Descuento de categoría eliminado');
+        this.loadProductosConDescuento();
+      });
+    } else {
+      alert('Este producto no tiene un descuento eliminable.');
+    }
   }
 
-  applyTodayDiscount(): void {
-    const today = new Date().toISOString().substring(0, 10); // YYYY-MM-DD
-    this.discountForm.patchValue({
-      startDate: today,
-      endDate: today
+  mostrarNotificacion(mensaje: string): void {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 3000
     });
+  }
+
+  editDiscount(p: any): void {
+    if (p.discountSource === 'CATEGORY') {
+      this.categoryDiscount = {
+        categoryId: p.categoryId,
+        percentage: p.discountPercentage,
+        startDate: p.startDate,
+        endDate: p.endDate,
+        description: p.description
+      };
+      this.editing = true;
+      this.editingId = p.discountId;
+    } else {
+      this.mostrarNotificacion('Solo se puede editar descuentos por categoría desde aquí.');
+    }
   }
 }
+

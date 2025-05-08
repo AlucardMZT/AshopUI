@@ -1,90 +1,131 @@
-<!--
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>Descuentos por categoría</mat-panel-title>
-  </mat-expansion-panel-header>
+<mat-tab-group>
+  <!-- TAB 1: Por Categoría -->
+  <mat-tab label="Descuento por Categoría">
+    <form #formCat="ngForm" (ngSubmit)="saveCategoryDiscount()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Selecciona una categoría</mat-label>
+        <mat-select [(ngModel)]="categoryDiscount.categoryId" name="categoryId" required>
+          <mat-option *ngFor="let cat of categories" [value]="cat.id">
+            {{ cat.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  &lt;!&ndash; Formulario de descuento &ndash;&gt;
-  <form [formGroup]="discountForm" (ngSubmit)="saveDiscount()" class="form-row" style="flex-wrap: wrap; gap: 1rem; align-items: end;">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Porcentaje (%)</mat-label>
+        <input matInput type="number" [(ngModel)]="categoryDiscount.percentage" name="percentageCat" required />
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Categoría</mat-label>
-      <mat-select formControlName="categoryId">
-        <mat-option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Fecha de inicio</mat-label>
+        <input matInput [matDatepicker]="catStart" [(ngModel)]="categoryDiscount.startDate" name="startDateCat" />
+        <mat-datepicker-toggle matSuffix [for]="catStart"></mat-datepicker-toggle>
+        <mat-datepicker #catStart></mat-datepicker>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-field small">
-      <mat-label>% Descuento</mat-label>
-      <input matInput type="number" formControlName="percentage" />
-    </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Fecha de fin</mat-label>
+        <input matInput [matDatepicker]="catEnd" [(ngModel)]="categoryDiscount.endDate" name="endDateCat" />
+        <mat-datepicker-toggle matSuffix [for]="catEnd"></mat-datepicker-toggle>
+        <mat-datepicker #catEnd></mat-datepicker>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Descripción</mat-label>
-      <input matInput formControlName="description" />
-    </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Motivo</mat-label>
+        <input matInput type="text" [(ngModel)]="categoryDiscount.description" name="description" required />
+        <mat-error *ngIf="formCat.submitted && !categoryDiscount.description">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-field small">
-      <mat-label>Inicio</mat-label>
-      <input matInput type="date" formControlName="startDate" />
-    </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Aplicar</button>
 
-    <mat-form-field appearance="outline" class="form-field small">
-      <mat-label>Fin</mat-label>
-      <input matInput type="date" formControlName="endDate" />
-    </mat-form-field>
-
-    <div class="form-actions" style="display: flex; gap: 1rem; margin-top: 1rem;">
-      <button mat-raised-button color="primary" type="submit">
-        Guardar descuento
+      <button mat-stroked-button color="accent" (click)="aplicarAhoraCategoria()">
+        Aplicar AHORA (hoy mismo)
       </button>
-      <button mat-stroked-button color="accent" type="button" (click)="applyTodayDiscount()">
-        Aplicar hoy
+    </form>
+
+  </mat-tab>
+
+
+  <mat-tab label="Descuento por Producto">
+    <form (ngSubmit)="saveProductDiscount()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>ID Producto</mat-label>
+        <input matInput type="number" [(ngModel)]="productDiscount.productId" name="productId" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Porcentaje (%)</mat-label>
+        <input matInput type="number" [(ngModel)]="productDiscount.percentage" name="percentageProd" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Fecha de inicio</mat-label>
+        <input matInput [matDatepicker]="prodStart" [(ngModel)]="productDiscount.startDate" name="startDateProd" />
+        <mat-datepicker-toggle matSuffix [for]="prodStart"></mat-datepicker-toggle>
+        <mat-datepicker #prodStart></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Fecha de fin</mat-label>
+        <input matInput [matDatepicker]="prodEnd" [(ngModel)]="productDiscount.endDate" name="endDateProd" />
+        <mat-datepicker-toggle matSuffix [for]="prodEnd"></mat-datepicker-toggle>
+        <mat-datepicker #prodEnd></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Motivo</mat-label>
+        <input matInput [(ngModel)]="productDiscount.description" name="descProd" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Aplicar</button>
+    </form>
+  </mat-tab>
+</mat-tab-group>
+
+
+<h3>Validación de Descuentos</h3>
+
+<table mat-table [dataSource]="productosConDescuento" class="mat-elevation-z2 full-width">
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Producto </th>
+    <td mat-cell *matCellDef="let p"> {{ p.name }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="originalPrice">
+    <th mat-header-cell *matHeaderCellDef> Precio Original </th>
+    <td mat-cell *matCellDef="let p"> {{ p.originalPrice | currency }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="finalPrice">
+    <th mat-header-cell *matHeaderCellDef> Precio Final </th>
+    <td mat-cell *matCellDef="let p"> {{ p.finalPrice | currency }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="hasDiscount">
+    <th mat-header-cell *matHeaderCellDef> ¿Con Descuento? </th>
+    <td mat-cell *matCellDef="let p">
+      <mat-icon color="primary" *ngIf="p.hasDiscount">check_circle</mat-icon>
+      <mat-icon color="warn" *ngIf="!p.hasDiscount">cancel</mat-icon>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let p">
+      <button mat-icon-button color="warn" (click)="eliminarDescuento(p)">
+        <mat-icon>delete</mat-icon>
       </button>
-      <button mat-stroked-button color="warn" type="button" (click)="cancelDiscount()">
-        Cancelar
+
+      <button mat-icon-button color="primary" (click)="editDiscount(p)">
+        <mat-icon>edit</mat-icon>
       </button>
-    </div>
-  </form>
 
-  &lt;!&ndash; Tabla de descuentos &ndash;&gt;
-  <table mat-table [dataSource]="discounts" class="mat-elevation-z1 full-width" style="margin-top: 1rem;">
+    </td>
+  </ng-container>
 
-    &lt;!&ndash; Categoría &ndash;&gt;
-    <ng-container matColumnDef="category">
-      <th mat-header-cell *matHeaderCellDef> Categoría </th>
-      <td mat-cell *matCellDef="let d"> {{ d.category?.name }} </td>
-    </ng-container>
-
-    &lt;!&ndash; Descuento &ndash;&gt;
-    <ng-container matColumnDef="percentage">
-      <th mat-header-cell *matHeaderCellDef> Descuento (%) </th>
-      <td mat-cell *matCellDef="let d"> {{ d.percentage }}%</td>
-    </ng-container>
-
-    &lt;!&ndash; Fechas &ndash;&gt;
-    <ng-container matColumnDef="range">
-      <th mat-header-cell *matHeaderCellDef> Vigencia </th>
-      <td mat-cell *matCellDef="let d"> {{ d.startDate }} → {{ d.endDate }} </td>
-    </ng-container>
-
-    &lt;!&ndash; Descripción &ndash;&gt;
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Descripción </th>
-      <td mat-cell *matCellDef="let d"> {{ d.description }} </td>
-    </ng-container>
-
-    &lt;!&ndash; Acciones &ndash;&gt;
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let d">
-        <button mat-button color="accent" (click)="editDiscount(d)">Editar</button>
-        <button mat-button color="warn" (click)="deleteDiscount(d.id)">Eliminar</button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="['category', 'percentage', 'range', 'description', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['category', 'percentage', 'range', 'description', 'actions'];"></tr>
-  </table>
-</mat-expansion-panel>
--->
+  <tr mat-header-row *matHeaderRowDef="columnasDescuento"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnasDescuento;"></tr>
+</table>

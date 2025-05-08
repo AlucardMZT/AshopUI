@@ -36,7 +36,6 @@
       <p *ngIf="selectedAddress"><strong>Seleccionada:</strong> {{ selectedAddress }}</p>
     </mat-card>
 
-    <!-- Vista principal del carrito -->
     <ng-container *ngIf="section === 'carrito'">
       <div *ngIf="cart.length === 0" class="empty-cart">
         <p>No tienes productos en el carrito.</p>

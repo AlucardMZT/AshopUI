@@ -41,13 +41,10 @@ export class PaymentComponent implements OnInit {
   ngOnInit(): void {
     this.orderId = this.route.snapshot.paramMap.get('orderId') || '';
 
-    // Obtener datos del pedido
     this.paymentService.getOrder(this.orderId).subscribe({
       next: (order) => {
-        console.log('✅ Pedido cargado:', order);
         this.order = order;
 
-        // Inicializar PayPal
         setTimeout(() => {
           (window as any).paypal.Buttons({
             createOrder: (data: any, actions: any) => {

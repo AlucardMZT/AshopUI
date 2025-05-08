@@ -2,7 +2,6 @@
   <div class="login-card">
     <h2 class="login-title">Crear cuenta en AShop</h2>
 
-    <!-- Mensaje de error o éxito -->
     <div class="mensaje" [ngClass]="{ error: esError, success: !esError }" *ngIf="mensaje">
       {{ mensaje }}
     </div>
@@ -64,7 +63,6 @@
         <input matInput required [(ngModel)]="municipality" name="municipality">
       </mat-form-field>
 
-      <!-- Opcionales -->
       <mat-form-field appearance="fill" class="full-row">
         <mat-label>Dirección adicional 1 (opcional)</mat-label>
         <input matInput [(ngModel)]="address2" name="address2">

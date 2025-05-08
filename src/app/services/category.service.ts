@@ -19,7 +19,10 @@ export class CategoryService {
   }
 
   create(category: any) {
-    return this.http.post<Category>(this.baseUrl, category);
+    const token = this.authService.getToken();
+    return this.http.post<Category>(this.baseUrl, category, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
   }
 
   update(id: number, data: any) {

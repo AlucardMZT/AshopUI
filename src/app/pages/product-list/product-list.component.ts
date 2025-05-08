@@ -50,17 +50,19 @@ export class ProductListComponent implements OnInit {
   sortOrder: 'asc' | 'desc' | '' = '';
   loading = false;
 
+
   constructor(
     private productService: ProductService,
     private snackBar: MatSnackBar,
     private categoryService: CategoryService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private cartService: CartService
   ) {}
 
   ngOnInit() {
+
     this.route.queryParams.subscribe(params => {
       const categoriaId = +params['categoria'];
 
@@ -176,5 +178,28 @@ export class ProductListComponent implements OnInit {
 
   verDetalle(id: number) {
     this.router.navigate(['/productos', id]);
+  }
+
+
+  handleAddClick(product: Product): void {
+    const isRopa = product.category?.name?.trim().toLowerCase() === 'ropa';
+
+    if (!this.authService.isLoggedIn()) {
+      this.snackBar.open('⚠️ Debes iniciar sesión para agregar al carrito.', 'Cerrar', { duration: 3000 });
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (isRopa) {
+      this.router.navigate([`/productos/${product.id}`]);
+      return;
+    }
+
+    const added = this.cartService.addToCart(product);
+    this.snackBar.open(
+      added ? '✅ Producto agregado al carrito.' : '➕ Se aumentó la cantidad.',
+      'Cerrar',
+      { duration: 3000 }
+    );
   }
 }

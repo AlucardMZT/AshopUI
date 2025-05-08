@@ -1,25 +1,27 @@
-import {Routes} from '@angular/router';
-import {HomeComponent} from './pages/home/home.component';
-import {LoginComponent} from './auth/login/login.component';
-import {RegisterComponent} from './auth/register/register.component';
-import {AuthGuard} from './auth/auth.guard';
-import {ProfileComponent} from './pages/profile/profile.component';
-import {AccountComponent} from './pages/profile/account/account.component';
-import {OrdersComponent} from './pages/profile/orders/orders.component';
-import {HistoryComponent} from './pages/profile/history/history.component';
-import {SettingsComponent} from './pages/profile/settings/settings.component';
-import {CarComponent} from './pages/profile/car/car.component';
-import {ConfirmacionpedidoComponent} from './pages/profile/orders/confirmacionpedido/confirmacionpedido.component';
-import {VerPedidoComponent} from './pages/profile/orders/verpedido/verpedido.component';
-import {AdminProductFormComponent} from './pages/admin/admin-product-form/admin-product-form.component';
-import {AdminPanelLayoutComponent} from './pages/admin/admin-panel-layout/admin-panel-layout.component';
-import {AdminOrderListComponent} from './pages/admin/admin-order-list/admin-order-list.component';
-import {CategoriaImageListComponent} from './pages/admin/categoria-image-list/categoria-image-list.component';
+import { Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { AuthGuard } from './auth/auth.guard';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { AccountComponent } from './pages/profile/account/account.component';
+import { OrdersComponent } from './pages/profile/orders/orders.component';
+import { LandingPageComponent } from './pages/landing/landing-page.component';
+import { HistoryComponent } from './pages/profile/history/history.component';
+import { SettingsComponent } from './pages/profile/settings/settings.component';
+import { CarComponent } from './pages/profile/car/car.component';
+import { ConfirmacionpedidoComponent } from './pages/profile/orders/confirmacionpedido/confirmacionpedido.component';
+import { VerPedidoComponent } from './pages/profile/orders/verpedido/verpedido.component';
+import { AdminProductFormComponent } from './pages/admin/admin-product-form/admin-product-form.component';
+import { AdminPanelLayoutComponent } from './pages/admin/admin-panel-layout/admin-panel-layout.component';
+import { AdminOrderListComponent } from './pages/admin/admin-order-list/admin-order-list.component';
+import { CategoriaImageListComponent } from './pages/admin/categoria-image-list/categoria-image-list.component';
 
 export const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  { path: 'landing', component: LandingPageComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
@@ -46,9 +48,9 @@ export const routes: Routes = [
       { path: 'ver-pedido', component: VerPedidoComponent },
       {
         path: 'pago/:orderId',
-        loadComponent: () => import('./pages/profile/orders/payment/payment.component')
-          .then(m => m.PaymentComponent),
-        canActivate: [AuthGuard],
+        loadComponent: () =>
+          import('./pages/profile/orders/payment/payment.component').then(m => m.PaymentComponent),
+        canActivate: [AuthGuard]
       }
     ]
   },
@@ -70,8 +72,17 @@ export const routes: Routes = [
       { path: 'categoria/upload', component: CategoriaImageListComponent }
     ]
   },
-  { path: 'forgot-password', loadComponent: () => import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
-  { path: 'reset-password', loadComponent: () => import('./auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
+  },
 
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];

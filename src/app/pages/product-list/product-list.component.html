@@ -1,6 +1,5 @@
 <div class="catalog-layout">
   <aside class="sidebar">
-    <!-- Categorías -->
     <h3>Categorías</h3>
     <ul *ngIf="categories.length > 0; else noCategories">
       <li (click)="filterByCategory(null)" [class.active]="selectedCategoryId === null">Todas</li>
@@ -17,9 +16,6 @@
     </ng-template>
   </aside>
 
-
-
-  <!-- PRODUCTOS -->
   <section class="catalog-content">
     <ng-container *ngIf="loading; else loadedContent">
       <div class="spinner-container">
@@ -88,14 +84,20 @@
             {{ product.stock === 0 ? 'Agotado' : 'Disponible' }}
           </p>
           <mat-card-actions>
-            <button
-              mat-raised-button
-              color="primary"
-              [disabled]="product.stock === 0"
-              (click)="addToCart(product); $event.stopPropagation()"
-            >
-              {{ product.stock === 0 ? 'Sin stock' : 'Agregar al carrito' }}
-            </button>
+              <button
+                      mat-raised-button
+                      color="primary"
+                      [disabled]="product.stock === 0"
+                      (click)="handleAddClick(product); $event.stopPropagation()"
+              >
+                  {{
+                      !authService.isLoggedIn()
+                          ? 'Agregar al carrito'
+                          : product.category?.name?.toLowerCase() === 'ropa'
+                              ? 'Seleccionar talla'
+                              : 'Agregar al carrito'
+                  }}
+              </button>
           </mat-card-actions>
         </mat-card>
       </div>

@@ -67,7 +67,10 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(): void {
-    if (!this.selectedSize) {
+    const isLoggedIn = this.authService.isLoggedIn();
+    const isRopa = this.product?.category?.name?.toLowerCase() === 'ropa';
+
+    if (isLoggedIn && isRopa && !this.selectedSize) {
       alert('❗ Por favor, selecciona una talla antes de continuar.');
       return;
     }
@@ -90,4 +93,7 @@ export class ProductDetailComponent implements OnInit {
       );
     }
   }
+
+
+
 }

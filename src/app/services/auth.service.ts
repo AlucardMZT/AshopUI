@@ -73,7 +73,7 @@ export class AuthService {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('nickname');
     this.authStatus.next(false);
-    this.router.navigate(['']);
+    this.router.navigate(['home']);
   }
 
   getCurrentUser(): any {

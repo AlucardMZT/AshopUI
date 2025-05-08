@@ -85,7 +85,7 @@ export class AdminProductFormComponent implements OnInit {
       price: [0, Validators.required],
       categoryId: ['', Validators.required],
       stock: [0, Validators.required],
-      sizes: [[], Validators.required]
+      sizes: [[]]
     });
   }
 
@@ -96,6 +96,15 @@ export class AdminProductFormComponent implements OnInit {
   ngOnInit(): void {
     this.loadCategories();
     this.loadProducts();
+
+    this.productForm.get('categoryId')?.valueChanges.subscribe(categoryId => {
+      const selected = this.categories.find(c => c.id === categoryId);
+      this.selectedCategory = selected?.name || '';
+
+      if (this.selectedCategory.toLowerCase().trim() !== 'ropa') {
+        this.productForm.get('sizes')?.setValue([]);
+      }
+    });
   }
 
   onFileSelected(event: any, slot: number) {
@@ -113,6 +122,7 @@ export class AdminProductFormComponent implements OnInit {
   }
 
   onSubmit() {
+
     if (this.productForm.valid && this.imageBase64_1) {
       const productRequest = {
         name: this.productForm.value.name,
@@ -125,7 +135,7 @@ export class AdminProductFormComponent implements OnInit {
         image2: this.imageBase64_2 || null,
         image3: this.imageBase64_3 || null
       };
-      console.log('🟡 Enviando al backend:', productRequest); // 👈 Agregado aquí
+
       if (this.editingProductId) {
         this.adminProductService.update(this.editingProductId, productRequest).subscribe({
           next: () => {

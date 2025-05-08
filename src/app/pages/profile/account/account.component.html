@@ -1,5 +1,4 @@
 <div class="account-layout">
-  <!-- Sidebar -->
   <aside class="account-sidebar">
     <div class="sidebar-header">
       <h3 class="username">Nick: {{ user?.nickname }}</h3>
@@ -21,7 +20,6 @@
     </nav>
   </aside>
 
-  <!-- Main content -->
   <section class="account-content">
     <ng-container [ngSwitch]="section">
       <div *ngSwitchCase="'profile'">
@@ -71,7 +69,6 @@
         test
       </div>
       <div *ngSwitchCase="'history'">
-        <!-- Historial de navegación / pedidos anteriores -->
       </div>
     </ng-container>
   </section>

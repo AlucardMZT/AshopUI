@@ -84,7 +84,7 @@ export class VerPedidoComponent implements OnInit {
         image2: i.image || '',
         description: '',
         size: i.size || '',
-        stock: 0, // 👈 se agrega para cumplir con la interfaz Product
+        stock: 0,
         category: { id: 0, name: '' }
       },
       quantity: i.quantity

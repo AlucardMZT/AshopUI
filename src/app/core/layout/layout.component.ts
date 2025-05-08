@@ -63,7 +63,7 @@ export class LayoutComponent implements OnInit{
     this.nickname = null;
 
     this.router.navigateByUrl('/dummy', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['']);
+      this.router.navigate(['/home']);
     });
   }
 }

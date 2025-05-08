@@ -38,11 +38,14 @@ export class CategoriaImageListComponent implements OnInit {
       image: [''],
       type: ['promocional']
     });
-    this.loadCategories();
+    this.refreshCategories();
   }
 
-  loadCategories() {
-    this.categoryService.getAll().subscribe(cats => this.categories = cats.filter(c => c.type === 'promocional'));
+  refreshCategories() {
+    this.categoryService.getAll().subscribe(cats => {
+      this.promotionalCategories = cats.filter(c => c.type === 'promocional');
+      this.realCategories = cats.filter(c => c.type === 'real');
+    });
   }
 
   onFileSelected(event: any) {
@@ -60,13 +63,13 @@ export class CategoriaImageListComponent implements OnInit {
       this.categoryService.update(this.editingId, data).subscribe(() => {
         this.snackBar.open('✅ Categoría actualizada', 'Cerrar', { duration: 3000 });
         this.resetForm();
-        this.loadCategories();
+        this.refreshCategories();
       });
     } else {
       this.categoryService.create(data).subscribe(() => {
         this.snackBar.open('✅ Categoría creada', 'Cerrar', { duration: 3000 });
         this.resetForm();
-        this.loadCategories();
+        this.refreshCategories();
       });
     }
   }
@@ -85,7 +88,7 @@ export class CategoriaImageListComponent implements OnInit {
 
   deleteCategory(id: number) {
     if (confirm('¿Seguro de eliminar?')) {
-      this.categoryService.delete(id).subscribe(() => this.loadCategories());
+      this.categoryService.delete(id).subscribe(() =>  this.refreshCategories());
     }
   }
 }

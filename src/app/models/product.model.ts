@@ -12,4 +12,5 @@ export interface Product {
   size: string;
   sizes?: string[];
   category: Category;
+  discountPrice?: number;
 }

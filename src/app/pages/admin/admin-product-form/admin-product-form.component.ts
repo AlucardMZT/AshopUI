@@ -245,4 +245,10 @@ export class AdminProductFormComponent implements OnInit {
     const combinedFilter = `${searchValue}||${this.selectedCategory}`;
     this.dataSource.filter = combinedFilter.trim().toLowerCase();
   }
+
+  clearImage(slot: number): void {
+    if (slot === 1) this.imageBase64_1 = '';
+    if (slot === 2) this.imageBase64_2 = '';
+    if (slot === 3) this.imageBase64_3 = '';
+  }
 }

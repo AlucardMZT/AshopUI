@@ -247,3 +247,17 @@
 }
 
 
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 0.4rem;
+}
+
+.discount-price {
+  color: #e53935;
+  font-weight: bold;
+}
+
+.normal-price {
+  font-weight: bold;
+}

@@ -16,6 +16,7 @@ import { AdminProductFormComponent } from './pages/admin/admin-product-form/admi
 import { AdminPanelLayoutComponent } from './pages/admin/admin-panel-layout/admin-panel-layout.component';
 import { AdminOrderListComponent } from './pages/admin/admin-order-list/admin-order-list.component';
 import { CategoriaImageListComponent } from './pages/admin/categoria-image-list/categoria-image-list.component';
+import {AdminDiscountManagerComponent} from './pages/admin/admin-discount-manager/admin-discount-manager.component';
 
 export const routes: Routes = [
   { path: 'landing', component: LandingPageComponent },
@@ -69,7 +70,8 @@ export const routes: Routes = [
       { path: '', redirectTo: 'productos', pathMatch: 'full' },
       { path: 'productos', component: AdminProductFormComponent },
       { path: 'pedidos', component: AdminOrderListComponent },
-      { path: 'categoria/upload', component: CategoriaImageListComponent }
+      { path: 'categoria/upload', component: CategoriaImageListComponent },
+      { path: 'descuentos', component: AdminDiscountManagerComponent },
     ]
   },
   {

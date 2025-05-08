@@ -22,4 +22,8 @@ export class ProductService {
   getDestacados(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/destacados`);
   }
+
+  getAllWithDiscounts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/with-discounts`);
+  }
 }

@@ -93,7 +93,7 @@
                   {{
                       !authService.isLoggedIn()
                           ? 'Agregar al carrito'
-                          : product.category?.name?.toLowerCase() === 'ropa'
+                          : product.category.name.toLowerCase() === 'ropa'
                               ? 'Seleccionar talla'
                               : 'Agregar al carrito'
                   }}

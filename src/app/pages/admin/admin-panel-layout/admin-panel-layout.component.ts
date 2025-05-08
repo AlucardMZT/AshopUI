@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatAnchor} from '@angular/material/button';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel-layout',

@@ -63,12 +63,24 @@
         </div>
       </div>
 
-      <div style="margin-top: 1rem;" *ngIf="imageBase64_1 || imageBase64_2 || imageBase64_3">
-        <strong>Vistas previas:</strong><br />
-        <img *ngIf="imageBase64_1" [src]="imageBase64_1" alt="Vista previa 1" style="max-height: 100px; border: 1px solid #ccc; margin-right: 8px;" />
-        <img *ngIf="imageBase64_2" [src]="imageBase64_2" alt="Vista previa 2" style="max-height: 100px; border: 1px solid #ccc; margin-right: 8px;" />
-        <img *ngIf="imageBase64_3" [src]="imageBase64_3" alt="Vista previa 3" style="max-height: 100px; border: 1px solid #ccc;" />
-      </div>
+        <div style="margin-top: 1rem;" *ngIf="imageBase64_1 || imageBase64_2 || imageBase64_3">
+            <strong>Vistas previas:</strong><br />
+
+            <div *ngIf="imageBase64_1" style="display: inline-block; position: relative; margin-right: 8px;">
+                <img [src]="imageBase64_1" alt="Vista previa 1" style="max-height: 100px; border: 1px solid #ccc;" />
+                <button mat-mini-button color="warn" style="position: absolute; top: 0; right: 0;" (click)="clearImage(1)">❌</button>
+            </div>
+
+            <div *ngIf="imageBase64_2" style="display: inline-block; position: relative; margin-right: 8px;">
+                <img [src]="imageBase64_2" alt="Vista previa 2" style="max-height: 100px; border: 1px solid #ccc;" />
+                <button mat-mini-button color="warn" style="position: absolute; top: 0; right: 0;" (click)="clearImage(2)">❌</button>
+            </div>
+
+            <div *ngIf="imageBase64_3" style="display: inline-block; position: relative;">
+                <img [src]="imageBase64_3" alt="Vista previa 3" style="max-height: 100px; border: 1px solid #ccc;" />
+                <button mat-mini-button color="warn" style="position: absolute; top: 0; right: 0;" (click)="clearImage(3)">❌</button>
+            </div>
+        </div>
 
       <div class="form-actions">
         <button mat-raised-button color="primary" type="submit">

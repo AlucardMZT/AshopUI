@@ -22,7 +22,7 @@ export class LoginComponent {
 
   onLogin() {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (res) => {// 👈 Ya presente
+      next: (res) => {
 
         this.authService.saveAuthData(res.token, res.nickname);
         if (res.nickname === 'admin') {

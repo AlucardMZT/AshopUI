@@ -1,76 +1,105 @@
-<form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="category-form">
-  <div class="form-row">
-    <mat-form-field appearance="outline">
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
+<div class="admin-wrapper">
+<mat-accordion multi>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Tipo de categoría</mat-label>
-      <mat-select formControlName="type">
-        <mat-option value="promocional">Promocional</mat-option>
-        <mat-option value="real">Real</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+  <!-- PANEL: Crear o Editar Categoría -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        📝 Crear o Editar Categoría
+      </mat-panel-title>
+    </mat-expansion-panel-header>
 
-  <div class="file-upload">
-    <label>Imagen</label>
-    <input type="file" (change)="onFileSelected($event)" />
-    <img *ngIf="imageBase64" [src]="imageBase64" class="preview-image" />
-  </div>
+    <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="category-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit">
-    {{ editingId ? 'Actualizar' : 'Crear' }}
-  </button>
-</form>
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de categoría</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="promocional">Promocional</mat-option>
+            <mat-option value="real">Real</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-<hr />
+      <div class="file-upload">
+        <label>Imagen</label>
+        <input type="file" (change)="onFileSelected($event)" />
+        <img *ngIf="imageBase64" [src]="imageBase64" class="preview-image" />
+      </div>
 
-<h3>📢 Categorías Promocionales</h3>
-<table mat-table [dataSource]="promotionalCategories" class="mat-elevation-z2 full-width-table">
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nombre</th>
-    <td mat-cell *matCellDef="let c">{{ c.name }}</td>
-  </ng-container>
+      <button mat-raised-button color="primary" type="submit">
+        {{ editingId ? 'Actualizar' : 'Crear' }}
+      </button>
+    </form>
+  </mat-expansion-panel>
 
-  <ng-container matColumnDef="image">
-    <th mat-header-cell *matHeaderCellDef>Imagen</th>
-    <td mat-cell *matCellDef="let c"><img [src]="c.image" width="80" /></td>
-  </ng-container>
+  <!-- PANEL: Categorías Promocionales -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        📢 Categorías Promocionales
+      </mat-panel-title>
+    </mat-expansion-panel-header>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Acciones</th>
-    <td mat-cell *matCellDef="let c">
-      <button mat-button color="accent" (click)="editCategory(c)">Editar</button>
-      <button mat-button color="warn" (click)="deleteCategory(c.id)">Eliminar</button>
-    </td>
-  </ng-container>
+    <table mat-table [dataSource]="promotionalCategories" class="mat-elevation-z2 full-width-table">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let c">{{ c.name }}</td>
+      </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="['name', 'image', 'actions']"></tr>
-  <tr mat-row *matRowDef="let row; columns: ['name', 'image', 'actions'];"></tr>
-</table>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef>Imagen</th>
+        <td mat-cell *matCellDef="let c"><img [src]="c.image" width="80" /></td>
+      </ng-container>
 
-<h3>📦 Categorías Reales</h3>
-<table mat-table [dataSource]="realCategories" class="mat-elevation-z2 full-width-table">
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nombre</th>
-    <td mat-cell *matCellDef="let c">{{ c.name }}</td>
-  </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let c">
+          <button mat-button color="accent" (click)="editCategory(c)">Editar</button>
+          <button mat-button color="warn" (click)="deleteCategory(c.id)">Eliminar</button>
+        </td>
+      </ng-container>
 
-  <ng-container matColumnDef="image">
-    <th mat-header-cell *matHeaderCellDef>Imagen</th>
-    <td mat-cell *matCellDef="let c"><img [src]="c.image" width="80" /></td>
-  </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['name', 'image', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['name', 'image', 'actions'];"></tr>
+    </table>
+  </mat-expansion-panel>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Acciones</th>
-    <td mat-cell *matCellDef="let c">
-      <button mat-button color="accent" (click)="editCategory(c)">Editar</button>
-      <button mat-button color="warn" (click)="deleteCategory(c.id)">Eliminar</button>
-    </td>
-  </ng-container>
+  <!-- PANEL: Categorías Reales -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        📦 Categorías Reales
+      </mat-panel-title>
+    </mat-expansion-panel-header>
 
-  <tr mat-header-row *matHeaderRowDef="['name', 'image', 'actions']"></tr>
-  <tr mat-row *matRowDef="let row; columns: ['name', 'image', 'actions'];"></tr>
-</table>
+    <table mat-table [dataSource]="realCategories" class="mat-elevation-z2 full-width-table">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let c">{{ c.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef>Imagen</th>
+        <td mat-cell *matCellDef="let c"><img [src]="c.image" width="80" /></td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let c">
+          <button mat-button color="accent" (click)="editCategory(c)">Editar</button>
+          <button mat-button color="warn" (click)="deleteCategory(c.id)">Eliminar</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['name', 'image', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['name', 'image', 'actions'];"></tr>
+    </table>
+  </mat-expansion-panel>
+
+</mat-accordion>
+</div>

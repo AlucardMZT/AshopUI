@@ -1,43 +1,124 @@
-.category-form {
+
+/* Panel general */
+mat-expansion-panel {
   margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+mat-expansion-panel-header {
+  font-weight: bold;
+  background-color: #f5f5f5;
+  border-radius: 8px 8px 0 0;
+}
+
+.product-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-  .form-row {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-
-    mat-form-field {
-      flex: 1;
-      min-width: 250px;
-    }
-  }
-
-  .file-upload {
-    margin: 1rem 0;
-
-    input[type="file"] {
-      margin-bottom: 0.5rem;
-    }
-
-    .preview-image {
-      max-height: 100px;
-      border: 1px solid #ccc;
-    }
-  }
+  margin-bottom: 2rem;
 }
 
-.full-width-table {
-  width: 100%;
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-field.small {
+  max-width: 180px;
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%; /* ✅ Ocupa toda la fila */
+  margin-top: 0.5rem;
+  font-size: 14px;
+}
+
+.form-actions {
+  margin-top: 1.5rem; /* ✅ Más espacio vertical */
+}
+
+
+
+/* Margen general del contenedor principal */
+.admin-wrapper {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Espacio entre inputs */
+.product-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 2rem;
+}
 
-  th, td {
-    text-align: left;
-  }
+/* Estilo de fila de inputs */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
 
-  img {
-    border-radius: 6px;
-  }
+/* Campos de formulario */
+mat-form-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Input de archivo */
+input[type="file"] {
+  margin-top: 8px;
+}
+
+/* Botón */
+button {
+  height: 40px;
+  margin-top: 8px;
+}
+
+/* Tabla separada visualmente */
+table {
+  margin-top: 2rem;
+  background-color: #fefefe;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Título espaciado */
+h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+
+.filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0 2rem 0;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.filter-select {
+  min-width: 200px;
+  max-width: 250px;
 }

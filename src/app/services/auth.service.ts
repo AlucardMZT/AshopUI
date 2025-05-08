@@ -113,4 +113,13 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  requestPasswordReset(email: string) {
+    return this.http.post('/api/auth/request-password-reset', { email });
+  }
+
+  resetPassword(token: string, password: string) {
+    return this.http.post('/api/auth/reset-password', { token, password });
+  }
+
 }

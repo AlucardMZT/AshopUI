@@ -9,5 +9,7 @@ export interface Product {
   image3?: string;
   description: string;
   stock: number;
+  size: string;
+  sizes?: string[];
   category: Category;
 }

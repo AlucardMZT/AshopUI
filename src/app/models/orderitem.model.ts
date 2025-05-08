@@ -9,6 +9,7 @@ export interface OrderItem {
   telefono: string;
   direccion: string;
   image?: string;
+  size: string;
 }
 
 export interface Order {
@@ -36,8 +37,10 @@ export interface Order {
     name?: string;
     email?: string;
     phone?: string;
+    countryName?: string;
+    country?: string;
+    countryId?: string;
   };
-
 }
 
 export interface PlaceOrderRequest {

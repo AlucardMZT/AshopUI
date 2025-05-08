@@ -32,9 +32,14 @@
       <input matInput formControlName="postalCode">
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Estado</mat-label>
-      <input matInput formControlName="state">
+
+    <mat-form-field appearance="fill">
+      <mat-label>País*</mat-label>
+      <mat-select formControlName="countryId" required>
+        <mat-option *ngFor="let pais of countries" [value]="pais.id">
+          {{ pais.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">

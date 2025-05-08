@@ -5,6 +5,7 @@
   <p><strong>Dirección:</strong> {{ order.direccion }}</p>
   <p><strong>Municipio:</strong> {{ order.user?.municipality }}</p>
   <p><strong>Estado:</strong> {{ order.user?.state }}</p>
+  <p><strong>Country:</strong> {{ order.user?.countryName }}</p>
   <p><strong>Fecha:</strong> {{ order.createdAt | date: 'short' }}</p>
   <p><strong>Total:</strong> ${{ order.total.toFixed(2) }}</p>
 
@@ -16,6 +17,7 @@
     <tr>
       <th>Imagen</th>
       <th>Nombre</th>
+      <th>Talla</th> <!-- ✅ nueva columna -->
       <th>Precio Unitario</th>
       <th>Cantidad</th>
       <th>Subtotal</th>
@@ -23,9 +25,9 @@
     </thead>
     <tbody>
     <tr *ngFor="let item of order.items">
-      <!-- <td><img [src]="item.image" width="60"></td> -->
       <td><img [src]="item.image || 'https://via.placeholder.com/60'" width="60"></td>
       <td>{{ item.productName }}</td>
+      <td>{{ item.size || 'N/A' }}</td>
       <td class="text-center">${{ item.unitPrice.toFixed(2) }}</td>
       <td class="text-center">{{ item.quantity }}</td>
       <td class="text-center">${{ (item.quantity * item.unitPrice).toFixed(2) }}</td>

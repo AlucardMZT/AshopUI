@@ -77,11 +77,16 @@
     padding: 1rem;
 
     mat-icon {
+      line-height: 1;          // evita que tenga espacio extra vertical
+      display: inline-flex;    // mejor alineación
+      justify-content: center;
+      align-items: center;
       color: #1976d2;
+      margin-bottom: 0.5rem;
     }
 
     h3 {
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     }
   }
 }
@@ -137,6 +142,20 @@
   .carousel-container {
     overflow-x: auto;
     padding: 1rem;
+    cursor: grab;
+    user-select: none;
+    scroll-behavior: smooth;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
 
     .carousel {
       display: flex;
@@ -163,6 +182,7 @@
   }
 }
 
+
 .stock-status {
   display: block;
   margin-top: 0.5rem;
@@ -181,4 +201,11 @@
   border-radius: 12px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
   background: linear-gradient(to bottom right, #ffffff, #f9f9f9);
+}
+
+
+@media (max-width: 768px) {
+  .benefits .benefit mat-icon {
+    font-size: 48px;
+  }
 }

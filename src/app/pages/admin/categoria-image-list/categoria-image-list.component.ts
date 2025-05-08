@@ -8,10 +8,12 @@ import {CommonModule} from '@angular/common';
 import {CategoryService} from '../../../services/category.service';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatAccordion, MatExpansionPanel, MatExpansionPanelTitle} from '@angular/material/expansion';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-categoria-image-list',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSelect, MatOption],
+  imports: [CommonModule, MatExpansionModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSelect, MatOption, MatExpansionPanel, MatExpansionPanelTitle, MatAccordion],
 
   templateUrl: './categoria-image-list.component.html',
   styleUrl: './categoria-image-list.component.scss'

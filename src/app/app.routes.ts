@@ -70,5 +70,8 @@ export const routes: Routes = [
       { path: 'categoria/upload', component: CategoriaImageListComponent }
     ]
   },
+  { path: 'forgot-password', loadComponent: () => import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+  { path: 'reset-password', loadComponent: () => import('./auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
+
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

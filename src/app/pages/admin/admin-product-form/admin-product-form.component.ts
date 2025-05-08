@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
-import { MatDivider } from '@angular/material/divider';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
-import {MatAnchor, MatButton} from '@angular/material/button';
-import { MatColumnDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatHeaderRowDef, MatRowDef, MatHeaderCellDef, MatCellDef, MatTable } from '@angular/material/table';
+
+import {
+  MatColumnDef,
+  MatHeaderCell,
+  MatCell,
+  MatHeaderRow,
+  MatRow,
+  MatHeaderRowDef,
+  MatRowDef,
+  MatHeaderCellDef,
+  MatCellDef,
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { Category } from '../../../models/category.model';
 import { CategoryService } from '../../../services/category.service';
 import { Product } from '../../../models/product.model';
 import { AdminProductService } from '../../../services/AdminProductService';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatButton} from '@angular/material/button';
+import {MatPaginator} from '@angular/material/paginator';
 
 
 @Component({
@@ -22,7 +36,6 @@ import { AdminProductService } from '../../../services/AdminProductService';
     MatFormField,
     MatLabel,
     MatInput,
-    MatButton,
     MatColumnDef,
     MatHeaderCell,
     MatCell,
@@ -37,18 +50,29 @@ import { AdminProductService } from '../../../services/AdminProductService';
     MatOption,
     NgForOf,
     NgIf,
+    MatExpansionModule,
+    MatButton,
+    MatPaginator
   ]
 })
 export class AdminProductFormComponent implements OnInit {
   productForm: FormGroup;
-  imageBase64_1: string = '';
-  imageBase64_2: string = '';
-  imageBase64_3: string = '';
+
+  imageBase64_1 = '';
+  imageBase64_2 = '';
+  imageBase64_3 = '';
 
   products: Product[] = [];
+  displayedColumns = ['name', 'description', 'price', 'stock', 'category', 'actions'];
+  dataSource = new MatTableDataSource<Product>();
+
+  selectedCategory: string = '';
+  categoryNames: string[] = [];
+
   editingProductId: number | null = null;
   categories: Category[] = [];
-  err:any;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private fb: FormBuilder,
@@ -60,13 +84,18 @@ export class AdminProductFormComponent implements OnInit {
       description: ['', Validators.required],
       price: [0, Validators.required],
       categoryId: ['', Validators.required],
-      stock: [0, Validators.required]
+      stock: [0, Validators.required],
+      sizes: [[], Validators.required]
     });
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+
   ngOnInit(): void {
-    this.loadProducts();
     this.loadCategories();
+    this.loadProducts();
   }
 
   onFileSelected(event: any, slot: number) {
@@ -91,11 +120,12 @@ export class AdminProductFormComponent implements OnInit {
         price: this.productForm.value.price,
         categoryId: this.productForm.value.categoryId,
         stock: this.productForm.value.stock,
+        sizes: this.productForm.value.sizes,
         image: this.imageBase64_1,
         image2: this.imageBase64_2 || null,
         image3: this.imageBase64_3 || null
       };
-
+      console.log('🟡 Enviando al backend:', productRequest); // 👈 Agregado aquí
       if (this.editingProductId) {
         this.adminProductService.update(this.editingProductId, productRequest).subscribe({
           next: () => {
@@ -134,7 +164,8 @@ export class AdminProductFormComponent implements OnInit {
       description: product.description,
       price: product.price,
       stock: product.stock,
-      categoryId: product.category.id
+      categoryId: product.category.id,
+      sizes: product.sizes // ⬅️ importante
     });
 
     // Carga las imágenes si existen
@@ -150,14 +181,20 @@ export class AdminProductFormComponent implements OnInit {
     this.imageBase64_1 = '';
   }
 
-  loadProducts() {
+  loadProducts(): void {
     this.adminProductService.getAllProducts().subscribe({
-      next: data => this.products = data,
+      next: data => {
+        this.products = data;
+        this.dataSource = new MatTableDataSource<Product>(data);
+        this.dataSource.paginator = this.paginator;
+        this.categoryNames = [...new Set(data.map(p => p.category.name))];
+        this.applyFilter(); // ✅ aplicar filtro inicial si hace falta
+      },
       error: err => console.error('Error al cargar productos', err)
     });
   }
 
-  loadCategories() {
+  loadCategories(): void {
     this.categoryService.getAll().subscribe({
       next: cats => this.categories = cats,
       error: err => console.error('Error cargando categorías', err)
@@ -177,5 +214,25 @@ export class AdminProductFormComponent implements OnInit {
         }
       });
     }
+  }
+
+
+  applyFilter(event?: Event): void {
+    const searchValue = event ? (event.target as HTMLInputElement).value.trim().toLowerCase() : '';
+
+    this.dataSource.filterPredicate = (data: Product, filter: string) => {
+      const [search, category] = filter.split('||');
+      const matchesSearch =
+        data.name.toLowerCase().includes(search) ||
+        data.description.toLowerCase().includes(search) ||
+        data.category?.name.toLowerCase().includes(search);
+
+      const matchesCategory = category ? data.category?.name.toLowerCase().trim() === category.toLowerCase().trim() : true;
+
+      return matchesSearch && matchesCategory;
+    };
+
+    const combinedFilter = `${searchValue}||${this.selectedCategory}`;
+    this.dataSource.filter = combinedFilter.trim().toLowerCase();
   }
 }

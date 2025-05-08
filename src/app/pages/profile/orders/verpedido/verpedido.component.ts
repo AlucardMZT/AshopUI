@@ -6,6 +6,7 @@ import {CommonModule, NgIf} from '@angular/common';
 import {Order} from '../../../../models/orderitem.model';
 import {CartItem} from '../../../../models/caritem.model';
 import { Location } from '@angular/common';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-verpedido',
@@ -22,31 +23,53 @@ export class VerPedidoComponent implements OnInit {
   order?: Order;
   errorMessage = '';
   loading = true;
+  countries: any[] = [];
+  selectedCountryName: string = 'Desconocido';
 
   constructor(
     private route: ActivatedRoute,
     private orderService: OrderService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private http: HttpClient,
   ) {}
 
+
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const numero = params['numero'];
-      if (numero) {
-        this.orderService.getOrderByNumber(numero).subscribe({
-          next: data => {
-            this.order = data;
-            this.loading = false;
-          },
-          error: err => {
-            this.errorMessage = 'No se pudo cargar el pedido.';
-            this.loading = false;
+    this.http.get<any[]>('http://localhost:8080/api/countries').subscribe({
+      next: countries => {
+        this.countries = countries;
+
+        this.route.queryParams.subscribe(params => {
+          const numero = params['numero'];
+          if (numero) {
+            this.orderService.getOrderByNumber(numero).subscribe({
+              next: data => {
+                this.order = data;
+
+                const countryId = Number(data.user?.countryId);
+                const match = this.countries.find(c => c.id === countryId);
+                this.selectedCountryName = match?.name ?? 'Desconocido';
+
+                this.loading = false;
+              },
+              error: err => {
+                this.errorMessage = 'No se pudo cargar el pedido.';
+                this.loading = false;
+              }
+            });
           }
         });
+      },
+      error: err => {
+        console.error('❌ Error al cargar países', err);
+        this.loading = false;
       }
     });
   }
+
+
+
 
   volverAComprar() {
     if (!this.order) return;
@@ -60,6 +83,7 @@ export class VerPedidoComponent implements OnInit {
         image1: i.image || '',
         image2: i.image || '',
         description: '',
+        size: i.size || '',
         stock: 0, // 👈 se agrega para cumplir con la interfaz Product
         category: { id: 0, name: '' }
       },

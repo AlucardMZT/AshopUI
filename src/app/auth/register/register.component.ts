@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Router, RouterLink} from '@angular/router';
 import {CommonModule, NgIf} from '@angular/common';
@@ -11,15 +11,16 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {HttpClient} from '@angular/common/http';
 import {SuccessDialogComponent} from '../../shared/success-dialog/success-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {MatOption, MatSelect} from '@angular/material/select';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, RouterLink, MatSelect, MatOption],
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
   name = '';
   email = '';
   password = '';
@@ -33,11 +34,24 @@ export class RegisterComponent {
   state = '';
   municipality = '';
   houseDescription = '';
+  city = '';
   mensaje: string = '';
   esError: boolean = false;
 
+  countries: any[] = [];
+  countryId: number | null = null;
+
   constructor(private http: HttpClient,  private router: Router,
               private dialog: MatDialog,) {}
+
+  ngOnInit() {
+    this.http.get<any[]>('http://localhost:8080/api/countries').subscribe({
+      next: data => {
+        this.countries = data;
+      },
+      error: err => console.error('❌ Error al cargar países', err)
+    });
+  }
 
   validarNicknameReservado(nick: string): boolean {
     const reservados = ['admin', 'administrador', 'owner', 'dueño'];
@@ -64,7 +78,10 @@ export class RegisterComponent {
       postalCode: this.postalCode,
       state: this.state,
       municipality: this.municipality,
-      houseDescription: this.houseDescription
+      houseDescription: this.houseDescription,
+      countryId: this.countryId,
+      city: this.city,
+      country: this.countries.find(c => c.id === this.countryId)?.name || ''
     };
 
     this.http.post('http://localhost:8080/api/auth/register', payload, {

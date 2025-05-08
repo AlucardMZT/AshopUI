@@ -12,4 +12,5 @@ export interface User {
   state: string;
   municipality: string;
   houseDescription: string;
+  countryName: string;
 }

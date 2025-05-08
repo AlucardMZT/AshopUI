@@ -46,6 +46,15 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill">
+        <mat-label>País*</mat-label>
+        <mat-select required name="country" [(ngModel)]="countryId">
+          <mat-option *ngFor="let pais of countries" [value]="pais.id">
+            {{ pais.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
         <mat-label>Estado*</mat-label>
         <input matInput required [(ngModel)]="state" name="state">
       </mat-form-field>

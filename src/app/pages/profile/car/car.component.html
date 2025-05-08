@@ -21,6 +21,7 @@
       <p><strong>Teléfono:</strong> {{ user.phone }}</p>
       <p><strong>Estado:</strong> {{ user.state }}</p>
       <p><strong>Municipio:</strong> {{ user.municipality }}</p>
+      <p><strong>Country Name:</strong> {{ user.countryName }}</p>
 
       <mat-form-field appearance="outline" class="address-selector">
         <mat-label>Dirección de entrega</mat-label>
@@ -50,6 +51,7 @@
             <mat-card-content class="cart-details">
               <h3>{{ item.product.name }}</h3>
               <p>{{ item.product.description }}</p>
+              <p><strong>Talla:</strong> {{ item.product.size }}</p> <!-- ✅ Aquí -->
               <p class="price">Precio unitario: ${{ item.product.price }}</p>
               <p>Cantidad: {{ item.quantity }}</p>
             </mat-card-content>

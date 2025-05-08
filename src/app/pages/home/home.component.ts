@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
@@ -20,6 +20,12 @@ import {AuthService} from '../../services/auth.service';
 export class HomeComponent implements OnInit{
   destacados: Product[] = [];
   categorias: Category[] = [];
+  @ViewChild('carouselContainer', { static: false }) carouselContainer!: ElementRef;
+
+  dragging = false;
+  startX = 0;
+  scrollLeft = 0;
+
 
   constructor(private productService: ProductService,private router: Router,private categoryService: CategoryService,public authService: AuthService) {}
 
@@ -68,5 +74,29 @@ export class HomeComponent implements OnInit{
 
   verCategoria(id: number): void {
     this.router.navigate(['/productos'], { queryParams: { categoria: id } });
+  }
+
+  startDrag(event: MouseEvent | TouchEvent): void {
+    this.dragging = true;
+    const container = this.carouselContainer.nativeElement;
+    this.startX = this.getPositionX(event) - container.offsetLeft;
+    this.scrollLeft = container.scrollLeft;
+  }
+
+  onDrag(event: MouseEvent | TouchEvent): void {
+    if (!this.dragging) return;
+    event.preventDefault(); // evita selección o scroll vertical
+    const container = this.carouselContainer.nativeElement;
+    const x = this.getPositionX(event) - container.offsetLeft;
+    const walk = (x - this.startX) * 1.5; // sensibilidad
+    container.scrollLeft = this.scrollLeft - walk;
+  }
+
+  stopDrag(): void {
+    this.dragging = false;
+  }
+
+  private getPositionX(event: MouseEvent | TouchEvent): number {
+    return event instanceof MouseEvent ? event.pageX : event.touches[0].pageX;
   }
 }

@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {MatToolbar} from '@angular/material/toolbar';
 import {MatAnchor} from '@angular/material/button';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel-layout',
   imports: [
-    MatToolbar,
+
     MatAnchor,
     RouterLink,
     RouterOutlet,

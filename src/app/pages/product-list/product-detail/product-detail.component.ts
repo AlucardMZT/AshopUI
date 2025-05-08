@@ -7,8 +7,10 @@ import { CartService } from '../../../services/car.service';
 import { AuthService } from '../../../services/auth.service';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
-import {NgClass, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
+import {MatFormField, MatLabel} from '@angular/material/input';
+import {MatOption, MatSelect} from '@angular/material/select';
 
 @Component({
   selector: 'app-product-detail',
@@ -16,9 +18,13 @@ import {MatIcon} from '@angular/material/icon';
   imports: [
     MatButton,
     NgIf,
-    MatIcon,
     NgClass,
-    RouterLink
+    RouterLink,
+    NgForOf,
+    MatFormField,
+    MatSelect,
+    MatLabel,
+    MatOption
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
@@ -27,6 +33,8 @@ export class ProductDetailComponent implements OnInit {
   product?: Product;
   loading = true;
   mainImage: string = '';
+  selectedSize: string = '';
+  sizes?: string[];
 
   constructor(
     private route: ActivatedRoute,
@@ -59,6 +67,11 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(): void {
+    if (!this.selectedSize) {
+      alert('❗ Por favor, selecciona una talla antes de continuar.');
+      return;
+    }
+
     if (!this.authService.getToken()) {
       this.snackBar.open('⚠️ Debes iniciar sesión para agregar al carrito.', 'Cerrar', { duration: 3000 });
       this.router.navigate(['/login']);
@@ -66,7 +79,10 @@ export class ProductDetailComponent implements OnInit {
     }
 
     if (this.product) {
-      const added = this.cartService.addToCart(this.product);
+      const productWithSize = { ...this.product, size: this.selectedSize };
+
+      const added = this.cartService.addToCart(productWithSize);
+
       this.snackBar.open(
         added ? '✅ Producto agregado al carrito.' : '➕ Se aumentó la cantidad.',
         'Cerrar',

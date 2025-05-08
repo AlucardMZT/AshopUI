@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormGroup,
+  FormGroup, FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
   Validators
@@ -10,9 +10,11 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user.model';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {catchError, map, Observable, of} from 'rxjs';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-settings',
@@ -26,6 +28,11 @@ import {catchError, map, Observable, of} from 'rxjs';
     ReactiveFormsModule,
     NgIf,
     MatButton,
+    MatOption,
+    MatSelect,
+    NgForOf,
+    FormsModule,
+
   ]
 })
 export class SettingsComponent implements OnInit {
@@ -33,42 +40,68 @@ export class SettingsComponent implements OnInit {
   message = '';
   error = '';
   user: User | null = null;
+  countries: any[] = [];
+  countryId: number | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private http: HttpClient,private fb: FormBuilder, private authService: AuthService) {}
 
-  ngOnInit(): void {
-    this.authService.getProfile().subscribe(user => {
-      this.user = user;
-      this.profileForm = this.fb.group({
-        name: [user.name],
-        email: [user.email, {
-          validators: [Validators.required, Validators.email],
-          asyncValidators: [this.emailExistsValidator.bind(this)],
-          updateOn: 'blur' // solo valida cuando se deja el campo
-        }],
-        nickname: [user.nickname, {
-          validators: [Validators.required],
-          asyncValidators: [this.nicknameExistsValidator.bind(this)],
-          updateOn: 'blur'
-        }],
-        phone: [user.phone],
-        address: [user.address],
-        address2: [user.address2],
-        address3: [user.address3],
-        address4: [user.address4],
-        postalCode: [user.postalCode],
-        state: [user.state],
-        municipality: [user.municipality],
-        houseDescription: [user.houseDescription],
-        password: ['']
-      });
+  ngOnInit() {
+    this.http.get<any[]>('http://localhost:8080/api/countries').subscribe({
+      next: countries => {
+        this.countries = countries;
+
+        this.authService.getProfile().subscribe(user => {
+          this.user = user;
+
+          const matchedCountry = this.countries.find(c => c.name === user.countryName);
+          const countryId = matchedCountry?.id ?? null;
+
+          this.profileForm = this.fb.group({
+            name: [user.name],
+            email: [user.email, {
+              validators: [Validators.required, Validators.email],
+              asyncValidators: [this.emailExistsValidator.bind(this)],
+              updateOn: 'blur'
+            }],
+            nickname: [user.nickname, {
+              validators: [Validators.required],
+              asyncValidators: [this.nicknameExistsValidator.bind(this)],
+              updateOn: 'blur'
+            }],
+            phone: [user.phone],
+            address: [user.address],
+            address2: [user.address2],
+            address3: [user.address3],
+            address4: [user.address4],
+            postalCode: [user.postalCode],
+            state: [user.state],
+            municipality: [user.municipality],
+            houseDescription: [user.houseDescription],
+            countryId: [countryId, Validators.required],
+            password: ['']
+          });
+        });
+      },
+      error: err => console.error('❌ Error al cargar países', err)
     });
   }
+
+
 
   onSave() {
     if (this.profileForm.invalid) return;
 
-    const formData = this.profileForm.value;
+    const formData = { ...this.profileForm.value };
+
+    // Convertir countryId en objeto country
+    const selectedCountry = this.countries.find(c => c.id === formData.countryId);
+    if (selectedCountry) {
+      formData.country = { id: selectedCountry.id }; // lo que espera el backend
+      formData.countryName = selectedCountry.name;
+    }
+
+    delete formData.countryId;
+
     if (!formData.password) delete formData.password;
 
     this.authService.updateUser(formData).subscribe({

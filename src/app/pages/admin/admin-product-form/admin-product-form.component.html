@@ -1,107 +1,157 @@
 <div class="admin-wrapper">
-  <h3>Create Update Product</h3>
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
 
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Nombre</mat-label>
-        <input matInput formControlName="name" />
-      </mat-form-field>
+  <!-- 🟢 Panel de formulario Create / Update -->
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Create / Update Product</mat-panel-title>
+    </mat-expansion-panel-header>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Descripción</mat-label>
-        <input matInput formControlName="description" />
-      </mat-form-field>
-    </div>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
 
-    <mat-form-field appearance="outline" class="form-field small">
-      <mat-label>Stock</mat-label>
-      <input matInput type="number" formControlName="stock" />
-    </mat-form-field>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
 
-    <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Descripción</mat-label>
+          <input matInput formControlName="description" />
+        </mat-form-field>
+      </div>
+
       <mat-form-field appearance="outline" class="form-field small">
-        <mat-label>Precio</mat-label>
-        <input matInput type="number" formControlName="price" />
+        <mat-label>Stock</mat-label>
+        <input matInput type="number" formControlName="stock" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Categoría</mat-label>
-        <mat-select formControlName="categoryId">
-          <mat-option *ngFor="let c of categories" [value]="c.id">
-            {{ c.name }}
-          </mat-option>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field small">
+          <mat-label>Precio</mat-label>
+          <input matInput type="number" formControlName="price" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Tallas disponibles</mat-label>
+          <mat-select formControlName="sizes" multiple>
+            <mat-option value="S">S</mat-option>
+            <mat-option value="M">M</mat-option>
+            <mat-option value="L">L</mat-option>
+            <mat-option value="XL">XL</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="categoryId">
+            <mat-option *ngFor="let c of categories" [value]="c.id">
+              {{ c.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="file-upload">
+          <label>Imagen 1</label>
+          <input type="file" (change)="onFileSelected($event, 1)" />
+        </div>
+        <div class="file-upload">
+          <label>Imagen 2</label>
+          <input type="file" (change)="onFileSelected($event, 2)" />
+        </div>
+        <div class="file-upload">
+          <label>Imagen 3</label>
+          <input type="file" (change)="onFileSelected($event, 3)" />
+        </div>
+      </div>
+
+      <!-- Vistas previas -->
+      <div style="margin-top: 1rem;" *ngIf="imageBase64_1 || imageBase64_2 || imageBase64_3">
+        <strong>Vistas previas:</strong><br />
+        <img *ngIf="imageBase64_1" [src]="imageBase64_1" alt="Vista previa 1" style="max-height: 100px; border: 1px solid #ccc; margin-right: 8px;" />
+        <img *ngIf="imageBase64_2" [src]="imageBase64_2" alt="Vista previa 2" style="max-height: 100px; border: 1px solid #ccc; margin-right: 8px;" />
+        <img *ngIf="imageBase64_3" [src]="imageBase64_3" alt="Vista previa 3" style="max-height: 100px; border: 1px solid #ccc;" />
+      </div>
+
+      <!-- Botón -->
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit">
+          {{ editingProductId ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </form>
+  </mat-expansion-panel>
+
+  <!-- 🔵 Panel de Productos existentes -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Productos existentes</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!-- Búsqueda -->
+    <div class="filtros">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar producto</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Nombre, categoría o descripción..." />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-select">
+        <mat-label>Filtrar por categoría</mat-label>
+        <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilter()">
+          <mat-option value="">Todas</mat-option>
+          <mat-option *ngFor="let cat of categoryNames" [value]="cat">{{ cat }}</mat-option>
         </mat-select>
       </mat-form-field>
-
-      <div class="file-upload">
-        <label>Imagen 1</label>
-        <input type="file" (change)="onFileSelected($event, 1)" />
-      </div>
-      <div class="file-upload">
-        <label>Imagen 2</label>
-        <input type="file" (change)="onFileSelected($event, 2)" />
-      </div>
-      <div class="file-upload">
-        <label>Imagen 3</label>
-        <input type="file" (change)="onFileSelected($event, 3)" />
-      </div>
     </div>
 
-    <div style="margin-top: 1rem;" *ngIf="imageBase64_1 || imageBase64_2 || imageBase64_3">
-      <strong>Vistas previas:</strong><br />
-      <img *ngIf="imageBase64_1" [src]="imageBase64_1" alt="Vista previa 1" style="max-height: 100px; border: 1px solid #ccc; margin-right: 8px;" />
-      <img *ngIf="imageBase64_2" [src]="imageBase64_2" alt="Vista previa 2" style="max-height: 100px; border: 1px solid #ccc; margin-right: 8px;" />
-      <img *ngIf="imageBase64_3" [src]="imageBase64_3" alt="Vista previa 3" style="max-height: 100px; border: 1px solid #ccc;" />
-    </div>
-    <!-- ✅ Mueve el botón aquí -->
-    <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit">
-        {{ editingProductId ? 'Actualizar' : 'Crear' }}
-      </button>
-    </div>
+    <!-- Tabla -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z2 full-width">
 
-  </form>
+      <!-- Nombre -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let product"> {{ product.name }} </td>
+      </ng-container>
 
+      <!-- Descripción -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+        <td mat-cell *matCellDef="let product"> {{ product.description }} </td>
+      </ng-container>
 
-  <!-- Tabla de productos -->
-  <h2>Productos existentes</h2>
-  <table mat-table [dataSource]="products" class="mat-elevation-z2 full-width">
+      <!-- Precio -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Precio </th>
+        <td mat-cell *matCellDef="let product"> ${{ product.price }} </td>
+      </ng-container>
 
-    <!-- Nombre -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let product"> {{ product.name }} </td>
-    </ng-container>
+      <!-- Stock -->
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef> Stock </th>
+        <td mat-cell *matCellDef="let product"> {{ product.stock }} </td>
+      </ng-container>
 
-    <!-- Descripción -->
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Descripción </th>
-      <td mat-cell *matCellDef="let product"> {{ product.description }} </td>
-    </ng-container>
+      <!-- Categoría -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef> Categoría </th>
+        <td mat-cell *matCellDef="let product"> {{ product.category?.name }} </td>
+      </ng-container>
 
-    <!-- Precio -->
-    <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef> Precio </th>
-      <td mat-cell *matCellDef="let product"> ${{ product.price }} </td>
-    </ng-container>
+      <!-- Acciones -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let product">
+          <button mat-button color="accent" (click)="editProduct(product)">Editar</button>
+          <button mat-button color="warn" (click)="deleteProduct(product.id)">Eliminar</button>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="stock">
-      <th mat-header-cell *matHeaderCellDef> Stock </th>
-      <td mat-cell *matCellDef="let product"> {{ product.stock }} </td>
-    </ng-container>
+      <!-- Filas -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
-    <!-- Acciones -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let product">
-        <button mat-button color="accent" (click)="editProduct(product)">Editar</button>
-        <button mat-button color="warn" (click)="deleteProduct(product.id)">Eliminar</button>
-      </td>
-    </ng-container>
+    <mat-paginator [pageSize]="30" [pageSizeOptions]="[30]" [hidePageSize]="true" showFirstLastButtons>
+    </mat-paginator>
 
-    <tr mat-header-row *matHeaderRowDef="['name', 'description', 'price', 'stock', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['name', 'description', 'price', 'stock', 'actions'];"></tr>
-  </table>
+  </mat-expansion-panel>
 </div>
-

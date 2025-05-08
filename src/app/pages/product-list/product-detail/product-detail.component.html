@@ -14,7 +14,7 @@
   <div class="product-info">
     <h2>{{ product.name }}</h2>
 
-    <div class="ratings">
+   <!-- <div class="ratings">
       <span class="stars">
         <mat-icon>star</mat-icon>
         <mat-icon>star</mat-icon>
@@ -23,9 +23,18 @@
         <mat-icon>star_border</mat-icon>
       </span>
       <span>1,231 calificaciones</span>
-    </div>
+    </div>-->
 
     <p class="price">${{ product.price }}</p>
+
+    <mat-form-field *ngIf="product?.category?.name === 'Ropa'" appearance="outline" class="size-select" >
+      <mat-label>Talla</mat-label>
+      <mat-select [(value)]="selectedSize">
+        <mat-option *ngFor="let size of product?.sizes" [value]="size">
+          {{ size }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <p class="description">{{ product.description }}</p>
 

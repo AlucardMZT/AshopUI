@@ -44,6 +44,7 @@ export class CarComponent implements OnInit{
       },
       error: (err) => console.error('Error cargando usuario', err)
     });
+
   }
 
   getTotal(): number {
@@ -134,7 +135,8 @@ export class CarComponent implements OnInit{
         productName: item.product.name,
         price: item.product.price,
         quantity: item.quantity,
-        image: item.product.image
+        image: item.product.image,
+        size: item.product.size || '' // ✅ añadimos talla
       }));
 
     if (items.length === 0) {
@@ -149,6 +151,7 @@ export class CarComponent implements OnInit{
       direccion: this.selectedAddress,
       municipality: this.user.municipality,
       state: this.user.state,
+      countryName: this.user.countryName,
       total: this.getTotal()
     };
 

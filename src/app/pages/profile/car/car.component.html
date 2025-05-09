@@ -52,13 +52,13 @@
               <p>{{ item.product.description }}</p>
               <p><strong>Talla:</strong> {{ item.product.size }}</p> <!-- ✅ Aquí -->
               <p class="price">
-                <ng-container *ngIf="item.product.hasDiscount; else sinDescuento">
+                <ng-container *ngIf="item.product.hasDiscount && item.product.finalPrice != null; else sinDescuento">
                   <span class="precio-final">${{ item.product.finalPrice }}</span>
-                  <span class="precio-original">${{ item.product.price }}</span>
+                  <span class="precio-original">${{ item.product.originalPrice ?? item.product.price }}</span>
                   <span class="badge-descuento">-{{ item.product.discountPercentage }}%</span>
                 </ng-container>
                 <ng-template #sinDescuento>
-                  <span class="precio-final">${{ item.product.price }}</span>
+                  <span class="precio-final">${{ item.product.originalPrice ?? item.product.price ?? 0 }}</span>
                 </ng-template>
               </p>
               <p>Cantidad: {{ item.quantity }}</p>

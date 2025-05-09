@@ -110,7 +110,15 @@ export class ProductDetailComponent implements OnInit {
     }
 
     if (this.product) {
-      const productWithSize = { ...this.product, size: this.selectedSize };
+      const productWithSize = {
+        ...this.product,
+        size: this.selectedSize,
+        price: this.product.price,
+        hasDiscount: this.product.hasDiscount ?? false,
+        finalPrice: this.product.finalPrice ?? this.product.price
+      };
+
+      console.log(productWithSize)
 
       const added = this.cartService.addToCart(productWithSize);
 

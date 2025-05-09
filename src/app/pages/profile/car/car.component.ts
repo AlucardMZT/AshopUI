@@ -143,9 +143,11 @@ export class CarComponent implements OnInit{
           : item.product.price,
         quantity: item.quantity,
         image: item.product.image,
-        size: item.product.size || ''
-      }))
-  console.log(items);
+        size: item.product.size || '',
+        hasDiscount: item.product.hasDiscount ?? false,
+        finalPrice: item.product.finalPrice ?? null
+      }));
+
     if (items.length === 0) {
       alert('No hay productos válidos en el carrito.');
       return;

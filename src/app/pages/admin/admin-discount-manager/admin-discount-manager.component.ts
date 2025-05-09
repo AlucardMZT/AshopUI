@@ -21,6 +21,9 @@ import {ProductDiscountRequest} from '../../../models/ProductDiscountRequest.mod
 import {ProductDiscountService} from '../../../services/ProductDiscountService';
 import {Category} from '../../../models/category.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatChip} from '@angular/material/chips';
+import {Product} from '../../../models/product.model';
+import {ProductService} from '../../../services/product.service';
 
 @Component({
   selector: 'app-admin-discount-manager',
@@ -45,7 +48,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     MatDatepickerInput,
     MatNativeDateModule,
     MatTabGroup,
-    MatTab
+    MatTab,
+    MatChip
   ]
 })
 
@@ -58,11 +62,14 @@ export class AdminDiscountManagerComponent implements OnInit {
   editingId: number | null = null;
   productosConDescuento: any[] = [];
   columnasDescuento: string[] = ['name', 'originalPrice', 'finalPrice', 'hasDiscount', 'acciones'];
+  productosRestaurados: any[] = [];
+  productos: Product[] = [];
 
   constructor(
     private discountService: DiscountService,
     private productDiscountService: ProductDiscountService,
     private categoryService: CategoryService,
+    private productService: ProductService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -70,6 +77,7 @@ export class AdminDiscountManagerComponent implements OnInit {
 
     this.loadCategories()
     this.loadProductosConDescuento();
+    this.loadProductos();
   }
 
   saveCategoryDiscount(): void {
@@ -96,8 +104,14 @@ export class AdminDiscountManagerComponent implements OnInit {
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
-    this.categoryDiscount.startDate = today.toISOString().substring(0, 10);
-    this.categoryDiscount.endDate = tomorrow.toISOString().substring(0, 10);
+    const adjustDate = (date: Date) => {
+      const offset = date.getTimezoneOffset(); // en minutos
+      const localISO = new Date(date.getTime() - offset * 60 * 1000).toISOString();
+      return localISO.substring(0, 10); // solo "YYYY-MM-DD"
+    };
+
+    this.categoryDiscount.startDate = adjustDate(today);
+    this.categoryDiscount.endDate = adjustDate(tomorrow);
   }
 
   saveProductDiscount(): void {
@@ -121,7 +135,10 @@ export class AdminDiscountManagerComponent implements OnInit {
 
   loadProductosConDescuento(): void {
     this.discountService.getProductosConDescuento().subscribe({
-      next: productos => this.productosConDescuento = productos,
+      next: productos => {
+        this.productosConDescuento = productos.filter(p => p.hasDiscount);
+        this.productosRestaurados = productos.filter(p => !p.hasDiscount);
+      },
       error: err => console.error('Error al cargar productos', err)
     });
   }
@@ -162,6 +179,15 @@ export class AdminDiscountManagerComponent implements OnInit {
     } else {
       this.mostrarNotificacion('Solo se puede editar descuentos por categoría desde aquí.');
     }
+  }
+
+  loadProductos(): void {
+    this.productService.getAll().subscribe({
+      next: productos => {
+        this.productos = productos;
+      },
+      error: err => console.error('Error cargando productos', err)
+    });
   }
 }
 

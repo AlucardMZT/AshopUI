@@ -1,0 +1,23 @@
+@media (max-width: 768px) {
+  table.mat-table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .mat-header-row,
+  .mat-row {
+    width: max-content;
+    min-width: 600px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .empty-msg {
+    text-align: center;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+  }
+}

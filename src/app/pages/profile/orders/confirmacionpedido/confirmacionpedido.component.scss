@@ -75,3 +75,68 @@ input {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .pedido-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  .titulo {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .fila {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  input {
+    font-size: 1rem;
+  }
+
+  .envio-info {
+    margin-top: 1.5rem;
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+      margin: 0.25rem 0;
+    }
+  }
+
+  .productos h3 {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+  }
+
+  .fila-producto {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .producto-detalle {
+    font-size: 0.95rem;
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 2rem;
+
+    button {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}

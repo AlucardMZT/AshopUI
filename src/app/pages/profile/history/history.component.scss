@@ -33,3 +33,59 @@
   border-top-style: none !important;
 }
 
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .order-history-card {
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .history-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    border-spacing: 0;
+    margin-top: 10px;
+
+    thead {
+      display: none; // opcional: ocultar encabezados para diseño más compacto
+    }
+
+    tr {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #ddd;
+      padding: 0.5rem 0;
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 8px;
+      text-align: left;
+
+      &::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  .order-actions {
+    text-align: center;
+    margin-top: 1rem;
+
+    button {
+      width: 100%;
+      max-width: 240px;
+    }
+  }
+}

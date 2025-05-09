@@ -263,3 +263,71 @@
   margin-left: 0.5rem;
   display: inline-block;
 }
+
+@media (max-width: 768px) {
+
+  .cart-container {
+    flex-direction: column;
+  }
+
+  .account-sidebar {
+    display: none; // ocultamos el sidebar en móvil
+  }
+
+  .cart-content {
+    padding: 1rem;
+
+    .cart-title {
+      font-size: 1.5rem;
+    }
+
+    .cart-grid {
+      padding: 0;
+      grid-template-columns: 1fr;
+    }
+
+    .cart-item-card {
+      max-width: 100%;
+    }
+
+    .total-actions {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0;
+    }
+
+    .cart-buttons {
+      flex-direction: column;
+      width: 100%;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+
+  .user-info-card {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .address-selector {
+    max-width: 100%;
+  }
+
+  .saved-carts-table {
+    padding: 0.5rem;
+  }
+
+  .saved-cart-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .cart-actions {
+    justify-content: flex-start;
+  }
+}
+

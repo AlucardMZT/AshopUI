@@ -1,245 +1,191 @@
 .hero {
   position: relative;
-  height: 350px; // más pequeño
+  height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   overflow: hidden;
   color: white;
-
-  .video-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    filter: brightness(0.6);
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 600px;
-    padding: 1rem;
-
-    h1 {
-      font-size: 2.2rem; // reducido aún más
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    button {
-      font-weight: 600;
-    }
-  }
 }
 
-
-
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 2rem;
-  }
-  .hero-content p {
-    font-size: 1rem;
-  }
+.hero .video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+  z-index: 1;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  padding: 1rem;
 }
 
+.hero-content h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.hero-content p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.hero-content button {
+  font-weight: 600;
+}
+
+/* Categorías */
+.categories {
+  margin: 2rem 0;
+}
+
+.categories h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.category-grid mat-card {
+  width: 200px;
+  border-radius: 12px;
+  background: linear-gradient(to bottom right, #fff, #f9f9f9);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+}
+
+.category-grid mat-card:hover {
+  transform: scale(1.05);
+}
+
+.category-grid mat-card img {
+  height: 140px;
+  object-fit: cover;
+}
+
+/* Carrusel de productos destacados */
+.featured {
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.featured h2 {
+  margin-bottom: 1.5rem;
+}
+
+.carousel-container {
+  overflow-x: auto;
+  padding: 1rem;
+  scroll-behavior: smooth;
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel-container:active {
+  cursor: grabbing;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.carousel {
+  display: flex;
+  gap: 1rem;
+  min-width: 100%;
+}
+
+.carousel-item {
+  min-width: 240px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+.carousel-item:hover {
+  transform: scale(1.05);
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Beneficios */
 .benefits {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   margin: 3rem 0;
   gap: 1.5rem;
-
-  .benefit {
-    flex: 1 1 200px;
-    text-align: center;
-    padding: 1rem;
-
-    mat-icon {
-      line-height: 1;          // evita que tenga espacio extra vertical
-      display: inline-flex;    // mejor alineación
-      justify-content: center;
-      align-items: center;
-      color: #1976d2;
-      margin-bottom: 0.5rem;
-    }
-
-    h3 {
-      margin-top: 0.5rem;
-    }
-  }
 }
 
-.categories {
-  margin: 2rem 0;
-
-  h2 {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-
-  .category-grid {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-
-    mat-card {
-      width: 200px;
-      cursor: pointer;
-      transition: transform 0.3s;
-
-      img {
-        height: 140px;
-        object-fit: cover;
-      }
-
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
-  }
+.benefit {
+  flex: 1 1 200px;
+  text-align: center;
+  padding: 1rem;
 }
 
+.benefit mat-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+  font-size: 48px;
+}
+
+.benefit h3 {
+  margin-top: 0.5rem;
+}
+
+/* CTA */
 .cta {
   text-align: center;
   margin: 3rem 0;
-
-  h2 {
-    margin-bottom: 1rem;
-  }
 }
 
-.featured {
-  margin: 3rem 0;
-  text-align: center;
-
-  h2 {
-    margin-bottom: 1.5rem;
-  }
-
-  .carousel-container {
-    overflow-x: auto;
-    padding: 1rem;
-    cursor: grab;
-    user-select: none;
-    scroll-behavior: smooth;
-
-    &:active {
-      cursor: grabbing;
-    }
-
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-
-    &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
-
-    .carousel {
-      display: flex;
-      gap: 1rem;
-      min-width: 100%;
-    }
-
-    .carousel-item {
-      min-width: 240px;
-      flex-shrink: 0;
-      transition: transform 0.3s ease-in-out;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-
-      img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        display: block;
-      }
-    }
-  }
+.cta h2 {
+  margin-bottom: 1rem;
 }
 
+/* Precios y stock */
+.precio {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
 
-.stock-status {
-  display: block;
-  margin-top: 0.5rem;
+.precio .precio-final {
   font-weight: bold;
-
-  &.disponible {
-    color: #2e7d32;
-  }
-
-  &.agotado {
-    color: #c62828;
-  }
 }
 
-.category-grid mat-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  background: linear-gradient(to bottom right, #ffffff, #f9f9f9);
+.precio.con-descuento .precio-final {
+  color: #ff1744;
 }
 
-
-@media (max-width: 768px) {
-  .benefits .benefit mat-icon {
-    font-size: 48px;
-  }
-}
-
-.precio {
-  font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  &.con-descuento .precio-final {
-    color: #d32f2f; // rojo para precios con descuento
-  }
-
-  &.sin-descuento .precio-final {
-    color: #2e7d32; // verde para precios normales
-  }
-}
-
-.precio {
-  font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  &.con-descuento .precio-final {
-    color: #ff1744; // rojo fuerte y llamativo
-    font-weight: bold;
-  }
-
-  &.sin-descuento .precio-final {
-    color: #40815b; // verde vibrante y fuerte
-    font-weight: bold;
-  }
+.precio.sin-descuento .precio-final {
+  color: #2e7d32;
 }
 
 .precio-original {
@@ -256,4 +202,42 @@
   padding: 2px 6px;
   border-radius: 4px;
   width: fit-content;
+}
+
+.stock-status {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+.stock-status.disponible {
+  color: #2e7d32;
+}
+
+.stock-status.agotado {
+  color: #c62828;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .benefit mat-icon {
+    font-size: 40px;
+  }
+
+  .category-grid mat-card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .carousel-item {
+    min-width: 200px;
+  }
 }

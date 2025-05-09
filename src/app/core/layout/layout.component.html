@@ -1,60 +1,54 @@
-<mat-toolbar color="primary">
-  <a routerLink="/home" class="logo-link" style="color: white; display: flex; align-items: center;">
+<mat-toolbar color="primary" class="toolbar">
+  <a routerLink="/home" (click)="showMenu = false" class="logo-link">
     <mat-icon>shopping_cart</mat-icon>
-    <strong style="margin-left: 5px;">AShop</strong>
+    <strong>AShop</strong>
   </a>
 
   <span class="spacer"></span>
 
-  <a mat-button routerLink="/home" style="color: white">
-    <mat-icon>home</mat-icon>
-    Inicio
-  </a>
+  <!-- Botón hamburguesa solo en móvil -->
+  <button mat-icon-button class="menu-button" (click)="showMenu = !showMenu">
+    <mat-icon>menu</mat-icon>
+  </button>
 
-  <a mat-button routerLink="/productos" style="color: white">
-    <mat-icon>category</mat-icon>
-    Productos
-  </a>
+  <!-- Menú de navegación -->
+  <div class="nav-links" [class.open]="showMenu">
+    <a mat-button routerLink="/home" (click)="showMenu = false">
+      <mat-icon>home</mat-icon> Inicio
+    </a>
+    <a mat-button routerLink="/productos" (click)="showMenu = false">
+      <mat-icon>category</mat-icon> Productos
+    </a>
 
-
-
-  <ng-container *ngIf="!isLoading; else loading">
-
-    <ng-container *ngIf="userNickname; else guestLinks">
-
-
-      <a mat-button routerLink="/account" style="color: white">
-        <mat-icon>person</mat-icon>
-        {{ userNickname }}
-      </a>
-      <a mat-button routerLink="/car" style="color: white">
-        🛒 Carrito
-        <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
-      </a>
-      <button mat-button style="color: white" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Salir
-      </button>
-
-      <a *ngIf="authService.hasRole('ADMIN')" mat-button routerLink="/a-shop-ctrl-984-panel" style="color: white">
-        <mat-icon>admin_panel_settings</mat-icon>
-        Admin
-      </a>
+    <ng-container *ngIf="!isLoading; else loading">
+      <ng-container *ngIf="userNickname; else guestLinks">
+        <a mat-button routerLink="/account" (click)="showMenu = false">
+          <mat-icon>person</mat-icon> {{ userNickname }}
+        </a>
+        <a mat-button routerLink="/car" (click)="showMenu = false">
+          🛒 Carrito
+          <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+        </a>
+        <button mat-button (click)="logout(); showMenu = false">
+          <mat-icon>logout</mat-icon> Salir
+        </button>
+        <a *ngIf="authService.hasRole('ADMIN')" mat-button routerLink="/a-shop-ctrl-984-panel" (click)="showMenu = false">
+          <mat-icon>admin_panel_settings</mat-icon> Admin
+        </a>
+      </ng-container>
     </ng-container>
-  </ng-container>
 
-  <ng-template #guestLinks>
-    <a mat-button routerLink="/login" style="color: white">
-      <mat-icon>login</mat-icon>
-      Iniciar sesión
-    </a>
-    <a mat-button routerLink="/register" style="color: white">
-      <mat-icon>person_add</mat-icon>
-      Registrarse
-    </a>
-  </ng-template>
+    <ng-template #guestLinks>
+      <a mat-button routerLink="/login" (click)="showMenu = false">
+        <mat-icon>login</mat-icon> Iniciar sesión
+      </a>
+      <a mat-button routerLink="/register" (click)="showMenu = false">
+        <mat-icon>person_add</mat-icon> Registrarse
+      </a>
+    </ng-template>
 
-  <ng-template #loading>
-    <mat-spinner diameter="30" color="accent"></mat-spinner>
-  </ng-template>
+    <ng-template #loading>
+      <mat-spinner diameter="30" color="accent"></mat-spinner>
+    </ng-template>
+  </div>
 </mat-toolbar>

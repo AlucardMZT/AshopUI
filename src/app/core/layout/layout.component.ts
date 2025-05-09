@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FooterComponent} from '../footer/footer.component';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {MatAnchor, MatButton} from '@angular/material/button';
+import {MatAnchor, MatButton, MatIconButton} from '@angular/material/button';
 import {MatToolbar} from '@angular/material/toolbar';
 import {AuthService} from '../../services/auth.service';
 import {NgIf} from '@angular/common';
@@ -19,7 +19,8 @@ import {CartItem} from '../../models/caritem.model';
     NgIf,
     MatProgressSpinner,
     MatButton,
-    MatIcon
+    MatIcon,
+    MatIconButton
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
@@ -30,6 +31,8 @@ export class LayoutComponent implements OnInit{
   isLoading = false;
   isAdmin = false;
   cartCount = 0;
+  showMenu = false;
+
 
   constructor(protected authService: AuthService, private router: Router,  private cartService: CartService) {}
 
@@ -60,10 +63,7 @@ export class LayoutComponent implements OnInit{
 
   logout() {
     this.authService.logout();
-    this.nickname = null;
-
-    this.router.navigateByUrl('/dummy', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/home']);
-    });
+    this.showMenu = false;
+    this.router.navigate(['/home']);
   }
 }

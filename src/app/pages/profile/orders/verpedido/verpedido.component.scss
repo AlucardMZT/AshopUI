@@ -49,3 +49,57 @@
   margin-top: 2px;
 }
 
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .tabla-productos {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    font-size: 0.9rem;
+
+    thead {
+      display: none; // opcional para mostrar diseño estilo lista
+    }
+
+    tr {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px;
+      text-align: left;
+
+      &::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 8px;
+        color: #555;
+      }
+
+      img {
+        max-width: 60px;
+        height: auto;
+      }
+    }
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 1rem 0;
+
+    button {
+      width: 100%;
+    }
+  }
+}

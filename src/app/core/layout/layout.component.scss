@@ -1,47 +1,67 @@
-mat-toolbar {
-  background: linear-gradient(90deg, #1976d2, #1565c0) !important;
+.toolbar {
+  display: flex;
+  align-items: center;
+  background-color: #1976d2; /* o usa primary desde Angular Material */
   color: white;
-}
-mat-toolbar a.mat-button {
-  color: white !important;
-}
-
-mat-toolbar a.mat-button:hover {
-  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .logo-link {
   color: white;
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-decoration: none;
   display: flex;
   align-items: center;
-
-  &:hover {
-    opacity: 0.85;
-  }
+  text-decoration: none;
 }
 
-mat-toolbar a.mat-button.active {
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 4px;
+.menu-button {
+  background: transparent; /* o #1976d2 si deseas que sea uniforme */
+  color: white;
+  z-index: 1001;
 }
-
-::ng-deep mat-toolbar a.mat-button {
-  color: white !important;
-}
-
-
 
 .spacer {
   flex: 1 1 auto;
 }
 
-.content-container {
-  padding: 24px;
-  background-color: #f7f7f7;
-  min-height: 100vh;
+.nav-links {
+  position: absolute;
+  top: 49px;
+  left: 0;
+  width: 100%;
+  background: #1976d2;
+  display: none;
+  flex-direction: column;
+  padding: 1rem 0;
+  z-index: 1000;
 }
 
+.nav-links a,
+.nav-links button {
+  color: white;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 1rem 2rem;
+  width: 100%;
+}
 
+.nav-links.open {
+  display: flex;
+}
+
+@media (min-width: 769px) {
+  .menu-button {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    background: transparent;
+    padding: 0;
+
+    a, button {
+      padding: 0 1rem;
+      width: auto;
+    }
+  }
+}

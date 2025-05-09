@@ -3,8 +3,9 @@ export interface OrderItem {
   productId: number;
   productName: string;
   quantity: number;
-  unitPrice: number;
-  price: number;
+  unitPrice: number;          // el precio final con descuento
+  originalPrice: number;      // el precio original (nuevo campo)
+  discountPercentage?: number;
   nombre: string;
   telefono: string;
   direccion: string;

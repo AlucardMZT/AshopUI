@@ -23,9 +23,18 @@
       <span>1,231 calificaciones</span>
     </div>-->
 
-    <p class="price">${{ product.price }}</p>
+    <p class="precio" [ngClass]="{ 'con-descuento': product.hasDiscount, 'sin-descuento': !product.hasDiscount }">
+      <ng-container *ngIf="product.hasDiscount; else precioNormal">
+        <span class="precio-final">${{ product.finalPrice }}</span>
+        <span class="precio-original">${{ product.originalPrice }}</span>
+        <span class="badge-descuento">-{{ product.discountPercentage }}%</span>
+      </ng-container>
+      <ng-template #precioNormal>
+        <span class="precio-final">${{ product.originalPrice || product.price }}</span>
+      </ng-template>
+    </p>
 
-    <mat-form-field *ngIf="product?.category?.name === 'Ropa'" appearance="outline" class="size-select" >
+    <mat-form-field *ngIf="product?.category?.name === 'Ropa'" appearance="outline" class="size-select">
       <mat-label>Talla</mat-label>
       <mat-select [(value)]="selectedSize">
         <mat-option *ngFor="let size of product?.sizes" [value]="size">

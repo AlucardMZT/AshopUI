@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { CarouselModule } from 'ngx-owl-carousel-o';
+import {CarouselModule} from 'ngx-owl-carousel-o';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import {Router, RouterLink} from '@angular/router';
@@ -10,6 +10,7 @@ import {ProductService} from '../../services/product.service';
 import {Category} from '../../models/category.model';
 import {CategoryService} from '../../services/category.service';
 import {AuthService} from '../../services/auth.service';
+import {DiscountService} from '../../services/DiscountService';
 
 @Component({
   selector: 'app-home',
@@ -17,17 +18,18 @@ import {AuthService} from '../../services/auth.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
   destacados: Product[] = [];
   categorias: Category[] = [];
-  @ViewChild('carouselContainer', { static: false }) carouselContainer!: ElementRef;
-
+  @ViewChild('carouselContainer', {static: false}) carouselContainer!: ElementRef;
   dragging = false;
   startX = 0;
   scrollLeft = 0;
 
 
-  constructor(private productService: ProductService,private router: Router,private categoryService: CategoryService,public authService: AuthService) {}
+  constructor(private productService: ProductService, private discountService: DiscountService,
+              private router: Router, private categoryService: CategoryService, public authService: AuthService) {
+  }
 
 
   ngOnInit(): void {
@@ -37,16 +39,25 @@ export class HomeComponent implements OnInit{
       );
     });
     this.loadDestacados();
+    this.loadProductosConDescuento();
   }
 
   loadDestacados(): void {
     this.productService.getDestacados().subscribe({
-      next: (productos) => {
-        this.destacados = productos;
+      next: destacadosOriginales => {
+        this.discountService.getConDescuentosOffline().subscribe({
+          next: conDescuentos => {
+            // Reemplazar los productos destacados con versión con descuento si existe
+            this.destacados = destacadosOriginales.map(prod => {
+              const conDesc = conDescuentos.find(p => p.id === prod.id);
+              return conDesc ? { ...prod, ...conDesc } : prod;
+            });
+            console.log('Destacados final con descuentos:', this.destacados);
+          },
+          error: err => console.error('Error al cargar descuentos:', err)
+        });
       },
-      error: (err) => {
-        console.error('Error al cargar productos destacados:', err);
-      }
+      error: err => console.error('Error al cargar destacados:', err)
     });
   }
 
@@ -73,7 +84,7 @@ export class HomeComponent implements OnInit{
   ];
 
   verCategoria(id: number): void {
-    this.router.navigate(['/productos'], { queryParams: { categoria: id } });
+    this.router.navigate(['/productos'], {queryParams: {categoria: id}});
   }
 
   startDrag(event: MouseEvent | TouchEvent): void {
@@ -98,5 +109,13 @@ export class HomeComponent implements OnInit{
 
   private getPositionX(event: MouseEvent | TouchEvent): number {
     return event instanceof MouseEvent ? event.pageX : event.touches[0].pageX;
+  }
+
+  loadProductosConDescuento(): void {
+    this.discountService.getConDescuentosOffline().subscribe({
+      next: productos => {
+        this.destacados = productos.filter(p => p.isFeatured);
+      }
+    });
   }
 }

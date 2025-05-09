@@ -11,6 +11,9 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {DiscountService} from '../../../services/DiscountService';
+import {Category} from '../../../models/category.model';
+import {CategoryService} from '../../../services/category.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -35,6 +38,7 @@ export class ProductDetailComponent implements OnInit {
   mainImage: string = '';
   selectedSize: string = '';
   sizes?: string[];
+  categories: Category[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +47,8 @@ export class ProductDetailComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private categoryService: CategoryService,
+    private discountService: DiscountService
   ) {}
 
   ngOnInit(): void {
@@ -60,17 +66,39 @@ export class ProductDetailComponent implements OnInit {
         }
       });
     }
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      const numericId = +idParam;
+      this.loadProductoConDescuento(numericId);
+    }
+
+  this.loadCategories()
   }
 
   setMainImage(image: string) {
     this.mainImage = image;
   }
 
-  addToCart(): void {
-    const isLoggedIn = this.authService.isLoggedIn();
-    const isRopa = this.product?.category?.name?.toLowerCase() === 'ropa';
+  loadCategories() {
+    this.categoryService.getAll().subscribe({
+      next: (cats) => {
+        this.categories = cats;
+      },
+      error: (err) => {
+        console.error('❌ Error cargando categorías:', err);
+      }
+    });
+  }
 
-    if (isLoggedIn && isRopa && !this.selectedSize) {
+  addToCart(): void {
+
+    const isLoggedIn = this.authService.isLoggedIn();
+
+    if (
+      isLoggedIn &&
+      this.product?.category?.name?.toLowerCase() === 'ropa' &&
+      !this.selectedSize
+    ) {
       alert('❗ Por favor, selecciona una talla antes de continuar.');
       return;
     }
@@ -92,6 +120,43 @@ export class ProductDetailComponent implements OnInit {
         { duration: 3000 }
       );
     }
+  }
+
+
+  loadProductoConDescuento(id: number): void {
+    this.discountService.getConDescuentosOffline().subscribe({
+      next: productos => {
+        const encontrado = productos.find(p => p.id === id);
+        if (encontrado) {
+          const categoria = this.categories.find(c => c.id === encontrado.categoryId);
+          this.product = {
+            ...encontrado,
+            category: categoria || null
+          };
+          this.mainImage = encontrado.image;
+        } else {
+          this.loadProductoSinDescuento(id);
+        }
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Error al cargar producto con descuento', err);
+        this.loading = false;
+      }
+    });
+  }
+
+
+  loadProductoSinDescuento(id: number): void {
+    this.productService.getProductById(id).subscribe({
+      next: product => {
+        this.product = product;
+        this.mainImage = product.image;
+      },
+      error: err => {
+        console.error('Error al cargar producto sin descuento', err);
+      }
+    });
   }
 
 

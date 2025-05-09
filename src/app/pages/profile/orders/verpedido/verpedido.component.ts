@@ -97,6 +97,9 @@ export class VerPedidoComponent implements OnInit {
     });
   }
 
+  calcularDescuento(original: number, final: number): number {
+    return Math.round(((original - final) / original) * 100);
+  }
 
 }
 

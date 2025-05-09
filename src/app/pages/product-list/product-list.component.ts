@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Product} from '../../models/product.model';
 import {MatCard, MatCardActions, MatCardContent, MatCardImage} from '@angular/material/card';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {CommonModule, NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {ProductService} from '../../services/product.service';
 import {Category} from '../../models/category.model';
@@ -12,6 +12,7 @@ import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CartService} from '../../services/car.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {DiscountService} from '../../services/DiscountService';
 
 
 
@@ -30,6 +31,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     NgIf,
     MatProgressSpinner,
     NgClass,
+    CommonModule
   ],
   styleUrls: ['./product-list.component.scss']
 })
@@ -58,8 +60,10 @@ export class ProductListComponent implements OnInit {
     public authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private cartService: CartService
-  ) {}
+    private cartService: CartService,
+    private discountService: DiscountService
+  ) {
+  }
 
   ngOnInit() {
 
@@ -77,14 +81,37 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-    this.productService.getAll().subscribe({
+    this.discountService.getConDescuentosOffline().subscribe({
       next: (data) => {
-        this.allProducts = data;
-        this.applyFilters();
+        if (this.categories.length > 0) {
+          this.allProducts = data.map(prod => {
+            const category = this.categories.find(c => c.id === prod.categoryId);
+            return {
+              ...prod,
+              category: category || null
+            };
+          });
+          this.applyFilters();
+        } else {
+          const interval = setInterval(() => {
+            if (this.categories.length > 0) {
+              clearInterval(interval);
+              this.allProducts = data.map(prod => {
+                const category = this.categories.find(c => c.id === prod.categoryId);
+                return {
+                  ...prod,
+                  category: category || null
+                };
+              });
+              this.applyFilters();
+            }
+          }, 100); // revisa cada 100ms
+        }
+
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar productos', err);
+        console.error('Error al cargar productos con descuento', err);
         this.loading = false;
       }
     });
@@ -92,8 +119,12 @@ export class ProductListComponent implements OnInit {
 
   loadCategories() {
     this.categoryService.getAll().subscribe({
-      next: (cats) => this.categories = cats,
-      error: (err) => console.error('Error cargando categorías', err)
+      next: (cats) => {
+        this.categories = cats;
+      },
+      error: (err) => {
+        console.error('❌ Error cargando categorías:', err);
+      }
     });
   }
 
@@ -117,11 +148,11 @@ export class ProductListComponent implements OnInit {
     }
 
     if (this.minPrice !== null) {
-      filtered = filtered.filter(p => p.price >= this.minPrice!);
+      filtered = filtered.filter(p => (p.hasDiscount ? p.finalPrice! : p.price) >= this.minPrice!);
     }
 
     if (this.maxPrice !== null) {
-      filtered = filtered.filter(p => p.price <= this.maxPrice!);
+      filtered = filtered.filter(p => (p.hasDiscount ? p.finalPrice! : p.price) <= this.maxPrice!);
     }
 
     if (this.minPrice !== null && this.maxPrice !== null && this.minPrice > this.maxPrice) {
@@ -129,10 +160,12 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
+    const getEffectivePrice = (p: Product) => p.hasDiscount ? p.finalPrice ?? p.price : p.price;
+
     if (this.sortOrder === 'asc') {
-      filtered.sort((a, b) => a.price - b.price);
+      filtered.sort((a, b) => getEffectivePrice(a) - getEffectivePrice(b));
     } else if (this.sortOrder === 'desc') {
-      filtered.sort((a, b) => b.price - a.price);
+      filtered.sort((a, b) => getEffectivePrice(b) - getEffectivePrice(a));
     }
 
     this.products = filtered;
@@ -172,7 +205,7 @@ export class ProductListComponent implements OnInit {
     this.snackBar.open(
       isNew ? '✅ Producto agregado al carrito' : '➕ Se aumentó la cantidad',
       'Cerrar',
-      { duration: 3000 }
+      {duration: 3000}
     );
   }
 
@@ -185,7 +218,7 @@ export class ProductListComponent implements OnInit {
     const isRopa = product.category?.name?.trim().toLowerCase() === 'ropa';
 
     if (!this.authService.isLoggedIn()) {
-      this.snackBar.open('⚠️ Debes iniciar sesión para agregar al carrito.', 'Cerrar', { duration: 3000 });
+      this.snackBar.open('⚠️ Debes iniciar sesión para agregar al carrito.', 'Cerrar', {duration: 3000});
       this.router.navigate(['/login']);
       return;
     }
@@ -199,7 +232,24 @@ export class ProductListComponent implements OnInit {
     this.snackBar.open(
       added ? '✅ Producto agregado al carrito.' : '➕ Se aumentó la cantidad.',
       'Cerrar',
-      { duration: 3000 }
+      {duration: 3000}
     );
   }
+
+  getDisplayPrice(product: Product): number {
+    return product.hasDiscount ? product.finalPrice ?? product.price : product.price;
+  }
+
+  getButtonLabel(product: Product): string {
+    if (!this.authService.isLoggedIn()) {
+      return 'Agregar al carrito';
+    }
+
+    if (product.category && product.category.name.toLowerCase() === 'ropa') {
+      return 'Seleccionar talla';
+    }
+
+    return 'Agregar al carrito';
+  }
+
 }

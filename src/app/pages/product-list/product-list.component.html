@@ -75,7 +75,16 @@
           <mat-card-content>
             <h3>{{ product.name }}</h3>
             <p>{{ product.description }}</p>
-            <p class="price">${{ product.price.toFixed(2) }}</p>
+            <p class="precio" [ngClass]="{ 'con-descuento': product.hasDiscount, 'sin-descuento': !product.hasDiscount }">
+              <ng-container *ngIf="product.hasDiscount; else precioNormal">
+                <span class="precio-final">${{ product.finalPrice }}</span>
+                <span class="precio-original">${{ product.originalPrice }}</span>
+                <span class="badge-descuento">-{{ product.discountPercentage }}%</span>
+              </ng-container>
+              <ng-template #precioNormal>
+                <span class="precio-final">${{ product.originalPrice || product.price }}</span>
+              </ng-template>
+            </p>
           </mat-card-content>
           <p
             class="stock"
@@ -84,20 +93,14 @@
             {{ product.stock === 0 ? 'Agotado' : 'Disponible' }}
           </p>
           <mat-card-actions>
-              <button
-                      mat-raised-button
-                      color="primary"
-                      [disabled]="product.stock === 0"
-                      (click)="handleAddClick(product); $event.stopPropagation()"
-              >
-                  {{
-                      !authService.isLoggedIn()
-                          ? 'Agregar al carrito'
-                          : product.category.name.toLowerCase() === 'ropa'
-                              ? 'Seleccionar talla'
-                              : 'Agregar al carrito'
-                  }}
-              </button>
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="product.stock === 0"
+              (click)="handleAddClick(product); $event.stopPropagation()"
+            >
+              {{ getButtonLabel(product) }}
+            </button>
           </mat-card-actions>
         </mat-card>
       </div>

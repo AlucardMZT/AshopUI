@@ -50,10 +50,21 @@
         <img mat-card-image [src]="producto.image" alt="{{ producto.name }}">
         <mat-card-content>
           <h3>{{ producto.name }}</h3>
-          <p>${{ producto.price }}</p>
+
+          <p class="precio" [ngClass]="{ 'con-descuento': producto.hasDiscount, 'sin-descuento': !producto.hasDiscount }">
+            <ng-container *ngIf="producto.hasDiscount; else sinDescuento">
+              <span class="precio-final">${{ producto.finalPrice }}</span>
+              <span class="precio-original">${{ producto.originalPrice }}</span>
+              <span class="badge-descuento">-{{ producto.discountPercentage }}%</span>
+            </ng-container>
+            <ng-template #sinDescuento>
+              <span class="precio-final">${{ producto.originalPrice }}</span>
+            </ng-template>
+          </p>
+
           <span class="stock-status" [ngClass]="{ 'agotado': producto.stock === 0, 'disponible': producto.stock > 0 }">
-            {{ producto.stock === 0 ? 'Agotado' : 'Disponible: ' + producto.stock }}
-          </span>
+    {{ producto.stock === 0 ? 'Agotado' : 'Disponible: ' + producto.stock }}
+  </span>
         </mat-card-content>
       </mat-card>
     </div>

@@ -61,8 +61,9 @@ export class AdminDiscountManagerComponent implements OnInit {
   editing: boolean = false;
   editingId: number | null = null;
   productosConDescuento: any[] = [];
-  columnasDescuento: string[] = ['name', 'originalPrice', 'finalPrice', 'hasDiscount', 'acciones'];
   productosRestaurados: any[] = [];
+  columnasDescuento: string[] = ['name', 'originalPrice', 'finalPrice', 'hasDiscount', 'acciones'];
+
   productos: Product[] = [];
 
   constructor(

@@ -48,7 +48,12 @@ export class CarComponent implements OnInit{
   }
 
   getTotal(): number {
-    return this.cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+    return this.cart.reduce((acc, item) => {
+      const unitPrice = item.product.hasDiscount
+        ? item.product.finalPrice ?? 0
+        : item.product.price ?? 0;
+      return acc + unitPrice * item.quantity;
+    }, 0);
   }
 
   guardarCompra() {
@@ -133,12 +138,14 @@ export class CarComponent implements OnInit{
       .map(item => ({
         productId: item.product.id,
         productName: item.product.name,
-        price: item.product.price,
+        price: item.product.hasDiscount && item.product.finalPrice != null
+          ? item.product.finalPrice
+          : item.product.price,
         quantity: item.quantity,
         image: item.product.image,
-        size: item.product.size || '' // ✅ añadimos talla
-      }));
-
+        size: item.product.size || ''
+      }))
+  console.log(items);
     if (items.length === 0) {
       alert('No hay productos válidos en el carrito.');
       return;

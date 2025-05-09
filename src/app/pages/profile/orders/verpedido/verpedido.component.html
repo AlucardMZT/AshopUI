@@ -28,7 +28,16 @@
       <td><img [src]="item.image || 'https://via.placeholder.com/60'" width="60"></td>
       <td>{{ item.productName }}</td>
       <td>{{ item.size || 'N/A' }}</td>
-      <td class="text-center">${{ item.unitPrice.toFixed(2) }}</td>
+      <td class="text-center">
+        <ng-container *ngIf="item.originalPrice && item.originalPrice > item.unitPrice; else sinDescuento">
+          <span class="precio-final">${{ item.unitPrice.toFixed(2) }}</span><br>
+          <span class="precio-original">${{ item.originalPrice.toFixed(2) }}</span>
+          <span class="badge-descuento">-{{ calcularDescuento(item.originalPrice, item.unitPrice) }}%</span>
+        </ng-container>
+        <ng-template #sinDescuento>
+          ${{ item.unitPrice.toFixed(2) }}
+        </ng-template>
+      </td>
       <td class="text-center">{{ item.quantity }}</td>
       <td class="text-center">${{ (item.quantity * item.unitPrice).toFixed(2) }}</td>
     </tr>

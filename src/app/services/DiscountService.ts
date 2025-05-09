@@ -47,4 +47,8 @@ export class DiscountService {
       headers: this.getAuthHeaders()
     });
   }
+
+  getConDescuentosOffline(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:8080/api/products/with-discounts');
+  }
 }

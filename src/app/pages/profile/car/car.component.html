@@ -51,7 +51,16 @@
               <h3>{{ item.product.name }}</h3>
               <p>{{ item.product.description }}</p>
               <p><strong>Talla:</strong> {{ item.product.size }}</p> <!-- ✅ Aquí -->
-              <p class="price">Precio unitario: ${{ item.product.price }}</p>
+              <p class="price">
+                <ng-container *ngIf="item.product.hasDiscount; else sinDescuento">
+                  <span class="precio-final">${{ item.product.finalPrice }}</span>
+                  <span class="precio-original">${{ item.product.price }}</span>
+                  <span class="badge-descuento">-{{ item.product.discountPercentage }}%</span>
+                </ng-container>
+                <ng-template #sinDescuento>
+                  <span class="precio-final">${{ item.product.price }}</span>
+                </ng-template>
+              </p>
               <p>Cantidad: {{ item.quantity }}</p>
             </mat-card-content>
             <mat-card-actions class="cart-actions">

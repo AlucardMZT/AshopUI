@@ -46,7 +46,7 @@ export class SettingsComponent implements OnInit {
   constructor(private http: HttpClient,private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit() {
-    this.http.get<any[]>('http://localhost:8080/api/countries').subscribe({
+    this.http.get<any[]>('http://192.168.1.58/api/countries').subscribe({
       next: countries => {
         this.countries = countries;
 

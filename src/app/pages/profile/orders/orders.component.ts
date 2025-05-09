@@ -80,7 +80,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
 
   fetchOrders() {
     const token = localStorage.getItem('auth_token');
-    this.http.get<Order[]>('http://localhost:8080/api/orders/mine', {
+    this.http.get<Order[]>('http://192.168.1.58/api/orders/mine', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -120,7 +120,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
 
   marcarComoPagado(id: number) {
     const token = localStorage.getItem('auth_token');
-    this.http.put(`http://localhost:8080/api/orders/${id}/pay`, {}, {
+    this.http.put(`http://192.168.1.58/api/orders/${id}/pay`, {}, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -142,7 +142,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const token = localStorage.getItem('auth_token');
-        this.http.delete(`http://localhost:8080/api/orders/${id}`, {
+        this.http.delete(`http://192.168.1.58/api/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
           responseType: 'text'
         }).subscribe({

@@ -9,7 +9,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const snackBar = inject(MatSnackBar);
 
   return next(req).pipe(
-    // Interceptamos errores
     tap({
       error: (error) => {
         if (error.status === 401) {

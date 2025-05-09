@@ -3,29 +3,30 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
 import {AuthService} from './auth.service';
+import {environment} from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
-  private baseUrl = 'http://localhost:8080/api/categories';
+  private baseUrl = `${environment.apiUrl}/categories`;
 
-  constructor(private http: HttpClient,private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getAll(): Observable<Category[]> {
     return this.http.get<Category[]>(this.baseUrl);
   }
 
-  getPromocionales() {
+  getPromocionales(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/promocionales`);
   }
 
-  create(category: any) {
+  create(category: any): Observable<Category> {
     const token = this.authService.getToken();
     return this.http.post<Category>(this.baseUrl, category, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
 
-  update(id: number, data: any) {
+  update(id: number, data: any): Observable<string> {
     const token = this.authService.getToken();
     return this.http.put(`${this.baseUrl}/${id}`, data, {
       headers: { Authorization: `Bearer ${token}` },
@@ -33,9 +34,8 @@ export class CategoryService {
     });
   }
 
-  delete(id: number) {
+  delete(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
-
-
 }
+

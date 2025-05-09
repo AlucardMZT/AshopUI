@@ -1,53 +1,41 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import {AuthService} from './auth.service';
-import { BehaviorSubject } from 'rxjs';
-import {CartItem} from '../models/caritem.model';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { AuthService } from './auth.service';
+import { CartItem } from '../models/caritem.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private API_URL = 'http://localhost:8080/api/cart';
+  private API_URL = `${environment.apiUrl}/cart`;
   private cart: any[] = [];
   private cartSubject = new BehaviorSubject<CartItem[]>(this.cart);
   cart$ = this.cartSubject.asObservable();
 
   constructor(private http: HttpClient, private authService: AuthService) {
-
     const saved = localStorage.getItem('cart');
     this.cart = saved ? JSON.parse(saved) : [];
   }
 
-
-
   guardarCarrito(name: string, items: any[]): Observable<string> {
     const token = this.authService.getToken();
-
     return this.http.post(`${this.API_URL}/save`, { name, items }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+      headers: { Authorization: `Bearer ${token}` },
       responseType: 'text'
     });
   }
 
   obtenerCarritosGuardados(): Observable<any[]> {
     const token = this.authService.getToken();
-
     return this.http.get<any[]>(`${this.API_URL}/all`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
   }
 
   eliminarCarrito(id: number): Observable<any> {
     const token = this.authService.getToken();
-
     return this.http.delete(`${this.API_URL}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+      headers: { Authorization: `Bearer ${token}` },
       responseType: 'text'
     });
   }
@@ -62,7 +50,7 @@ export class CartService {
     }
 
     this.saveToLocal();
-    this.cartSubject.next(this.cart); // ✅ Notificar cambio
+    this.cartSubject.next(this.cart);
     return index === -1;
   }
 

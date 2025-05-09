@@ -12,6 +12,8 @@ import {HttpClient} from '@angular/common/http';
 import {SuccessDialogComponent} from '../../shared/success-dialog/success-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {Country} from '../../models/country.model';
+import {CountryService} from '../../services/country.service';
 
 @Component({
   selector: 'app-register',
@@ -41,15 +43,18 @@ export class RegisterComponent implements OnInit{
   countries: any[] = [];
   countryId: number | null = null;
 
-  constructor(private http: HttpClient,  private router: Router,
+
+  constructor(private http: HttpClient,  private router: Router, private country: CountryService,
               private dialog: MatDialog,) {}
 
   ngOnInit() {
-    this.http.get<any[]>('http://localhost:8080/api/countries').subscribe({
-      next: data => {
+    this.country.getCountries().subscribe({
+      next: (data) => {
         this.countries = data;
       },
-      error: err => console.error('❌ Error al cargar países', err)
+      error: (err) => {
+        console.error('❌ Error al cargar países', err);
+      }
     });
   }
 

@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 import { CategoryDiscountRequestModel } from '../models/CategoryDiscountRequest.model';
 import { Observable } from 'rxjs';
 import {AuthService} from './auth.service';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiscountService {
-  private apiUrl = 'http://localhost:8080/api/discounts';
+  private baseUrl = `${environment.apiUrl}/discounts`;
 
-  constructor(private http: HttpClient,private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
@@ -18,37 +19,37 @@ export class DiscountService {
   }
 
   getAll(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, { headers: this.getAuthHeaders() });
+    return this.http.get<any[]>(this.baseUrl, { headers: this.getAuthHeaders() });
   }
 
   create(discount: CategoryDiscountRequestModel): Observable<string> {
-    return this.http.post(this.apiUrl, discount, {
+    return this.http.post(this.baseUrl, discount, {
       headers: this.getAuthHeaders(),
-      responseType: 'text' as const
+      responseType: 'text'
     });
   }
 
   update(id: number, discount: CategoryDiscountRequestModel): Observable<string> {
-    return this.http.put(`${this.apiUrl}/${id}`, discount, {
+    return this.http.put(`${this.baseUrl}/${id}`, discount, {
       headers: this.getAuthHeaders(),
-      responseType: 'text' as const
+      responseType: 'text'
     });
   }
 
   delete(id: number): Observable<string> {
-    return this.http.delete(`${this.apiUrl}/${id}`, {
+    return this.http.delete(`${this.baseUrl}/${id}`, {
       headers: this.getAuthHeaders(),
-      responseType: 'text' as const
+      responseType: 'text'
     });
   }
 
   getProductosConDescuento(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:8080/api/products/with-discounts', {
+    return this.http.get<any[]>(`${environment.apiUrl}/products/with-discounts`, {
       headers: this.getAuthHeaders()
     });
   }
 
   getConDescuentosOffline(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:8080/api/products/with-discounts');
+    return this.http.get<any[]>(`${environment.apiUrl}/products/with-discounts`);
   }
 }

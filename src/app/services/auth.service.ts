@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from '../models/user.model';
-import {UpdateUserRequest} from '../models/update-user-request.model';
-import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from '../models/user.model';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 interface LoginRequest {
   email: string;
@@ -19,30 +19,53 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
+  private baseUrl = environment.apiUrl;
+  private authUrl = `${this.baseUrl}/auth`;
 
-  private apiUrl = 'http://localhost:8080/api/auth';
   private authStatus = new BehaviorSubject<boolean>(!!this.getToken());
   authStatus$ = this.authStatus.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials);
+    return this.http.post<LoginResponse>(`${this.authUrl}/login`, credentials);
   }
 
   register(credentials: LoginRequest): Observable<string> {
-    return this.http.post(this.apiUrl + '/register', credentials, { responseType: 'text' });
+    return this.http.post(`${this.authUrl}/register`, credentials, { responseType: 'text' });
   }
 
   updateUser(data: Partial<User>): Observable<string> {
     const token = this.getToken();
-    return this.http.put(`${this.apiUrl}/update/profile`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+    return this.http.put(`${this.baseUrl}/update/profile`, data, {
+      headers: { Authorization: `Bearer ${token}` },
       responseType: 'text'
     });
+  }
 
+  getProfile(): Observable<User> {
+    const token = this.getToken();
+    return this.http.get<User>(`${this.authUrl}/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+  getProfileByNickname(nickname: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/profile/${nickname}`);
+  }
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.authUrl}/email-exists?email=${email}`);
+  }
+
+  checkNicknameExists(nickname: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.authUrl}/nickname-exists?nickname=${nickname}`);
+  }
+
+  requestPasswordReset(email: string) {
+    return this.http.post(`${this.authUrl}/request-password-reset`, { email });
+  }
+
+  resetPassword(token: string, password: string) {
+    return this.http.post(`${this.authUrl}/reset-password`, { token, password });
   }
 
   saveToken(token: string) {
@@ -57,12 +80,6 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('auth_token');
-  }
-
-  getProfile(): Observable<User> {
-    const token = this.getToken();
-    const headers = { Authorization: `Bearer ${token}` };
-    return this.http.get<User>(`${this.apiUrl}/profile`, { headers });
   }
 
   getNickname(): string | null {
@@ -102,24 +119,7 @@ export class AuthService {
     return user?.role?.toUpperCase() === role.toUpperCase();
   }
 
-  checkEmailExists(email: string) {
-    return this.http.get<boolean>(`http://localhost:8080/api/auth/email-exists?email=${email}`);
-  }
-
-  checkNicknameExists(nickname: string) {
-    return this.http.get<boolean>(`http://localhost:8080/api/auth/nickname-exists?nickname=${nickname}`);
-  }
-
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
-
-  requestPasswordReset(email: string) {
-    return this.http.post('/api/auth/request-password-reset', { email });
-  }
-
-  resetPassword(token: string, password: string) {
-    return this.http.post('/api/auth/reset-password', { token, password });
-  }
-
 }

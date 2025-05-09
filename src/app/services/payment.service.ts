@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {AuthService} from './auth.service';
+import {environment} from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  private apiUrl = 'http://localhost:8080/api/payments';
+  private apiUrl = `${environment.apiUrl}/payments`;
 
-  constructor(private http: HttpClient,private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getOrder(id: string) {
     const token = this.authService.getToken();
@@ -27,9 +28,10 @@ export class PaymentService {
   }
 
   markOrderAsPaid(orderId: string, token: string) {
-    return this.http.put(`http://localhost:8080/api/orders/${orderId}/pay`, {}, {
+    return this.http.put(`${this.apiUrl}/orders/${orderId}/pay`, {}, {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'text'
     });
   }
 }
+

@@ -58,7 +58,10 @@
                   <span class="badge-descuento">-{{ item.product.discountPercentage }}%</span>
                 </ng-container>
                 <ng-template #sinDescuento>
-                  <span class="precio-final">${{ item.product.originalPrice ?? item.product.price ?? 0 }}</span>
+                  <span class="precio-final">
+                    ${{ item.product.originalPrice != null ? item.product.originalPrice :
+                                      item.product.price != null ? item.product.price : 0 }}
+                  </span>
                 </ng-template>
               </p>
               <p>Cantidad: {{ item.quantity }}</p>

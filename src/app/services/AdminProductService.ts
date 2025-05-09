@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Product } from '../models/product.model';
-
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminProductService {
-  private baseUrl = 'http://localhost:8080/api/dashboard-a-shop-ctrl-984/products';
+  private baseUrl = `${environment.apiUrl}/dashboard-a-shop-ctrl-984/products`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -20,30 +20,24 @@ export class AdminProductService {
   create(product: any): Observable<string> {
     const token = this.authService.getToken();
     return this.http.post(`${this.baseUrl}`, product, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      responseType: 'text' as const
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'text'
     });
   }
 
   update(id: number, product: any): Observable<string> {
     const token = this.authService.getToken();
     return this.http.put(`${this.baseUrl}/${id}`, product, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      responseType: 'text' as const
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'text'
     });
   }
 
   delete(id: number): Observable<string> {
     const token = this.authService.getToken();
     return this.http.delete(`${this.baseUrl}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      responseType: 'text' as const
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'text'
     });
   }
 }

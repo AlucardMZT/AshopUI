@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProductDiscountRequest } from '../models/ProductDiscountRequest.model';
 import { Observable } from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductDiscountService {
-  private apiUrl = 'http://localhost:8080/api/product-discounts';
+  private apiUrl = `${environment.apiUrl}/product-discounts`;
 
   constructor(private http: HttpClient) {}
 

@@ -47,12 +47,10 @@ export class HomeComponent implements OnInit {
       next: destacadosOriginales => {
         this.discountService.getConDescuentosOffline().subscribe({
           next: conDescuentos => {
-            // Reemplazar los productos destacados con versión con descuento si existe
             this.destacados = destacadosOriginales.map(prod => {
               const conDesc = conDescuentos.find(p => p.id === prod.id);
               return conDesc ? { ...prod, ...conDesc } : prod;
             });
-            console.log('Destacados final con descuentos:', this.destacados);
           },
           error: err => console.error('Error al cargar descuentos:', err)
         });

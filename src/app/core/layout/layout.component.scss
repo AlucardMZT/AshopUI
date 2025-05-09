@@ -1,53 +1,74 @@
+/* Navbar base */
 .toolbar {
   display: flex;
   align-items: center;
-  background-color: #1976d2; /* o usa primary desde Angular Material */
+  background-color: #1976d2;
   color: white;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1000;
 }
 
 .logo-link {
   color: white;
+  text-decoration: none;
   display: flex;
   align-items: center;
-  text-decoration: none;
-}
-
-.menu-button {
-  background: transparent; /* o #1976d2 si deseas que sea uniforme */
-  color: white;
-  z-index: 1001;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
 .spacer {
-  flex: 1 1 auto;
+  flex-grow: 1;
+}
+
+.menu-button {
+  display: block;
+  color: white;
+  background: none;
+  border: none;
 }
 
 .nav-links {
-  position: absolute;
-  top: 49px;
-  left: 0;
-  width: 100%;
-  background: #1976d2;
   display: none;
   flex-direction: column;
-  padding: 1rem 0;
-  z-index: 1000;
-}
-
-.nav-links a,
-.nav-links button {
-  color: white;
-  justify-content: flex-start;
-  text-align: left;
-  padding: 1rem 2rem;
   width: 100%;
+  position: absolute;
+  top: 49px; /* ajusta según tu toolbar */
+  left: 0;
+  background-color: #1976d2;
+  padding: 1rem 0;
 }
 
 .nav-links.open {
   display: flex;
 }
 
-@media (min-width: 769px) {
+.nav-links a,
+.nav-links button {
+  color: white;
+  text-align: left;
+  padding: 1rem 1.5rem;
+  font-weight: 500;
+  width: 100%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cart-badge {
+  background: #ff1744;
+  color: white;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  margin-left: 0.3rem;
+}
+
+/* Desktop version */
+@media (min-width: 768px) {
   .menu-button {
     display: none;
   }
@@ -56,12 +77,14 @@
     display: flex !important;
     position: static;
     flex-direction: row;
+    width: auto;
     background: transparent;
     padding: 0;
+  }
 
-    a, button {
-      padding: 0 1rem;
-      width: auto;
-    }
+  .nav-links a,
+  .nav-links button {
+    padding: 0 1rem;
+    width: auto;
   }
 }

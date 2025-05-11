@@ -15,6 +15,7 @@ import {MatButton} from '@angular/material/button';
 import {catchError, map, Observable, of} from 'rxjs';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {HttpClient} from '@angular/common/http';
+import {CountryService} from '../../../services/country.service';
 
 @Component({
   selector: 'app-settings',
@@ -43,10 +44,10 @@ export class SettingsComponent implements OnInit {
   countries: any[] = [];
   countryId: number | null = null;
 
-  constructor(private http: HttpClient,private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private http: HttpClient,private fb: FormBuilder, private authService: AuthService, private countryService: CountryService) {}
 
   ngOnInit() {
-    this.http.get<any[]>('http://localhost:8080/api/countries').subscribe({
+    this.countryService.getCountries().subscribe({
       next: countries => {
         this.countries = countries;
 

@@ -39,4 +39,12 @@ export class OrderService {
       params
     });
   }
+
+  eliminarPedido(id: number): Observable<string> {
+    const token = this.authService.getToken();
+    return this.http.delete(`${this.baseUrl}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'text'
+    });
+  }
 }

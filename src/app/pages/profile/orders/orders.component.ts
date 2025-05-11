@@ -27,6 +27,8 @@ import {MatCard, MatCardTitle} from '@angular/material/card';
 import {MatInput} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
+import {OrderService} from '../../../services/orderservice.service';
+import {CountryService} from '../../../services/country.service';
 
 export interface Order {
   id: number;
@@ -77,7 +79,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private http: HttpClient,private router: Router,  private dialog: MatDialog,
-              private snackBar: MatSnackBar) {}
+              private snackBar: MatSnackBar,private orderService: OrderService,private countryService: CountryService) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -152,14 +154,10 @@ export class OrdersComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const token = localStorage.getItem('auth_token');
-        this.http.delete(`http://localhost:8080/api/orders/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-          responseType: 'text'
-        }).subscribe({
+        this.orderService.eliminarPedido(id).subscribe({
           next: () => {
             this.snackBar.open('✅ Pedido eliminado exitosamente', 'Cerrar', { duration: 3000 });
-            this.fetchOrders();
+            this.fetchOrders(); // refresca la lista
           },
           error: err => {
             this.snackBar.open('❌ Error al eliminar: ' + err.message, 'Cerrar', { duration: 4000 });

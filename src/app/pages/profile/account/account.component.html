@@ -1,29 +1,29 @@
 <div class="account-layout">
-  <aside class="account-sidebar">
-    <div class="sidebar-header">
-      <h3 class="username">Nick: {{ user?.nickname }}</h3>
-    </div>
+<!--  <aside class="account-sidebar">-->
+<!--    <div class="sidebar-header">-->
+<!--      <h3 class="username">Nick: {{ user?.nickname }}</h3>-->
+<!--    </div>-->
 
-    <nav class="sidebar-menu">
-      <button mat-button (click)="section = 'profile'" class="sidebar-button">
-        <mat-icon>person</mat-icon>
-        <span>Perfil</span>
-      </button>
-     <!-- <button mat-button (click)="section = 'orders'" class="sidebar-button">
-        <mat-icon>receipt</mat-icon>
-        <span>Mis compras</span>
-      </button>
-      <button mat-button (click)="section = 'history'" class="sidebar-button">
-        <mat-icon>history</mat-icon>
-        <span>Historial</span>
-      </button>-->
-    </nav>
-  </aside>
+<!--    <nav class="sidebar-menu">-->
+<!--      <button mat-button (click)="section = 'profile'" class="sidebar-button">-->
+<!--        <mat-icon>person</mat-icon>-->
+<!--        <span>Perfil</span>-->
+<!--      </button>-->
+<!--     &lt;!&ndash; <button mat-button (click)="section = 'orders'" class="sidebar-button">-->
+<!--        <mat-icon>receipt</mat-icon>-->
+<!--        <span>Mis compras</span>-->
+<!--      </button>-->
+<!--      <button mat-button (click)="section = 'history'" class="sidebar-button">-->
+<!--        <mat-icon>history</mat-icon>-->
+<!--        <span>Historial</span>-->
+<!--      </button>&ndash;&gt;-->
+<!--    </nav>-->
+<!--  </aside>-->
 
   <section class="account-content">
     <ng-container [ngSwitch]="section">
       <div *ngSwitchCase="'profile'">
-        <div *ngIf="user" class="profile-card">
+        <div *ngIf="user" class="profile-card" style="color: white;">
           <h2 class="section-title">Información del Usuario</h2>
           <div class="info-section">
             <div class="info-item">

@@ -9,12 +9,12 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {MatToolbar} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-profile',
   imports: [
     MatSidenavContainer,
-    MatNavList,
     MatSidenav,
     MatListItem,
     RouterLink,
@@ -22,7 +22,9 @@ import {MatIcon} from '@angular/material/icon';
     MatSidenavModule,
     MatIcon,
     NgIf,
-    MatIconButton
+    MatIconButton,
+    RouterLinkActive,
+    MatToolbar
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit{
 
 
   constructor(private http: HttpClient,  private router: Router, private country: CountryService,
-              private dialog: MatDialog,) {}
+              private dialog: MatDialog,private auth: AuthService) {}
 
   ngOnInit() {
     this.country.getCountries().subscribe({
@@ -89,9 +89,7 @@ export class RegisterComponent implements OnInit{
       country: this.countries.find(c => c.id === this.countryId)?.name || ''
     };
 
-    this.http.post('http://localhost:8080/api/auth/register', payload, {
-      responseType: 'text'
-    }).subscribe({
+    this.auth.register(payload).subscribe({
       next: () => {
         const dialogRef = this.dialog.open(SuccessDialogComponent, {
           data: {

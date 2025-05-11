@@ -7,6 +7,7 @@ import {Order} from '../../../../models/orderitem.model';
 import {CartItem} from '../../../../models/caritem.model';
 import { Location } from '@angular/common';
 import {HttpClient} from '@angular/common/http';
+import {CountryService} from '../../../../services/country.service';
 
 @Component({
   selector: 'app-verpedido',
@@ -32,16 +33,18 @@ export class VerPedidoComponent implements OnInit {
     private router: Router,
     private location: Location,
     private http: HttpClient,
+    private countryService: CountryService
   ) {}
 
 
   ngOnInit(): void {
-    this.http.get<any[]>('http://localhost:8080/api/countries').subscribe({
+    this.countryService.getCountries().subscribe({
       next: countries => {
         this.countries = countries;
 
         this.route.queryParams.subscribe(params => {
           const numero = params['numero'];
+
           if (numero) {
             this.orderService.getOrderByNumber(numero).subscribe({
               next: data => {
@@ -53,7 +56,7 @@ export class VerPedidoComponent implements OnInit {
 
                 this.loading = false;
               },
-              error: err => {
+              error: () => {
                 this.errorMessage = 'No se pudo cargar el pedido.';
                 this.loading = false;
               }

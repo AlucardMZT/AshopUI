@@ -11,10 +11,8 @@ import {MatIcon} from '@angular/material/icon';
   selector: 'app-account',
   templateUrl: './account.component.html',
   imports: [
-    MatIcon,
     NgSwitch,
     NgSwitchCase,
-    MatButton,
     NgIf,
   ],
   styleUrls: ['./account.component.scss']

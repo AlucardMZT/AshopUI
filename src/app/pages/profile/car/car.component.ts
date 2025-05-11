@@ -49,10 +49,8 @@ export class CarComponent implements OnInit{
 
   getTotal(): number {
     return this.cart.reduce((acc, item) => {
-      const unitPrice = item.product.hasDiscount
-        ? item.product.finalPrice ?? 0
-        : item.product.price ?? 0;
-      return acc + unitPrice * item.quantity;
+      const price = item.product.finalPrice ?? item.product.originalPrice ?? item.product.price ?? 0;
+      return acc + price * item.quantity;
     }, 0);
   }
 

@@ -1,64 +1,73 @@
-.register-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-
-  mat-form-field {
-    width: 100%;
-  }
-
-  .full-row {
-    grid-column: span 2;
-
-    @media (max-width: 600px) {
-      grid-column: span 1;
-    }
-  }
-
-  button.full-width {
-    width: 100%;
-    margin-top: 1rem;
-  }
-}
-
 .login-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 90vh;
-  background-color: #f9f9f9;
+  min-height: 100vh;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
   padding: 2rem;
 }
 
 .login-card {
-  padding: 2.5rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  background-color: #fff;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.6s ease-out;
 }
 
 .login-title {
   text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e3c72;
   margin-bottom: 2rem;
-  font-size: 1.8rem;
+}
+
+.register-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
 }
 
 .full-width {
   width: 100%;
+}
+
+.full-row {
+  grid-column: 1 / -1;
+}
+
+.mensaje {
+  text-align: center;
+  padding: 0.8rem;
+  border-radius: 6px;
   margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.mensaje.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #66bb6a;
+}
+
+.mensaje.error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef5350;
 }
 
 .login-links {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 
   a {
     color: #1976d2;
     text-decoration: none;
+    font-weight: 500;
 
     &:hover {
       text-decoration: underline;
@@ -66,31 +75,15 @@
   }
 }
 
-.error-message {
-  color: #f44336;
-  text-align: center;
-  margin-top: 0.5rem;
+/* Animación suave */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.success-message {
-  color: #2e7d32;
-  text-align: center;
-  margin-top: 0.5rem;
-}
-
-.mensaje {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border-radius: 6px;
-  text-align: center;
-
-  &.error {
-    background-color: #ffebee;
-    color: #c62828;
-  }
-
-  &.success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+/* Responsivo */
+@media (max-width: 600px) {
+  .register-grid {
+    grid-template-columns: 1fr;
   }
 }

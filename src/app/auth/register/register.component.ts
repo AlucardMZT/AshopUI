@@ -89,7 +89,7 @@ export class RegisterComponent implements OnInit{
       country: this.countries.find(c => c.id === this.countryId)?.name || ''
     };
 
-    this.http.post('http://192.168.1.58/api/auth/register', payload, {
+    this.http.post('http://localhost:8080/api/auth/register', payload, {
       responseType: 'text'
     }).subscribe({
       next: () => {

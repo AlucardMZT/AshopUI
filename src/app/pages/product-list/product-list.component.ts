@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Product} from '../../models/product.model';
 import {MatCard, MatCardActions, MatCardContent, MatCardImage} from '@angular/material/card';
 import {CommonModule, NgClass, NgForOf, NgIf} from '@angular/common';
-import {MatButton} from '@angular/material/button';
+import {MatAnchor, MatButton} from '@angular/material/button';
 import {ProductService} from '../../services/product.service';
 import {Category} from '../../models/category.model';
 import {CategoryService} from '../../services/category.service';
@@ -29,9 +29,8 @@ import {DiscountService} from '../../services/DiscountService';
     MatCardImage,
     FormsModule,
     NgIf,
-    MatProgressSpinner,
     NgClass,
-    CommonModule
+    CommonModule,
   ],
   styleUrls: ['./product-list.component.scss']
 })
@@ -42,7 +41,7 @@ export class ProductListComponent implements OnInit {
   selectedCategoryId: number | null = null;
 
 
-  productsPerPage = 12;
+  productsPerPage = 18;
   currentPage = 1;
   paginatedProducts: Product[] = [];
 

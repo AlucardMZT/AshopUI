@@ -5,6 +5,8 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
 import {NgIf} from '@angular/common';
+import {MatDivider} from '@angular/material/divider';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-forgot-password',
@@ -15,7 +17,9 @@ import {NgIf} from '@angular/common';
     FormsModule,
     MatButton,
     MatLabel,
-    NgIf
+    NgIf,
+    MatDivider,
+    MatIcon
   ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'

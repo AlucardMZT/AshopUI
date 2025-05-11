@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CarouselModule} from 'ngx-owl-carousel-o';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {CommonModule, NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import {Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
@@ -14,7 +14,7 @@ import {DiscountService} from '../../services/DiscountService';
 
 @Component({
   selector: 'app-home',
-  imports: [CarouselModule, MatCard, NgForOf, MatCardContent, MatCardImage, RouterLink, MatButton, MatIcon, NgIf, NgClass],
+  imports: [CarouselModule, MatCard, NgForOf, MatCardContent, MatCardImage, RouterLink, MatButton, MatIcon, NgIf, NgClass,CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   dragging = false;
   startX = 0;
   scrollLeft = 0;
-
+  destacadosError: string | null = null;
 
   constructor(private productService: ProductService, private discountService: DiscountService,
               private router: Router, private categoryService: CategoryService, public authService: AuthService) {

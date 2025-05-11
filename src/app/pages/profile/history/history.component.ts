@@ -25,7 +25,7 @@ export class HistoryComponent implements OnInit{
   orders: Order[] = [];
 
   ngOnInit(): void {
-    this.orderService.getMyOrders('PAGADO').subscribe({
+    this.orderService.getMyOrders('PAID').subscribe({
       next: data => {
         this.orders = data;
       },

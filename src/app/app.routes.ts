@@ -37,7 +37,6 @@ export const routes: Routes = [
   {
     path: '',
     component: ProfileComponent,
-    canActivate: [AuthGuard],
     data: { role: 'USER' },
     children: [
       { path: '', redirectTo: 'account', pathMatch: 'full' },

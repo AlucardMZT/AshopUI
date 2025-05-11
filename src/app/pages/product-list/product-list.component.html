@@ -1,74 +1,88 @@
 <div class="catalog-layout">
+  <!-- Sidebar -->
   <aside class="sidebar">
-    <h3>Categorías</h3>
-    <ul *ngIf="categories.length > 0; else noCategories">
-      <ng-container *ngFor="let cat of categories">
-        <li (click)="filterByCategory(cat.id)" [class.active]="selectedCategoryId === cat.id">
-          {{ cat.name }}
+    <div class="category-group">
+      <h4 class="group-label">📦 Categorías</h4>
+      <ul>
+        <ng-container *ngFor="let cat of categories">
+          <li *ngIf="cat.type === 'real'"
+              (click)="filterByCategory(cat.id)"
+              [class.active]="selectedCategoryId === cat.id">
+            {{ cat.name }}
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+
+    <div class="category-group">
+      <h4 class="group-label">🎯 Promocionales</h4>
+      <ul>
+        <!-- "Todas" va aquí -->
+        <li [class.active]="selectedCategoryId === null" (click)="filterByCategory(null)">
+          Todas
         </li>
-      </ng-container>
-    </ul>
-    <ng-template #noCategories>
-      <p>No hay categorías disponibles.</p>
-    </ng-template>
+
+        <ng-container *ngFor="let cat of categories">
+          <li *ngIf="cat.type === 'promocional' || ['Novedades', 'Lo más vendido'].includes(cat.name)"
+              (click)="filterByCategory(cat.id)"
+              [class.active]="selectedCategoryId === cat.id">
+            {{ cat.name }}
+          </li>
+        </ng-container>
+      </ul>
+    </div>
   </aside>
 
+
+
+  <!-- Main Content -->
   <section class="catalog-content">
-    <ng-container *ngIf="loading; else loadedContent">
-      <div class="spinner-container">
-        <mat-spinner diameter="40" color="primary"></mat-spinner>
-        <p class="loading-text">Cargando productos, por favor espera...</p>
-      </div>
-    </ng-container>
+    <div class="filter-bar">
+      <input type="text" placeholder="Buscar..." [(ngModel)]="searchTerm" (input)="applyFilters()" />
+      <input type="number" placeholder="Precio mínimo" [(ngModel)]="minPrice" (input)="applyFilters()" />
+      <input type="number" placeholder="Precio máximo" [(ngModel)]="maxPrice" (input)="applyFilters()" />
+      <select [(ngModel)]="sortOrder" (change)="applyFilters()">
+        <option value="">Ordenar</option>
+        <option value="asc">Menor precio</option>
+        <option value="desc">Mayor precio</option>
+      </select>
+      <button mat-stroked-button (click)="resetFilters()">Limpiar</button>
+    </div>
 
-    <ng-template #loadedContent>
-      <div class="filter-bar">
-        <input type="text" placeholder="Buscar..." [(ngModel)]="searchTerm" (input)="applyFilters()" />
-        <input type="number" placeholder="Precio mínimo" [(ngModel)]="minPrice" (input)="applyFilters()" />
-        <input type="number" placeholder="Precio máximo" [(ngModel)]="maxPrice" (input)="applyFilters()" />
-        <select [(ngModel)]="sortOrder" (change)="applyFilters()">
-          <option value="">Ordenar</option>
-          <option value="asc">Menor precio</option>
-          <option value="desc">Mayor precio</option>
-        </select>
-        <button mat-stroked-button (click)="resetFilters()">Limpiar</button>
-      </div>
+    <h2 class="section-title">Productos</h2>
 
-      <h2 class="section-title">Productos</h2>
-
-      <div class="product-grid">
-        <mat-card class="product-card" *ngFor="let product of paginatedProducts" (click)="verDetalle(product.id)">
-          <img mat-card-image [src]="product.image" [alt]="product.name" loading="lazy" />
-          <mat-card-content>
-            <h3>{{ product.name }}</h3>
-            <p class="description">{{ product.description }}</p>
-            <p class="price">
-              <ng-container *ngIf="product.hasDiscount; else normalPrice">
-                <span class="precio-final">${{ product.finalPrice }}</span>
-                <span class="precio-original">${{ product.originalPrice }}</span>
-                <span class="badge-descuento">-{{ product.discountPercentage }}%</span>
-              </ng-container>
-              <ng-template #normalPrice>
-                <span class="precio-final">${{ product.originalPrice || product.price }}</span>
-              </ng-template>
-            </p>
-          </mat-card-content>
-          <p class="stock" [ngClass]="{ 'agotado': product.stock === 0, 'disponible': product.stock > 0 }">
-            {{ product.stock === 0 ? 'Agotado' : 'Disponible' }}
+    <div class="product-grid">
+      <mat-card class="product-card" *ngFor="let product of paginatedProducts" (click)="verDetalle(product.id)">
+        <img mat-card-image [src]="product.image" [alt]="product.name" />
+        <mat-card-content>
+          <h3>{{ product.name }}</h3>
+          <p class="description">{{ product.description }}</p>
+          <p class="price">
+            <ng-container *ngIf="product.hasDiscount; else normalPrice">
+              <span class="precio-final">${{ product.finalPrice | number:'1.2-2' }}</span>
+              <span class="precio-original">${{ product.originalPrice | number:'1.2-2' }}</span>
+              <span class="badge-descuento">-{{ product.discountPercentage }}%</span>
+            </ng-container>
+            <ng-template #normalPrice>
+              <span class="precio-final">${{ (product.originalPrice || product.price) | number:'1.2-2' }}</span>
+            </ng-template>
           </p>
-          <mat-card-actions>
-            <button mat-raised-button color="primary" [disabled]="product.stock === 0" (click)="handleAddClick(product); $event.stopPropagation()">
-              {{ getButtonLabel(product) }}
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+        </mat-card-content>
+        <p class="stock" [ngClass]="{ 'agotado': product.stock === 0, 'disponible': product.stock > 0 }">
+          {{ product.stock === 0 ? 'Agotado' : 'Disponible' }}
+        </p>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" [disabled]="product.stock === 0" (click)="handleAddClick(product); $event.stopPropagation()">
+            {{ getButtonLabel(product) }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
 
-      <div class="pagination" *ngIf="products.length > productsPerPage">
-        <button mat-button (click)="setPage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
-        <span>Página {{ currentPage }} de {{ totalPages }}</span>
-        <button mat-button (click)="setPage(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente</button>
-      </div>
-    </ng-template>
+    <div class="pagination" *ngIf="products.length > productsPerPage">
+      <button mat-button (click)="setPage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <button mat-button (click)="setPage(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente</button>
+    </div>
   </section>
 </div>

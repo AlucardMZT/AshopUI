@@ -50,7 +50,7 @@
             <mat-card-content class="cart-details">
               <h3>{{ item.product.name }}</h3>
               <p>{{ item.product.description }}</p>
-              <p><strong>Talla:</strong> {{ item.product.size }}</p> <!-- ✅ Aquí -->
+              <p><strong *ngIf="item.product.category.name === 'Ropa'">Talla:</strong> {{ item.product.size }}</p> <!-- ✅ Aquí -->
               <p class="price">
                 <ng-container *ngIf="item.product.hasDiscount && item.product.finalPrice != null; else sinDescuento">
                   <span class="precio-final">${{ item.product.finalPrice }}</span>

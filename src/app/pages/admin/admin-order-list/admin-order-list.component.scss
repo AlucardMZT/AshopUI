@@ -1,21 +1,47 @@
-.paid {
-  color: green;
-  font-weight: bold;
-}
-
-.pending {
-  color: orange;
-  font-weight: bold;
-}
-
 table {
   width: 100%;
   margin-top: 2rem;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
+  font-size: 0.95rem;
 }
 
-h2 {
-  margin-top: 2rem;
+.paid {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.pending {
+  color: #f9a825;
+  font-weight: bold;
+}
+
+mat-form-field {
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+@media (max-width: 768px) {
+  table.mat-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .mat-header-row,
+  .mat-row {
+    min-width: 750px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-top: 1rem;
+  }
 }

@@ -20,7 +20,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let item of order.items">
-      <td>{{ item.image }}</td>
+      <td>  <img [src]="item.image" alt="Producto" width="60" height="60" style="object-fit: cover; border-radius: 6px;" /></td>
       <td>{{ item.productName }}</td>
       <td class="center">{{ item.quantity }}</td>
       <td class="center">${{ item.unitPrice.toFixed(2) }}</td>

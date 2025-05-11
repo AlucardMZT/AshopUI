@@ -29,6 +29,7 @@
 
 <section class="featured">
   <h2>🎯 Productos destacados</h2>
+
   <div
     #carouselContainer
     class="carousel-container"
@@ -41,6 +42,7 @@
     (touchend)="stopDrag()"
   >
     <div class="carousel" *ngIf="destacados.length > 0">
+
       <mat-card
         class="carousel-item"
         *ngFor="let producto of destacados"
@@ -53,12 +55,12 @@
 
           <p class="precio" [ngClass]="{ 'con-descuento': producto.hasDiscount, 'sin-descuento': !producto.hasDiscount }">
             <ng-container *ngIf="producto.hasDiscount; else sinDescuento">
-              <span class="precio-final">${{ producto.finalPrice }}</span>
-              <span class="precio-original">${{ producto.originalPrice }}</span>
+              <span class="precio-final">${{ producto.finalPrice | number:'1.2-2' }}</span>
+              <span class="precio-original"> {{ producto.originalPrice | number:'1.2-2' }}</span>
               <span class="badge-descuento">-{{ producto.discountPercentage }}%</span>
             </ng-container>
             <ng-template #sinDescuento>
-              <span class="precio-final">${{ producto.originalPrice }}</span>
+              <span class="precio-final">${{ producto.originalPrice | number:'1.2-2' }}</span>
             </ng-template>
           </p>
 

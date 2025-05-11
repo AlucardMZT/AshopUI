@@ -1,12 +1,15 @@
+/* === HERO VIDEO SECTION === */
 .hero {
   position: relative;
-  height: 350px;
+  height: 420px;
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
   text-align: center;
   overflow: hidden;
-  color: white;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
 }
 
 .hero .video-bg {
@@ -16,40 +19,55 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.6);
+  filter: brightness(0.3);
   z-index: 1;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 600px;
-  padding: 1rem;
+  max-width: 700px;
+  padding: 2rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.3);
 }
 
 .hero-content h1 {
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
 }
 
 .hero-content p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
 }
 
 .hero-content button {
   font-weight: 600;
+  padding: 0.7rem 1.6rem;
+  border-radius: 30px;
+  background: #2a5298;
+  color: white;
 }
 
-/* Categorías */
+.hero-content button:hover {
+  background: #1e3c72;
+}
+
+/* === CATEGORÍAS === */
 .categories {
-  margin: 2rem 0;
+  margin: 3rem 0;
+  text-align: center;
 }
 
 .categories h2 {
-  text-align: center;
-  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #1e3c72;
 }
 
 .category-grid {
@@ -60,154 +78,118 @@
 }
 
 .category-grid mat-card {
-  width: 200px;
-  border-radius: 12px;
-  background: linear-gradient(to bottom right, #fff, #f9f9f9);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s;
+  width: 220px;
+  border-radius: 14px;
+  color: #1e3c72;
+  background: linear-gradient(to bottom right, #ffffff, #f1f5fc);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
 }
 
 .category-grid mat-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .category-grid mat-card img {
   height: 140px;
   object-fit: cover;
+  border-radius: 14px 14px 0 0;
 }
 
-/* Carrusel de productos destacados */
+/* === DESTACADOS === */
 .featured {
-  margin: 3rem 0;
-  text-align: center;
+  margin: 4rem 0 3rem;
 }
 
 .featured h2 {
+  text-align: center;
   margin-bottom: 1.5rem;
+  color: #1e3c72;
 }
 
 .carousel-container {
   overflow-x: auto;
   padding: 1rem;
-  scroll-behavior: smooth;
   cursor: grab;
-  user-select: none;
-}
-
-.carousel-container:active {
-  cursor: grabbing;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .carousel-container::-webkit-scrollbar {
   display: none;
 }
 
-.carousel-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.carousel-container:active {
+  cursor: grabbing;
 }
 
 .carousel {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: 1rem 0;
   min-width: 100%;
 }
 
 .carousel-item {
-  min-width: 240px;
-  flex-shrink: 0;
-  transition: transform 0.3s ease-in-out;
+  flex: 0 0 240px;
+  background: linear-gradient(to bottom right, #ffffff, #f1f5fc);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
 }
 
 .carousel-item:hover {
-  transform: scale(1.05);
+  transform: translateY(-6px);
 }
 
 .carousel-item img {
   width: 100%;
-  height: auto;
+  height: 160px;
   object-fit: contain;
-  display: block;
-}
-
-/* Beneficios */
-.benefits {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 3rem 0;
-  gap: 1.5rem;
-}
-
-.benefit {
-  flex: 1 1 200px;
-  text-align: center;
   padding: 1rem;
+  background-color: #f6f6f6;
+  border-bottom: 1px solid #eee;
 }
 
-.benefit mat-icon {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  color: #1976d2;
-  margin-bottom: 0.5rem;
-  font-size: 48px;
+.carousel-item h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #1e3c72;
 }
 
-.benefit h3 {
-  margin-top: 0.5rem;
-}
-
-/* CTA */
-.cta {
-  text-align: center;
-  margin: 3rem 0;
-}
-
-.cta h2 {
-  margin-bottom: 1rem;
-}
-
-/* Precios y stock */
 .precio {
   font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  margin: 0.3rem 0;
 }
 
 .precio .precio-final {
   font-weight: bold;
-}
-
-.precio.con-descuento .precio-final {
-  color: #ff1744;
-}
-
-.precio.sin-descuento .precio-final {
-  color: #2e7d32;
+  color: #d32f2f;
 }
 
 .precio-original {
   text-decoration: line-through;
-  color: #9e9e9e;
-  font-size: 0.9rem;
+  color: #999;
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
 }
 
 .badge-descuento {
-  background-color: #ff1744;
+  background-color: #d32f2f;
   color: white;
   font-weight: bold;
   font-size: 0.75rem;
   padding: 2px 6px;
-  border-radius: 4px;
-  width: fit-content;
+  border-radius: 6px;
 }
 
 .stock-status {
-  display: block;
-  margin-top: 0.5rem;
+  font-size: 0.85rem;
   font-weight: bold;
+  margin-top: 0.4rem;
 }
 
 .stock-status.disponible {
@@ -218,26 +200,63 @@
   color: #c62828;
 }
 
-/* Responsividad */
+/* === BENEFICIOS === */
+.benefits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 4rem 0 2rem;
+}
+
+.benefit {
+  background: #f5faff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+  width: 240px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.benefit mat-icon {
+  font-size: 48px;
+  color: #2a5298;
+  margin-bottom: 0.5rem;
+}
+
+/* === CTA === */
+.cta {
+  text-align: center;
+  padding: 3rem 1rem;
+  border-radius: 16px;
+  margin: 4rem 0;
+}
+
+.cta h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.cta button {
+  font-weight: bold;
+  border-radius: 30px;
+  padding: 0.7rem 1.5rem;
+  color: #2a5298;
+  color: #0b0b0b;
+}
+
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
   .hero-content h1 {
     font-size: 2rem;
   }
 
-  .hero-content p {
-    font-size: 1rem;
-  }
-
-  .benefit mat-icon {
-    font-size: 40px;
+  .carousel-item {
+    flex: 0 0 200px;
   }
 
   .category-grid mat-card {
     width: 100%;
     max-width: 300px;
-  }
-
-  .carousel-item {
-    min-width: 200px;
   }
 }

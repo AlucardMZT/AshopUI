@@ -1,7 +1,61 @@
 .footer {
-  //margin-top: 40px;
-  justify-content: center;
-  font-size: 14px;
-  background: linear-gradient(90deg, #1976d2, #1565c0) !important;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #2a5298, #000000);
   color: white;
+  font-size: 14px;
+  padding: 0;
+
+  .footer-container {
+    width: 100%;
+    background: linear-gradient(to bottom, #2a5298, #000000); // Coincide con .footer
+  }
+
+  .footer-promo {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 500;
+
+    a {
+      color: #4fc3f7;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 2rem;
+
+    .footer-copy {
+      font-size: 0.9rem;
+    }
+
+    .footer-icons {
+      display: flex;
+      gap: 1rem;
+
+      a {
+        color: white;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      a:hover {
+        color: #4fc3f7;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
 }

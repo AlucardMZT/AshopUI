@@ -1,85 +1,96 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule, NgIf } from '@angular/common';
+import { PaymentService } from '../../../../services/payment.service';
 import { Order } from '../../../../models/orderitem.model';
-import {PaymentService} from '../../../../services/payment.service';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
-import {MatList, MatListItem} from '@angular/material/list';
-import {MatButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon'; // ✅ Asegúrate que el path es correcto
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import {PaymentSuccessDialogComponent} from './payment-success-dialog.component';
 
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss',
+  standalone: true,
   imports: [
     NgIf,
     CommonModule,
     MatCard,
     MatCardTitle,
-    MatList,
     MatCardContent,
+    MatList,
     MatListItem,
     MatButton,
-    MatIcon
-  ],
-  standalone: true
+    MatIcon,
+    MatProgressSpinner
+  ]
 })
 export class PaymentComponent implements OnInit {
   orderId!: string;
   order: Order | null = null;
+  isLoading = true;
   stripePromise = loadStripe('pk_test_51RLU2OPT97lRLDs5DMy1Aj7CV9FwSCeWIyuuXxDC2cUOM9NnXAQRV5BUPsWJymHF8j12lGGDalGcINKg4WO6FT7200lLJQNz55');
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.orderId = this.route.snapshot.paramMap.get('orderId') || '';
+    if (!this.orderId) {
+      this.router.navigate(['/']);
+      return;
+    }
+
 
     this.paymentService.getOrder(this.orderId).subscribe({
       next: (order) => {
         this.order = order;
+        this.isLoading = false;
 
         setTimeout(() => {
-          (window as any).paypal.Buttons({
-            createOrder: (data: any, actions: any) => {
+          (window as any).paypal?.Buttons({
+            createOrder: (_: any, actions: any) => {
               return actions.order.create({
-                purchase_units: [{
-                  amount: {
-                    value: order.total.toFixed(2)
-                  }
-                }]
+                purchase_units: [{ amount: { value: order.total.toFixed(2) } }]
               });
             },
-            onApprove: (data: any, actions: any) => {
+            onApprove: (_: any, actions: any) => {
               return actions.order.capture().then((details: any) => {
-                alert(`✅ Pago completado por ${details.payer.name.given_name}`);
                 const token = localStorage.getItem('auth_token') || '';
                 this.paymentService.markOrderAsPaid(this.orderId, token).subscribe({
-                  next: () => this.router.navigate(['/orders']),
+                  next: () => {
+                    this.dialog.open(PaymentSuccessDialogComponent, {
+                      data: { message: `Pago confirmado para ${details.payer.name.given_name}` }
+                    });
+                    this.router.navigate(['/orders']);
+                  },
                   error: err => {
-                    console.error('❌ Error actualizando pedido:', err);
-                    alert('Pago exitoso, pero error al actualizar el pedido');
+                    console.error('❌ Error al marcar como pagado', err);
                   }
                 });
               });
             },
             onError: (err: any) => {
               console.error('❌ Error PayPal:', err);
-              alert('Error al procesar el pago con PayPal');
             }
           }).render('#paypal-button-container');
         }, 500);
       },
-      error: err => console.error('❌ Error cargando pedido:', err)
+      error: err => {
+        this.isLoading = false;
+        console.error('❌ Error cargando pedido:', err);
+      }
     });
 
-    // Inicializar Stripe
     this.paymentService.createPaymentIntent(this.orderId).subscribe({
       next: async (res) => {
         const stripe = await this.stripePromise;
@@ -96,14 +107,18 @@ export class PaymentComponent implements OnInit {
           });
 
           if (paymentIntent?.status === 'succeeded') {
-            alert('✅ Pago realizado con Stripe');
+            this.dialog.open(PaymentSuccessDialogComponent, {
+              data: { message: '✅ Pago realizado con Stripe correctamente.' }
+            });
             this.router.navigate(['/orders']);
           } else if (error) {
-            alert('❌ Error con Stripe: ' + error.message);
+            console.error('❌ Stripe error:', error.message);
           }
         });
       },
-      error: err => console.error('Error creando PaymentIntent:', err)
+      error: err => {
+        console.error('❌ Error creando PaymentIntent:', err);
+      }
     });
   }
 }

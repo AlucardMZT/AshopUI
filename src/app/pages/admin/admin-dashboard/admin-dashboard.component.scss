@@ -1,0 +1,152 @@
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.order-total {
+  font-weight: 500;
+  color: #1a237e;
+}
+
+.order-date {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.dashboard-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 2rem;
+
+  mat-icon {
+    font-size: 28px;
+    color: #3949ab;
+  }
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  mat-icon {
+    font-size: 36px;
+    background: #e8eaf6;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.chart-card {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: #1a237e;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+}
+
+.side-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.orders-card {
+  padding: 0rem 1.2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #3949ab;
+
+  }
+
+  mat-list-item {
+    padding: 2.5rem 0;
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #333;
+      }
+
+      strong {
+        font-weight: 600;
+        color: #1a237e;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .chart-card h3,
+  .orders-card h3 {
+    font-size: 1.1rem;
+  }
+}

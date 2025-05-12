@@ -31,8 +31,6 @@ export class VerPedidoComponent implements OnInit {
     private route: ActivatedRoute,
     private orderService: OrderService,
     private router: Router,
-    private location: Location,
-    private http: HttpClient,
     private countryService: CountryService
   ) {}
 

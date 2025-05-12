@@ -69,9 +69,12 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'productos', pathMatch: 'full' },
       { path: 'productos', component: AdminProductFormComponent },
+      { path: 'dashboard', loadComponent: () => import('./pages/admin/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
       { path: 'pedidos', component: AdminOrderListComponent },
       { path: 'categoria/upload', component: CategoriaImageListComponent },
       { path: 'descuentos', component: AdminDiscountManagerComponent },
+      { path: 'usuarios', loadComponent: () => import('./pages/admin/admin-user-list/admin-user-list.component').then(m => m.AdminUserListComponent) }
+
     ]
   },
   {

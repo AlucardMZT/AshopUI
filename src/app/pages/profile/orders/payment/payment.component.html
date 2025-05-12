@@ -1,7 +1,7 @@
 <div class="payment-container">
   <div class="payment-inner">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" diameter="40" class="spinner-center"></mat-progress-spinner>
 
-    <!-- 🧾 Resumen -->
     <mat-card class="summary-card mat-elevation-z2">
       <mat-card-title>
         <mat-icon>receipt_long</mat-icon>
@@ -17,7 +17,6 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- 💳 Stripe -->
     <mat-card class="method-card mat-elevation-z2">
       <mat-card-title>
         <mat-icon color="primary">credit_card</mat-icon> Pagar con tarjeta
@@ -38,7 +37,6 @@
       <div class="divider-line"></div>
     </div>
 
-    <!-- 🅿️ PayPal -->
     <mat-card class="method-card mat-elevation-z2">
       <mat-card-title>
         <mat-icon color="accent">account_balance_wallet</mat-icon> Pagar con PayPal

@@ -1,0 +1,62 @@
+<mat-card class="lista-usuario">
+  <mat-card-title>
+    <mat-icon>group</mat-icon> Lista de usuarios
+  </mat-card-title>
+
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Buscar</mat-label>
+    <input matInput [(ngModel)]="search" (ngModelChange)="filtrarUsuarios()" placeholder="Nombre, email o nickname" />
+  </mat-form-field>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z2" matSort>
+
+      <!-- Nombre -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+        <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+      </ng-container>
+
+      <!-- Nickname -->
+      <ng-container matColumnDef="nickname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nickname</th>
+        <td mat-cell *matCellDef="let user">{{ user.nickname }}</td>
+      </ng-container>
+
+      <!-- Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
+
+      <!-- Teléfono -->
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
+        <td mat-cell *matCellDef="let user">{{ user.phone }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-icon-button color="primary" (click)="editarUsuario(user)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarUsuario(user)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <div class="export-section">
+    <button mat-flat-button color="primary" (click)="exportarExcel()">
+      <mat-icon>download</mat-icon> Exportar Excel
+    </button>
+  </div>
+</mat-card>

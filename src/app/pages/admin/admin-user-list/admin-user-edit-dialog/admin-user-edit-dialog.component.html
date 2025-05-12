@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Editar usuario</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="w-100" style="margin-top: 1rem">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Nickname</mat-label>
+      <input matInput formControlName="nickname" />
+      <mat-error *ngIf="nicknameError">{{ nicknameError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="emailError">{{ emailError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+
+    <p *ngIf="errorMessage" class="text-error mt-2">{{ errorMessage }}</p>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    [disabled]="form.invalid || isSaving"
+    (click)="onGuardar()"
+  >
+    <mat-progress-spinner
+      *ngIf="isSaving"
+      mode="indeterminate"
+      diameter="18"
+      strokeWidth="3"
+      color="accent"
+    ></mat-progress-spinner>
+    <span *ngIf="!isSaving">Guardar</span>
+  </button>
+</mat-dialog-actions>

@@ -37,7 +37,7 @@ export class AuthService {
 
   updateUser(data: Partial<User>): Observable<string> {
     const token = this.getToken();
-    return this.http.put(`${this.baseUrl}/update/profile`, data, {
+    return this.http.put(`${this.baseUrl}/auth/update/profile`, data, {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'text'
     });
@@ -123,6 +123,29 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  getAllUsers(): Observable<User[]> {
+    const token = this.getToken();
+    return this.http.get<User[]>(`${this.baseUrl}/auth/users`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  deleteUser(id: number): Observable<string> {
+    const token = this.getToken();
+    return this.http.delete(`${this.baseUrl}/auth/users/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'text'
+    });
+  }
+
+  updateUserByAdmin(id: number, data: Partial<User>): Observable<string> {
+    const token = this.getToken();
+    return this.http.put<string>(`${this.baseUrl}/auth/users/${id}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'text' as 'json'
+    });
   }
 
 }

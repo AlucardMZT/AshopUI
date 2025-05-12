@@ -7,7 +7,7 @@ import { CartService } from '../../../services/car.service';
 import { AuthService } from '../../../services/auth.service';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {CommonModule, NgClass, NgForOf, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
@@ -24,6 +24,7 @@ import {CategoryService} from '../../../services/category.service';
     NgClass,
     RouterLink,
     NgForOf,
+    CommonModule,
     MatFormField,
     MatSelect,
     MatLabel,

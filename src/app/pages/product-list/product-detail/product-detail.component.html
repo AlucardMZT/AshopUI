@@ -25,9 +25,9 @@
 
     <p class="precio" [ngClass]="{ 'con-descuento': product.hasDiscount, 'sin-descuento': !product.hasDiscount }">
       <ng-container *ngIf="product.hasDiscount; else precioNormal">
-        <span class="precio-final">${{ product.finalPrice }}</span>
-        <span class="precio-original">${{ product.originalPrice }}</span>
-        <span class="badge-descuento">-{{ product.discountPercentage }}%</span>
+        <span class="precio-final">${{ product.finalPrice | number:'1.2-2' }}</span>
+        <span class="precio-original">${{ product.originalPrice | number:'1.2-2' }}</span>
+        <span class="badge-descuento">-{{ product.discountPercentage | number:'1.2-2' }}%</span>
       </ng-container>
       <ng-template #precioNormal>
         <span class="precio-final">${{ product.originalPrice || product.price }}</span>

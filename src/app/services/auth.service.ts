@@ -45,10 +45,12 @@ export class AuthService {
 
   getProfile(): Observable<User> {
     const token = this.getToken();
+    console.log('🔑 Token actual:', token); // ✅ revisa si es null
     return this.http.get<User>(`${this.authUrl}/profile`, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
+
   getProfileByNickname(nickname: string): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/profile/${nickname}`);
   }

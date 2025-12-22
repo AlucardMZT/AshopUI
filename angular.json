@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ashopweb": {
+    "toxic-nature": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ashopweb",
+            "outputPath": "dist/toxic-nature",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ashopweb:build:production"
+              "buildTarget": "toxic-nature:build:production"
             },
             "development": {
-              "buildTarget": "ashopweb:build:development"
+              "buildTarget": "toxic-nature:build:development"
             }
           },
           "defaultConfiguration": "development"

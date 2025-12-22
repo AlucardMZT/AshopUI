@@ -43,7 +43,7 @@
 
       <ng-container *ngIf="cart.length > 0">
         <div class="cart-grid">
-          <mat-card *ngFor="let item of cart" class="cart-item-card">
+          <mat-card *ngFor="let item of cart; trackBy: trackByProductId" class="cart-item-card">
             <div class="cart-image">
               <img [src]="item.product.image" [alt]="item.product.name" />
             </div>

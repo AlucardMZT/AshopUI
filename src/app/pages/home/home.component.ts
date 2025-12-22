@@ -94,10 +94,10 @@ export class HomeComponent implements OnInit {
 
   onDrag(event: MouseEvent | TouchEvent): void {
     if (!this.dragging) return;
-    event.preventDefault(); // evita selección o scroll vertical
+    event.preventDefault();
     const container = this.carouselContainer.nativeElement;
     const x = this.getPositionX(event) - container.offsetLeft;
-    const walk = (x - this.startX) * 1.5; // sensibilidad
+    const walk = (x - this.startX) * 1.5;
     container.scrollLeft = this.scrollLeft - walk;
   }
 

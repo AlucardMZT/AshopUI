@@ -8,7 +8,7 @@ import {PaymentService} from '../../../../services/payment.service';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {MatList, MatListItem} from '@angular/material/list';
 import {MatButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon'; // ✅ Asegúrate que el path es correcto
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-payment',
@@ -79,7 +79,6 @@ export class PaymentComponent implements OnInit {
       error: err => console.error('❌ Error cargando pedido:', err)
     });
 
-    // Inicializar Stripe
     this.paymentService.createPaymentIntent(this.orderId).subscribe({
       next: async (res) => {
         const stripe = await this.stripePromise;

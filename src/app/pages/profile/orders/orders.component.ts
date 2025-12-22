@@ -23,6 +23,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ConfirmDialogComponent} from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import {MatPaginator} from '@angular/material/paginator';
+import { environment } from '../../../../environments/environment';
 
 export interface Order {
   id: number;
@@ -80,7 +81,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
 
   fetchOrders() {
     const token = localStorage.getItem('auth_token');
-    this.http.get<Order[]>('http://192.168.1.58/api/orders/mine', {
+    this.http.get<Order[]>(`${environment.apiUrl}/orders/mine`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -120,7 +121,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
 
   marcarComoPagado(id: number) {
     const token = localStorage.getItem('auth_token');
-    this.http.put(`http://192.168.1.58/api/orders/${id}/pay`, {}, {
+    this.http.put(`${environment.apiUrl}/orders/${id}/pay`, {}, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -142,7 +143,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const token = localStorage.getItem('auth_token');
-        this.http.delete(`http://192.168.1.58/api/orders/${id}`, {
+        this.http.delete(`${environment.apiUrl}/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
           responseType: 'text'
         }).subscribe({

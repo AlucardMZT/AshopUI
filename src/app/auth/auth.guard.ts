@@ -9,19 +9,33 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const token = this.authService.getToken();
+    console.log('[AuthGuard] token presente?', !!token);
+    console.log('[AuthGuard] token value:', token);
+
     if (!token) {
+      console.log('[AuthGuard] Sin token -> redirigiendo a /login');
       this.router.navigate(['/login']);
       return false;
     }
 
-    const expectedRole = route.data['role']; // <-- lo defines en la ruta
-    const currentUser = this.authService.getCurrentUser();
-
-    if (!currentUser || (expectedRole && currentUser.role !== expectedRole)) {
-      this.router.navigate(['/unauthorized']);
-      return false;
+    if (this.authService.isAdmin()) {
+      console.log('[AuthGuard] Usuario es ADMIN => acceso permitido a cualquier ruta');
+      return true;
     }
 
+    const expectedRole = route.data['role'];
+    if (expectedRole) {
+      const allowedRoles = Array.isArray(expectedRole) ? expectedRole : [expectedRole];
+      const hasAny = allowedRoles.some((r: string) => this.authService.hasRole(r));
+
+      if (!hasAny) {
+        console.log('[AuthGuard] Roles esperados:', allowedRoles, 'pero user tiene:', this.authService.getCurrentUser());
+        this.router.navigate(['/unauthorized']);
+        return false;
+      }
+    }
+
+    console.log('[AuthGuard] Permitir acceso');
     return true;
   }
 }

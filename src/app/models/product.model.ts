@@ -3,9 +3,9 @@ import { Category } from './category.model';
 export interface Product {
   id: number;
   name: string;
-  price: number; // Este puede seguir usándose internamente
-  originalPrice?: number; // 👈 Precio antes del descuento
-  finalPrice?: number;    // 👈 Precio con descuento aplicado
+  price: number;
+  originalPrice?: number;
+  finalPrice?: number;
 
   image: string;
   image2?: string;

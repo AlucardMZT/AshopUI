@@ -175,10 +175,9 @@ export class AdminProductFormComponent implements OnInit {
       price: product.price,
       stock: product.stock,
       categoryId: product.category.id,
-      sizes: product.sizes // ⬅️ importante
+      sizes: product.sizes
     });
 
-    // Carga las imágenes si existen
     this.imageBase64_1 = product.image || '';
     this.imageBase64_2 = product.image2 || '';
     this.imageBase64_3 = product.image3 || '';
@@ -198,7 +197,7 @@ export class AdminProductFormComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Product>(data);
         this.dataSource.paginator = this.paginator;
         this.categoryNames = [...new Set(data.map(p => p.category.name))];
-        this.applyFilter(); // ✅ aplicar filtro inicial si hace falta
+        this.applyFilter();
       },
       error: err => console.error('Error al cargar productos', err)
     });

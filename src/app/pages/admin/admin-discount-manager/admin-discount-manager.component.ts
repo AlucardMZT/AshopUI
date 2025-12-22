@@ -106,9 +106,9 @@ export class AdminDiscountManagerComponent implements OnInit {
     tomorrow.setDate(today.getDate() + 1);
 
     const adjustDate = (date: Date) => {
-      const offset = date.getTimezoneOffset(); // en minutos
+      const offset = date.getTimezoneOffset();
       const localISO = new Date(date.getTime() - offset * 60 * 1000).toISOString();
-      return localISO.substring(0, 10); // solo "YYYY-MM-DD"
+      return localISO.substring(0, 10);
     };
 
     this.categoryDiscount.startDate = adjustDate(today);

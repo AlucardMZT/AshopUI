@@ -25,6 +25,9 @@ export class AuthService {
   private authStatus = new BehaviorSubject<boolean>(!!this.getToken());
   authStatus$ = this.authStatus.asObservable();
 
+  private currentUserSubject = new BehaviorSubject<any | null>(this.getCurrentUser());
+  currentUser$ = this.currentUserSubject.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {}
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
@@ -70,12 +73,14 @@ export class AuthService {
 
   saveToken(token: string) {
     localStorage.setItem('auth_token', token);
+    this.currentUserSubject.next(this.getCurrentUser());
   }
 
   saveAuthData(token: string, nickname: string) {
     localStorage.setItem('auth_token', token);
     localStorage.setItem('nickname', nickname);
     this.authStatus.next(true);
+    this.currentUserSubject.next(this.getCurrentUser());
   }
 
   getToken(): string | null {
@@ -90,6 +95,7 @@ export class AuthService {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('nickname');
     this.authStatus.next(false);
+    this.currentUserSubject.next(null);
     this.router.navigate(['home']);
   }
 
@@ -99,9 +105,29 @@ export class AuthService {
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
+      const rawRole = payload.role ?? payload.roles ?? payload.authorities ?? null;
+
+      let roles: string[] = [];
+      if (Array.isArray(rawRole)) {
+        roles = rawRole.map((r: any) => {
+          if (typeof r === 'string') return r;
+          if (r == null) return '';
+          return String(r.authority ?? r.role ?? r.name ?? r);
+        }).filter(Boolean);
+      } else if (rawRole != null) {
+        if (typeof rawRole === 'string' && rawRole.includes(',')) {
+          roles = rawRole.split(',').map(s => s.trim());
+        } else {
+          roles = [String(rawRole)];
+        }
+      }
+
+      roles = roles.map(r => r.replace(/^ROLE_/i, '').toUpperCase());
+
       return {
         email: payload.sub,
-        role: payload.role
+        role: roles[0] ?? null,
+        roles
       };
     } catch (e) {
       console.error('Error al decodificar el token:', e);
@@ -111,12 +137,14 @@ export class AuthService {
 
   isAdmin(): boolean {
     const user = this.getCurrentUser();
-    return user?.role?.toUpperCase() === 'ADMIN';
+    return user?.roles?.includes('ADMIN') ?? false;
   }
 
   hasRole(role: string): boolean {
     const user = this.getCurrentUser();
-    return user?.role?.toUpperCase() === role.toUpperCase();
+    if (!user) return false;
+    const wanted = role.replace(/^ROLE_/i, '').toUpperCase();
+    return (user.roles ?? []).map((r: string) => r.toUpperCase()).includes(wanted);
   }
 
   isLoggedIn(): boolean {

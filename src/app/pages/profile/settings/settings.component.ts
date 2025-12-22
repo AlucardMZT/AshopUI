@@ -13,8 +13,9 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {NgForOf, NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {catchError, map, Observable, of} from 'rxjs';
-import {MatOption, MatSelect} from '@angular/material/select';
+import {MatSelectModule} from '@angular/material/select';
 import {HttpClient} from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-settings',
@@ -28,8 +29,7 @@ import {HttpClient} from '@angular/common/http';
     ReactiveFormsModule,
     NgIf,
     MatButton,
-    MatOption,
-    MatSelect,
+    MatSelectModule,
     NgForOf,
     FormsModule,
 
@@ -46,14 +46,23 @@ export class SettingsComponent implements OnInit {
   constructor(private http: HttpClient,private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit() {
-    this.http.get<any[]>('http://192.168.1.58/api/countries').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/countries`).subscribe({
       next: countries => {
-        this.countries = countries;
+        this.countries = countries.map(c => {
+          const rawId = (c as any).id ?? (c as any)._id ?? (c as any).countryId ?? (c as any).ID;
+          return { ...c, id: Number(rawId) };
+        });
 
         this.authService.getProfile().subscribe(user => {
           this.user = user;
-
-          const matchedCountry = this.countries.find(c => c.name === user.countryName);
+          const userCountryId = (user as any).countryId ?? (user as any).country?.id ?? null;
+          let matchedCountry = null;
+          if (userCountryId != null) {
+            matchedCountry = this.countries.find(c => c.id === Number(userCountryId));
+          }
+          if (!matchedCountry && user.countryName) {
+            matchedCountry = this.countries.find(c => c.name === user.countryName);
+          }
           const countryId = matchedCountry?.id ?? null;
 
           this.profileForm = this.fb.group({
@@ -92,11 +101,9 @@ export class SettingsComponent implements OnInit {
     if (this.profileForm.invalid) return;
 
     const formData = { ...this.profileForm.value };
-
-    // Convertir countryId en objeto country
     const selectedCountry = this.countries.find(c => c.id === formData.countryId);
     if (selectedCountry) {
-      formData.country = { id: selectedCountry.id }; // lo que espera el backend
+      formData.country = { id: selectedCountry.id };
       formData.countryName = selectedCountry.name;
     }
 
@@ -118,7 +125,7 @@ export class SettingsComponent implements OnInit {
 
   emailExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
     const email = control.value;
-    if (!email || email === this.user?.email) return of(null); // No valida si es su mismo email
+    if (!email || email === this.user?.email) return of(null);
 
     return this.authService.checkEmailExists(email).pipe(
       map(exists => exists ? { emailExists: true } : null),
@@ -126,7 +133,6 @@ export class SettingsComponent implements OnInit {
     );
   }
 
-// Nickname validator
   nicknameExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
     const nickname = control.value;
     if (!nickname || nickname === this.user?.nickname) return of(null);

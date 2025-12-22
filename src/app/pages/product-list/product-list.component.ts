@@ -105,7 +105,7 @@ export class ProductListComponent implements OnInit {
               });
               this.applyFilters();
             }
-          }, 100); // revisa cada 100ms
+          }, 100);
         }
 
         this.loading = false;

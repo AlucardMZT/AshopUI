@@ -6,5 +6,5 @@ export const environment = {
 */
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.1.58:8080/api' // <- usa tu IP local aquí
+  apiUrl: 'http://192.168.1.48:8080/api'
 };

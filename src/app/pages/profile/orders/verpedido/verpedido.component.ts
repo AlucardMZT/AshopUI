@@ -7,6 +7,7 @@ import {Order} from '../../../../models/orderitem.model';
 import {CartItem} from '../../../../models/caritem.model';
 import { Location } from '@angular/common';
 import {HttpClient} from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-verpedido',
@@ -36,7 +37,7 @@ export class VerPedidoComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.http.get<any[]>('http://192.168.1.58/api/countries').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/countries`).subscribe({
       next: countries => {
         this.countries = countries;
 
@@ -102,4 +103,3 @@ export class VerPedidoComponent implements OnInit {
   }
 
 }
-

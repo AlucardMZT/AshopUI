@@ -23,7 +23,7 @@ export interface SavedCart {
   selector: 'app-car',
   imports: [CommonModule, MatCardModule, MatButtonModule, NgForOf, NgIf, MatIcon, MatFormField, MatSelect, MatOption,MatLabel],
   templateUrl: './car.component.html',
-  styleUrl: './car.component.scss'
+  styleUrls: ['./car.component.scss']
 })
 export class CarComponent implements OnInit{
   cart: CartItem[] = [];
@@ -68,17 +68,20 @@ export class CarComponent implements OnInit{
 
   cargarCarrito(cart: SavedCart) {
     try {
-      const parsedItems = typeof cart.itemsJson === 'string'
-        ? JSON.parse(cart.itemsJson)
-        : cart.itemsJson;
+      let parsed: any;
+      if (typeof cart.itemsJson === 'string') {
+        parsed = JSON.parse(cart.itemsJson);
+      } else {
+        parsed = cart.itemsJson;
+      }
 
-      this.cart = parsedItems;
-      this.section = 'carrito';
-      this.cartService.saveToLocal();
-    } catch (err) {
-      alert('Error cargando carrito guardado');
-    }
-  }
+      this.cart = Array.isArray(parsed) ? parsed : [];
+       this.section = 'carrito';
+       this.cartService.saveToLocal();
+     } catch (err) {
+       alert('Error cargando carrito guardado');
+     }
+   }
 
   abrirCarritosGuardados() {
     this.section = 'guardados';
@@ -113,8 +116,8 @@ export class CarComponent implements OnInit{
     this.cartService.saveToLocal();
   }
 
-  saveToLocal() {
-    localStorage.setItem('cart', JSON.stringify(this.cart));
+  trackByProductId(index: number, item: CartItem) {
+    return item?.product?.id ?? index;
   }
 
   removeFromCart(productId: string | number) {

@@ -1,23 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {CommonModule, NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatFormField, MatInput, MatInputModule, MatLabel} from '@angular/material/input';
-import {MatCard} from '@angular/material/card';
-import {MatButton, MatButtonModule} from '@angular/material/button';
-import {UserRegisterRequest} from '../../models/register.model';
+import {MatInputModule} from '@angular/material/input';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {HttpClient} from '@angular/common/http';
 import {SuccessDialogComponent} from '../../shared/success-dialog/success-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {MatOption, MatSelect} from '@angular/material/select';
-import {Country} from '../../models/country.model';
+import {MatSelectModule} from '@angular/material/select';
 import {CountryService} from '../../services/country.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, RouterLink, MatSelect, MatOption],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, RouterLink, MatSelectModule, MatCardModule],
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
@@ -50,7 +48,11 @@ export class RegisterComponent implements OnInit{
   ngOnInit() {
     this.country.getCountries().subscribe({
       next: (data) => {
-        this.countries = data;
+        this.countries = data.map(c => {
+          const rawId = (c as any).id ?? (c as any)._id ?? (c as any).countryId ?? (c as any).ID;
+          return { ...c, id: Number(rawId) };
+        });
+        console.log('🌍 países cargados:', this.countries);
       },
       error: (err) => {
         console.error('❌ Error al cargar países', err);
@@ -89,7 +91,9 @@ export class RegisterComponent implements OnInit{
       country: this.countries.find(c => c.id === this.countryId)?.name || ''
     };
 
-    this.http.post('http://192.168.1.58/api/auth/register', payload, {
+    console.log('📤 register payload', payload);
+
+    this.http.post(`${environment.apiUrl}/auth/register`, payload, {
       responseType: 'text'
     }).subscribe({
       next: () => {
@@ -104,7 +108,11 @@ export class RegisterComponent implements OnInit{
         });
       },
       error: (err) => {
-        this.mensaje = '❌ ' + (err.error || 'Error al registrar.');
+        if (err?.status === 0) {
+          this.mensaje = `❌ No se pudo conectar con el servidor. Verifica que la API esté corriendo en: ${environment.apiUrl}`;
+        } else {
+          this.mensaje = '❌ ' + (err.error || 'Error al registrar.');
+        }
         this.esError = true;
       }
     });

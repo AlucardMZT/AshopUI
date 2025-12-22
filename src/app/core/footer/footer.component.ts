@@ -16,7 +16,7 @@ export class FooterComponent {
   rutasSinFooter: (string | RegExp)[] = [
     '/login',
     '/register',
-    /^\/productos\/\d+$/  // Coincide con /productos/1, /productos/123, etc.
+    /^\/productos\/\d+$/
   ];
 
   constructor(public router: Router) {}
@@ -28,7 +28,7 @@ export class FooterComponent {
       if (typeof ruta === 'string') {
         return ruta === url;
       } else {
-        return ruta.test(url); // para rutas con RegExp
+        return ruta.test(url);
       }
     });
   }

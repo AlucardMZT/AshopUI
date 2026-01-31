@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="toolbar">
   <a routerLink="/home" (click)="showMenu = false" class="logo-link">
     <mat-icon>shopping_cart</mat-icon>
-    <strong>Toxic Nature</strong>
+    <strong>Toxic Nature Mazatlan</strong>
   </a>
 
   <span class="spacer"></span>
@@ -41,10 +41,10 @@
     </ng-container>
 
     <ng-template #guestLinks>
-      <a  *ngIf="authService.hasRole('ADMIN')" mat-button routerLink="/login" (click)="showMenu = false">
+      <a mat-button routerLink="/login" (click)="showMenu = false">
         <mat-icon>login</mat-icon> Iniciar sesión
       </a>
-      <a  *ngIf="authService.hasRole('ADMIN')" mat-button routerLink="/register" (click)="showMenu = false">
+      <a mat-button routerLink="/register" (click)="showMenu = false">
         <mat-icon>person_add</mat-icon> Registrarse
       </a>
     </ng-template>

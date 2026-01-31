@@ -26,6 +26,12 @@
   border-radius: 8px;
   background-color: #f1f1f1;
   transition: background 0.3s ease, color 0.3s ease;
+  /* Centrar icono y texto: */
+  display: flex;
+  align-items: center; /* centra verticalmente */
+  //justify-content: center; /* centra horizontalmente dentro del li */
+  gap: 0.5rem; /* espacio entre icono y texto */
+  text-align: center;
 }
 
 .sidebar li:hover {
@@ -36,6 +42,17 @@
   background-color: #1976d2;
   color: white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustes específicos para el icono */
+.sidebar li .cat-icon,
+.sidebar li mat-icon {
+  font-size: 20px;
+  line-height: 1;
+  /* Heredar color del li (para que el icono sea blanco en active) */
+  color: inherit;
+  display: inline-flex;
+  vertical-align: middle;
 }
 
 .catalog-content {

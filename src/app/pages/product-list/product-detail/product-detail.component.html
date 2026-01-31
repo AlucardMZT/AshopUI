@@ -35,7 +35,7 @@
     </p>
 
     <mat-form-field *ngIf="product?.category?.name === 'Ropa'" appearance="outline" class="size-select">
-      <mat-label>Talla</mat-label>
+      <mat-label>Valor</mat-label>
       <mat-select [(value)]="selectedSize">
         <mat-option *ngFor="let size of product?.sizes" [value]="size">
           {{ size }}
@@ -55,7 +55,7 @@
               (click)="addToCart()">
         {{ product.stock === 0 ? 'Sin stock' : 'Agregar al carrito' }}
       </button>
-
+      <button mat-stroked-button color="primary" class="whatsapp-link" (click)="openWhatsapp()">Contactar Vendedor</button>
       <button mat-stroked-button color="accent" routerLink="/productos">
         Volver a productos
       </button>

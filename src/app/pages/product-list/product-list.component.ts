@@ -13,6 +13,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CartService} from '../../services/car.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DiscountService} from '../../services/DiscountService';
+import {MatIcon} from '@angular/material/icon';
 
 
 
@@ -31,6 +32,7 @@ import {DiscountService} from '../../services/DiscountService';
     NgIf,
     MatProgressSpinner,
     NgClass,
+    MatIcon,
     CommonModule
   ],
   styleUrls: ['./product-list.component.scss']
@@ -129,7 +131,14 @@ export class ProductListComponent implements OnInit {
   }
 
   filterByCategory(id: number | null) {
-    this.selectedCategoryId = id;
+    // Si se hace click sobre la misma categoría seleccionada -> deseleccionar (toggle)
+    if (this.selectedCategoryId === id) {
+      this.selectedCategoryId = null;
+    } else {
+      this.selectedCategoryId = id;
+    }
+    // Reiniciar paginación y aplicar filtros
+    this.currentPage = 1;
     this.applyFilters();
   }
 
@@ -250,6 +259,24 @@ export class ProductListComponent implements OnInit {
     }
 
     return 'Agregar al carrito';
+  }
+
+  // Devuelve un icono de Material apropiado según el nombre de la categoría
+  getCategoryIcon(name?: string): string {
+    const n = (name || '').toLowerCase();
+    if (n.includes('ropa')) return 'checkroom';
+    if (n.includes('juguet')) return 'toys';
+    if (n.includes('perf') || n.includes('frag') || n.includes('perfume')) return 'local_mall';
+    if (n.includes('elect') || n.includes('electron') || n.includes('tec')) return 'devices';
+    if (n.includes('aroma') || n.includes('fragancia')) return 'spa';
+    if (n.includes('casa') || n.includes('hogar') || n.includes('mueble')) return 'home';
+    return 'category';
+  }
+
+  getSelectedCategoryName(): string {
+    if (this.selectedCategoryId == null) return 'Productos';
+    const cat = this.categories.find(c => c.id === this.selectedCategoryId);
+    return cat ? cat.name : 'Productos';
   }
 
 }

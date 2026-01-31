@@ -167,6 +167,13 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  whatsappNumber = '+526691164704';
+  whatsappMessage = 'Hola quiero inscribirme como distribuidor';
 
+  openWhatsapp(): void {
+    const encoded = encodeURIComponent(this.whatsappMessage);
+    const url = `https://wa.me/${this.whatsappNumber}?text=${encoded}`;
+    window.open(url, '_blank', 'noopener');
+  }
 
 }

@@ -4,13 +4,18 @@
     <ul *ngIf="categories.length > 0; else noCategories">
       <ng-container *ngFor="let cat of categories">
         <li (click)="filterByCategory(cat.id)" [class.active]="selectedCategoryId === cat.id">
-          {{ cat.name }}
+          <mat-icon class="cat-icon">{{ getCategoryIcon(cat.name) }}</mat-icon>
+          <span class="cat-name">{{ cat.name }}</span>
         </li>
       </ng-container>
     </ul>
     <ng-template #noCategories>
       <p>No hay categorías disponibles.</p>
     </ng-template>
+
+
+    <h3>Catalogos Disponibles</h3>
+
   </aside>
 
   <section class="catalog-content">
@@ -34,7 +39,7 @@
         <button mat-stroked-button (click)="resetFilters()">Limpiar</button>
       </div>
 
-      <h2 class="section-title">Productos</h2>
+      <h2 class="section-title">{{ selectedCategoryId ? getSelectedCategoryName() : 'Productos' }}</h2>
 
       <div class="product-grid">
         <mat-card class="product-card" *ngFor="let product of paginatedProducts" (click)="verDetalle(product.id)">

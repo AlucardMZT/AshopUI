@@ -126,5 +126,5 @@
 
 <section class="cta" *ngIf="!authService.isLoggedIn()">
   <h2>¡Listo para comprar!</h2>
-  <button mat-stroked-button color="accent" routerLink="/register">Crear cuenta</button>
+  <button mat-stroked-button color="primary" class="whatsapp-link" (click)="openWhatsapp()">Contratar</button>
 </section>

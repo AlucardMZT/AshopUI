@@ -64,6 +64,6 @@ export class LayoutComponent implements OnInit{
   logout() {
     this.authService.logout();
     this.showMenu = false;
-    this.router.navigate(['/home']);
+    this.router.navigateByUrl('/home', { replaceUrl: true });
   }
 }

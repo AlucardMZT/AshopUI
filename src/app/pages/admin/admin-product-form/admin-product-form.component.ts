@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
@@ -24,7 +24,8 @@ import { AdminProductService } from '../../../services/AdminProductService';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButton} from '@angular/material/button';
 import {MatPaginator} from '@angular/material/paginator';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductService } from '../../../services/product.service';
 
 @Component({
   selector: 'app-admin-product-form',
@@ -73,11 +74,15 @@ export class AdminProductFormComponent implements OnInit {
   categories: Category[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('formPanel') formPanel!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
-    private adminProductService: AdminProductService
+    private adminProductService: AdminProductService,
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private router: Router
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -103,6 +108,28 @@ export class AdminProductFormComponent implements OnInit {
 
       if (this.selectedCategory.toLowerCase().trim() !== 'ropa') {
         this.productForm.get('sizes')?.setValue([]);
+      }
+    });
+
+    // Si la URL contiene ?edit=ID, cargar ese producto y abrirlo en el formulario de edición
+    this.route.queryParams.subscribe(params => {
+      const editId = params['edit'];
+      if (editId) {
+        const id = +editId;
+        this.productService.getProductById(id).subscribe({
+          next: product => {
+            if (product) {
+              this.editProduct(product);
+              // limpiar query param `edit` para evitar re-ejecución al recargar
+              this.router.navigate([], { relativeTo: this.route, queryParams: { edit: null }, replaceUrl: true });
+              // Hacer scroll suave al formulario
+              setTimeout(() => {
+                try { this.formPanel.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
+              }, 50);
+            }
+          },
+          error: err => console.error('Error cargando producto para edición:', err)
+        });
       }
     });
   }

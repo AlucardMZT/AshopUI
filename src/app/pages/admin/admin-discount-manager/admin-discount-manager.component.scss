@@ -37,5 +37,76 @@ mat-card-title {
   margin-bottom: 0.5rem;
 }
 
+.discount-tab-group {
+  margin: 1.5rem 0;
 
+  /* Aumentar la altura y tamaño de las etiquetas de las tabs */
+  ::ng-deep .mat-tab-labels {
+    min-height: 72px; /* aún más alto para más espacio visual */
+  }
 
+  ::ng-deep .mat-tab-label {
+    font-size: 1.12rem; /* texto más grande */
+    padding: 16px 28px; /* más espacio horizontal */
+  }
+
+  /* Aumentar el padding del contenido de la pestaña para que se vea más grande */
+  ::ng-deep .mat-tab-body-wrapper {
+    padding: 36px 0; /* más espacio arriba/abajo */
+  }
+
+  /* Altura mínima razonable del contenido */
+  ::ng-deep .mat-tab-body {
+    min-height: 420px; /* suficiente para que el cuerpo muestre contenido */
+    padding-bottom: 64px; /* espacio extra al final del contenido */
+    overflow: visible; /* asegurar que los elementos internos no se recorten */
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  /* Mantener el área de acciones siempre visible: hacer sticky dentro del mat-tab-body */
+  ::ng-deep .mat-tab-body .form-actions {
+    position: sticky;
+    bottom: 16px;
+    background: white; /* ajusta si tu fondo es otro */
+    padding-top: 8px;
+    padding-bottom: 8px;
+    z-index: 50;
+    border-radius: 8px;
+  }
+}
+
+/* Contenedor para agrupar los botones del formulario y separarlos */
+.form-actions {
+  display: flex;
+  gap: 12px; /* separación entre botones */
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 24px; /* espacio debajo de los botones para que no queden pegados */
+  flex-wrap: wrap; /* responsive: si falta espacio, se apilan */
+}
+
+.actions-row {
+  margin-left: auto; /* empuja este bloque al extremo derecho */
+}
+
+/* Responsive: en pantallas pequeñas, apilar botones y quitar margin-left auto */
+@media (max-width: 1024px) {
+  .discount-tab-group ::ng-deep .mat-tab-body {
+    min-height: auto;
+    padding-bottom: 48px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .actions-row {
+    margin-left: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

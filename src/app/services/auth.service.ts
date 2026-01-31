@@ -96,7 +96,7 @@ export class AuthService {
     localStorage.removeItem('nickname');
     this.authStatus.next(false);
     this.currentUserSubject.next(null);
-    this.router.navigate(['home']);
+    this.router.navigateByUrl('/home', { replaceUrl: true });
   }
 
   getCurrentUser(): any {

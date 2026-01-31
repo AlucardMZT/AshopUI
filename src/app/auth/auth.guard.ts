@@ -26,7 +26,8 @@ export class AuthGuard implements CanActivate {
     const expectedRole = route.data['role'];
     if (expectedRole) {
       const allowedRoles = Array.isArray(expectedRole) ? expectedRole : [expectedRole];
-      const hasAny = allowedRoles.some((r: string) => this.authService.hasRole(r));
+      // Permitir si el usuario tiene cualquiera de los roles requeridos OR si es ADMIN
+      const hasAny = allowedRoles.some((r: string) => this.authService.hasRole(r)) || this.authService.hasRole('ADMIN');
 
       if (!hasAny) {
         console.log('[AuthGuard] Roles esperados:', allowedRoles, 'pero user tiene:', this.authService.getCurrentUser());

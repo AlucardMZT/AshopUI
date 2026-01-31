@@ -34,8 +34,12 @@ export class CategoryService {
     });
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  delete(id: number, force: boolean = false): Observable<any> {
+    const url = force ? `${this.baseUrl}/${id}?force=true` : `${this.baseUrl}/${id}`;
+    const token = this.authService.getToken();
+    if (token) {
+      return this.http.delete(url, { headers: { Authorization: `Bearer ${token}` } });
+    }
+    return this.http.delete(url);
   }
 }
-

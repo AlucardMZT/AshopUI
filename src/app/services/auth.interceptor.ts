@@ -16,8 +16,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             duration: 5000,
             panelClass: 'snack-session-expired'
           });
-          localStorage.removeItem('auth_token');
-          router.navigate(['/login']);
+
+          const existingToken = localStorage.getItem('auth_token');
+          const currentUrl = router.url;
+
+          if (existingToken && currentUrl !== '/home' && currentUrl !== '/login') {
+            localStorage.removeItem('auth_token');
+            router.navigate(['/login']);
+          }
         }
       }
     })

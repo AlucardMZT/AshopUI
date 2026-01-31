@@ -14,7 +14,7 @@ import {DiscountService} from '../../services/DiscountService';
 
 @Component({
   selector: 'app-home',
-  imports: [CarouselModule, MatCard, NgForOf, MatCardContent, MatCardImage, RouterLink, MatButton, MatIcon, NgIf, NgClass],
+  imports: [CarouselModule, MatCard, NgForOf, MatCardContent, MatCardImage, RouterLink, MatButton, MatIcon, NgIf],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.categoryService.getAll().subscribe((cats) => {
       this.categorias = cats.filter(cat =>
-        ['Electrónica', 'Ropa', 'Juguetes'].includes(cat.name)
+        ['Electrónica', 'Ropa', 'Juguetes','Arabela', 'Avon','Natura'].includes(cat.name)
       );
     });
     this.loadDestacados();

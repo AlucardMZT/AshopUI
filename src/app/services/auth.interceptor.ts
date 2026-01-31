@@ -20,9 +20,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           const existingToken = localStorage.getItem('auth_token');
           const currentUrl = router.url;
 
-          if (existingToken && currentUrl !== '/home' && currentUrl !== '/login') {
-            localStorage.removeItem('auth_token');
-            router.navigate(['/login']);
+          if (existingToken) {
+            const safeUrls = ['/home', '/', ''];
+            if (!safeUrls.includes(currentUrl) && currentUrl !== '/login') {
+              localStorage.removeItem('auth_token');
+              router.navigate(['/login']);
+            } else {
+              localStorage.removeItem('auth_token');
+            }
           }
         }
       }

@@ -34,6 +34,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/product-list/product-list.component').then(m => m.ProductListComponent)
   },
+  // Redirigir la raíz a /home antes de la ruta '' protegida por AuthGuard
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: '',
     component: ProfileComponent,
@@ -85,7 +87,5 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
   },
-
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];

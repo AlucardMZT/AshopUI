@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FooterComponent} from '../footer/footer.component';
-import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {MatAnchor, MatButton, MatIconButton} from '@angular/material/button';
 import {MatToolbar} from '@angular/material/toolbar';
 import {AuthService} from '../../services/auth.service';
@@ -13,14 +12,14 @@ import {CartItem} from '../../models/caritem.model';
 @Component({
   selector: 'app-layout',
   imports: [
-    MatAnchor,
     RouterLink,
     MatToolbar,
     NgIf,
     MatProgressSpinner,
     MatButton,
     MatIcon,
-    MatIconButton
+    MatIconButton,
+    MatAnchor
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
@@ -29,7 +28,6 @@ export class LayoutComponent implements OnInit{
   nickname: string | null = null;
   userNickname: string = '';
   isLoading = false;
-  isAdmin = false;
   cartCount = 0;
   showMenu = false;
 
@@ -65,5 +63,20 @@ export class LayoutComponent implements OnInit{
     this.authService.logout();
     this.showMenu = false;
     this.router.navigateByUrl('/home', { replaceUrl: true });
+  }
+
+  openWhatsapp(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    const number = '526691164704';
+    const message = 'Hola quiero inscribirme como distribuidor';
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    const newWindow = window.open(url, '_blank', 'noopener');
+    if (!newWindow) {
+      window.location.href = url;
+    }
+    this.showMenu = false;
   }
 }

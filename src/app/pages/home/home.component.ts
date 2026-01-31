@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CarouselModule} from 'ngx-owl-carousel-o';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import {Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.categoryService.getAll().subscribe((cats) => {
       this.categorias = cats.filter(cat =>
-        ['Electrónica', 'Ropa', 'Juguetes','Arabela', 'Avon','Natura'].includes(cat.name)
+        ['Fuller', 'Sthan Home', 'Juguetes','Arabela', 'Avon','Natura'].includes(cat.name)
       );
     });
     this.loadDestacados();
@@ -83,6 +83,15 @@ export class HomeComponent implements OnInit {
 
   verCategoria(id: number): void {
     this.router.navigate(['/productos'], {queryParams: {categoria: id}});
+  }
+
+  whatsappNumber = '+526691164704';
+  whatsappMessage = 'Hola quiero inscribirme como distribuidor';
+
+  openWhatsapp(): void {
+    const encoded = encodeURIComponent(this.whatsappMessage);
+    const url = `https://wa.me/${this.whatsappNumber}?text=${encoded}`;
+    window.open(url, '_blank', 'noopener');
   }
 
   startDrag(event: MouseEvent | TouchEvent): void {

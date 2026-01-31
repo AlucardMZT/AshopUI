@@ -16,7 +16,7 @@
 <!--</section>-->
 
 <section class="categories">
-  <h2>Categorías</h2>
+  <h2>Nuestros Productos</h2>
   <div class="category-grid">
     <mat-card *ngFor="let cat of categorias" (click)="verCategoria(cat.id)" style="cursor: pointer;">
       <img mat-card-image [src]="cat.image" alt="{{ cat.name }}">
@@ -26,6 +26,51 @@
     </mat-card>
   </div>
 </section>
+
+<!-- Info + imagen: imagen izquierda, texto derecha -->
+<section class="info-section">
+  <div class="info-image appear">
+    <img src="assets/FOLLETO-C21.png" alt="Imagen destacada" />
+  </div>
+
+  <div class="info-text appear">
+    <h2>Productos</h2>
+    <p>
+      Puedes Realizar Pedidos Directamente con nosotros a Travez de Whatsapp o Nuestro Catalogo en Linea.
+    </p>
+    <p>
+      Tambien puedes visitar el sitio web oficial de cada marca para conocer mas sobre sus productos y promociones.
+    </p>
+    <p>
+      Todos Nuestros Productos Son <b>100%</b> Originales Garantizados ademas de contar con envios en todo Mazatlan!.
+    </p>
+    <p>
+      Les Gustaria Ver Nuestro Catalogo De <b>Productos?</b>
+    </p>
+    <button mat-stroked-button color="primary" routerLink="/productos">Ver productos</button>
+  </div>
+</section>
+
+
+<section class="info-section">
+  <div class="info-text appear">
+    <h2>Te Gustaria Formar Parte De Nuestro Equipo?</h2>
+    <p>
+      Hola Te Invitamos a que formes parte de nuestro equipo si deseas vender cualquiera de estas marcas.
+    </p>
+    <p>
+      Conviertete en un distribuidor autorizado y disfruta de los beneficios de trabajar con nosotros.
+    </p>
+    <p>
+      Nuestros Registros son Atravez de Whatapp haciendo click en el enlace de aqui abajo!.
+    </p>
+    <button mat-stroked-button color="primary" class="whatsapp-link" (click)="openWhatsapp()">Inscribirme</button>
+  </div>
+  <div class="info-image appear">
+    <img src="assets/jumbotron-fragancias.png" alt="Imagen destacada" />
+  </div>
+</section>
+
 
 <!--<section class="featured">-->
 <!--  <h2>🎯 Productos destacados</h2>-->

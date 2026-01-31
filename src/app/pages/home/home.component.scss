@@ -219,6 +219,81 @@
   color: #c62828;
 }
 
+/* Sección de info con imagen a la izquierda y texto a la derecha */
+.info-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 2.5rem 0;
+  padding: 1rem;
+}
+
+.info-image {
+  flex: 0 0 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  //box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  object-fit: cover;
+  display: block;
+}
+
+.info-text {
+  flex: 1 1 55%;
+}
+
+.info-text h2 {
+  margin-top: 0;
+}
+
+/* Animación de aparición (fade + scale) */
+.appear {
+  opacity: 0;
+  transform: scale(0.98);
+  animation: popIn 420ms ease-out forwards;
+}
+
+/* pequeños delays para generar efecto en secuencia */
+.info-image.appear {
+  animation-delay: 0.08s;
+}
+.info-text.appear {
+  animation-delay: 0.22s;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98) translateY(6px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Estilos alternativos para efecto "aparición de repente" opcional */
+.appear-instant {
+  opacity: 0;
+  transform: none;
+  animation: appearInstant 120ms steps(1, end) forwards;
+}
+@keyframes appearInstant {
+  to {
+    opacity: 1;
+  }
+}
+
 /* Responsividad */
 @media (max-width: 768px) {
   .hero-content h1 {
@@ -240,5 +315,20 @@
 
   .carousel-item {
     min-width: 200px;
+  }
+
+  .info-section {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .info-image {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .info-text {
+    width: 100%;
   }
 }

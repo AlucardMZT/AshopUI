@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Catalog } from '../models/catalog.model';
 import { environment } from '../../environments/environment';
@@ -18,11 +18,22 @@ export class CatalogService {
     return this.http.get<Catalog[]>(this.apiUrl);
   }
 
+  // Obtener el PDF/archivo del catálogo de una categoría (devuelve Blob)
   getCategoryCatalog(categoryId: number): Observable<Blob> {
+    const url = `${environment.apiUrl}/categories/${categoryId}/catalog`;
+    // Pedimos el recurso como blob para manejar PDF/imagen/binarios o JSON
+    const token = this.authService.getToken();
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    // Es importante usar el literal 'blob' para que HttpClient devuelva Observable<Blob>
+    return this.http.get(url, { headers, responseType: 'blob' as 'blob' });
+  }
+
+  // Descargar catálogo con respuesta completa (para obtener cabeceras como Content-Disposition)
+  downloadCategoryCatalog(categoryId: number): Observable<HttpResponse<Blob>> {
     const url = `${environment.apiUrl}/categories/${categoryId}/catalog`;
     const token = this.authService.getToken();
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
-    return this.http.get(url, { headers, responseType: 'blob' as 'blob' });
+    return this.http.get(url, { headers, responseType: 'blob' as 'blob', observe: 'response' });
   }
 
   uploadCategoryCatalog(categoryId: number, file: File): Observable<any> {

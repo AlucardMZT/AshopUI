@@ -4,6 +4,9 @@
   <section class="categories">
     <div class="category-grid">
       <mat-card *ngFor="let cat of catalogs; let i = index" (click)="selectCatalog(cat, i)" class="catalog-card" [class.selected]="isSelected(cat, i)" tabindex="0" role="button" [attr.aria-selected]="isSelected(cat, i) ? 'true' : 'false'" (keydown.enter)="selectCatalog(cat, i)">
+        <button mat-icon-button class="download-btn" aria-label="Descargar catálogo" (click)="$event.stopPropagation(); downloadCatalog(cat)">
+          <mat-icon>download</mat-icon>
+        </button>
         <div class="image-wrap">
           <img mat-card-image [src]="getImage(cat)" alt="{{ cat.title || cat.name }}">
         </div>
@@ -16,4 +19,44 @@
 
     <div *ngIf="catalogs.length === 0" class="empty">No hay catálogos disponibles.</div>
   </section>
+
+  <!-- Viewer modal / carrusel -->
+  <div class="viewer-overlay" *ngIf="viewerOpen" role="dialog" aria-modal="true">
+    <div class="viewer-backdrop" (click)="closeViewer()"></div>
+    <div class="viewer-content" (click)="$event.stopPropagation()">
+      <div class="viewer-toolbar">
+        <button mat-icon-button aria-label="Cerrar" (click)="closeViewer()"><mat-icon>close</mat-icon></button>
+        <div class="viewer-actions">
+          <button mat-icon-button aria-label="Anterior" (click)="prevPage()"><mat-icon>chevron_left</mat-icon></button>
+          <span class="page-indicator" *ngIf="viewerIsPdf">Página {{viewerPage}}{{viewerTotalPages ? ' / ' + viewerTotalPages : ''}}</span>
+          <button mat-icon-button aria-label="Siguiente" (click)="nextPage()"><mat-icon>chevron_right</mat-icon></button>
+          <button mat-icon-button aria-label="Descargar" *ngIf="viewerUrl" (click)="$event.stopPropagation(); downloadViewer()"><mat-icon>file_download</mat-icon></button>
+        </div>
+      </div>
+
+      <div class="viewer-body" #viewerBody>
+        <!-- PDF.js canvas -->
+        <div class="pdf-container" *ngIf="viewerIsPdf">
+          <div class="pdf-loading" *ngIf="loadingPdf">Cargando PDF...</div>
+          <canvas #pdfCanvas class="viewer-canvas" *ngIf="!loadingPdf"></canvas>
+          <div class="pdf-iframe-fallback" *ngIf="!loadingPdf && !pdfDoc">
+            <a [href]="viewerUrl" target="_blank">Abrir catálogo en nueva pestaña</a>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <img *ngIf="viewerIsImage && viewerUrl" [src]="viewerUrl" alt="catálogo" class="viewer-image"/>
+
+        <!-- Fallback cuando no es PDF ni imagen -->
+        <div *ngIf="!viewerIsPdf && !viewerIsImage && viewerUrl" class="viewer-fallback">
+          <a [href]="viewerUrl" target="_blank">Abrir catálogo en nueva pestaña</a>
+        </div>
+      </div>
+
+      <div class="viewer-footer">
+        <button mat-button (click)="closeViewer()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
 </div>

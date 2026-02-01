@@ -120,9 +120,7 @@ export class AdminProductFormComponent implements OnInit {
           next: product => {
             if (product) {
               this.editProduct(product);
-              // limpiar query param `edit` para evitar re-ejecución al recargar
               this.router.navigate([], { relativeTo: this.route, queryParams: { edit: null }, replaceUrl: true });
-              // Hacer scroll suave al formulario
               setTimeout(() => {
                 try { this.formPanel.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
               }, 50);

@@ -4,7 +4,8 @@ export interface Catalog {
   id?: number;
   title?: string;
   name?: string;
-  image?: string;    // portada o imagen del catálogo
-  fileUrl?: string;  // URL del archivo (PDF/imagen) subido
+  image?: string;
+  fileUrl?: string;
+  catalog_pdf?: string | null;
   products?: Product[];
 }

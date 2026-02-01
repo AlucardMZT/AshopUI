@@ -79,6 +79,7 @@ export const routes: Routes = [
       { path: 'productos', component: AdminProductFormComponent },
       { path: 'pedidos', component: AdminOrderListComponent },
       { path: 'categoria/upload', component: CategoriaImageListComponent },
+      { path: 'categoria/upload/catalog', loadComponent: () => import('./pages/admin/admin-catalog-upload/admin-catalog-upload.component').then(m => m.AdminCatalogUploadComponent) },
       { path: 'descuentos', component: AdminDiscountManagerComponent },
     ]
   },

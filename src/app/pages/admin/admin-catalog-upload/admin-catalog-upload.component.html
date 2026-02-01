@@ -1,0 +1,21 @@
+<mat-card class="upload-card">
+  <h2>Subir catálogo por categoría</h2>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Categoría</mat-label>
+      <mat-select [(value)]="selectedCategoryId">
+        <mat-option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <input id="catalog-file" type="file" (change)="onFileChange($event)" accept="application/pdf,image/*" />
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="upload()" [disabled]="uploading">{{ uploading ? 'Subiendo...' : 'Subir catálogo' }}</button>
+  </div>
+</mat-card>
+

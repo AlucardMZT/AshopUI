@@ -6,6 +6,7 @@ import { CatalogService } from '../../services/catalog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Category } from '../../models/category.model';
 import { CategoryService } from '../../services/category.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-catalogos',
@@ -75,13 +76,59 @@ export class CatalogosComponent implements OnInit {
   }
 
   openCatalog(cat: Catalog) {
-    const url = cat?.fileUrl || cat?.image;
+    // 1) si viene fileUrl o image, abrirlo
+    let url = cat?.fileUrl || cat?.image;
     if (url) {
-      // Abrir en nueva pestaña
       window.open(url, '_blank');
-    } else {
-      console.warn('No hay archivo de catálogo para este elemento', cat);
-      alert('No hay un archivo disponible para este catálogo.');
+      return;
     }
+
+    // 2) Si no hay URL directa, intentar obtener el catálogo vía API (devuelve blob)
+    if (cat?.id != null) {
+      this.catalogService.getCategoryCatalog(cat.id).subscribe({
+        next: (blob) => {
+          try {
+            const type = blob && (blob as Blob).type ? (blob as Blob).type : '';
+            if (type.includes('application/json')) {
+              // Si el backend devolvió JSON (por ejemplo { url: '...' }), parsearlo
+              (blob as Blob).text().then(text => {
+                try {
+                  const parsed = JSON.parse(text);
+                  const remote = parsed?.url || parsed?.fileUrl || parsed?.data;
+                  if (remote) {
+                    window.open(remote, '_blank');
+                  } else {
+                    alert('El servidor devolvió JSON pero no contiene la URL del catálogo.');
+                  }
+                } catch (e) {
+                  console.error('Error parseando JSON devuelto por /catalog:', e);
+                  alert('No se pudo abrir el catálogo (respuesta inesperada).');
+                }
+              });
+            } else {
+              // Asumimos que es un PDF o imagen binaria: crear URL de objeto y abrir
+              const objectUrl = URL.createObjectURL(blob);
+              window.open(objectUrl, '_blank');
+              // Revocar después para evitar fugas de memoria (dar tiempo a que la nueva pestaña demande el recurso)
+              setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+            }
+          } catch (err) {
+            console.error('Error procesando blob del catálogo:', err);
+            alert('Error al abrir el catálogo.');
+          }
+        },
+        error: (err) => {
+          console.warn('Error al obtener catálogo por categoría desde API:', err);
+          // Fallback: abrir la URL del endpoint directamente (puede redirigir o servir el archivo)
+          const apiUrl = `${environment.apiUrl}/categories/${cat.id}/catalog`;
+          window.open(apiUrl, '_blank');
+        }
+      });
+      return;
+    }
+
+    // 3) fallback: avisar al usuario
+    console.warn('No hay archivo de catálogo para este elemento', cat);
+    alert('No hay un archivo disponible para este catálogo.');
   }
 }

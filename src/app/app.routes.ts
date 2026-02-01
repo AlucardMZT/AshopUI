@@ -34,7 +34,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/product-list/product-list.component').then(m => m.ProductListComponent)
   },
-  // Redirigir la raíz a /home antes de la ruta '' protegida por AuthGuard
+  {
+    path: 'catalogos',
+    loadComponent: () =>
+      import('./pages/catalogos/catalogos.component').then(m => m.CatalogosComponent)
+  },
+
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: '',

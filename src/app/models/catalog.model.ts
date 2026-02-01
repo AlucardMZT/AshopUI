@@ -1,6 +1,10 @@
 import { Product } from './product.model';
 
 export interface Catalog {
-  title: string;
-  products: Product[];
+  id?: number;
+  title?: string;
+  name?: string;
+  image?: string;    // portada o imagen del catálogo
+  fileUrl?: string;  // URL del archivo (PDF/imagen) subido
+  products?: Product[];
 }

@@ -1,0 +1,19 @@
+<div class="catalogos-page">
+  <h1>Catálogos</h1>
+
+  <section class="categories">
+    <div class="category-grid">
+      <mat-card *ngFor="let cat of catalogs; let i = index" (click)="selectCatalog(cat, i)" class="catalog-card" [class.selected]="isSelected(cat, i)" tabindex="0" role="button" [attr.aria-selected]="isSelected(cat, i) ? 'true' : 'false'" (keydown.enter)="selectCatalog(cat, i)">
+        <div class="image-wrap">
+          <img mat-card-image [src]="getImage(cat)" alt="{{ cat.title || cat.name }}">
+        </div>
+
+        <div class="brand-label">
+          <span class="catalog-name">{{ cat.title || cat.name }}</span>
+        </div>
+      </mat-card>
+    </div>
+
+    <div *ngIf="catalogs.length === 0" class="empty">No hay catálogos disponibles.</div>
+  </section>
+</div>

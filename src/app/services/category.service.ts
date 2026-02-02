@@ -19,6 +19,10 @@ export class CategoryService {
     return this.http.get<Category[]>(`${this.baseUrl}/promocionales`);
   }
 
+  getById(id: number): Observable<Category> {
+    return this.http.get<Category>(`${this.baseUrl}/${id}`);
+  }
+
   create(category: any): Observable<Category> {
     const token = this.authService.getToken();
     return this.http.post<Category>(this.baseUrl, category, {

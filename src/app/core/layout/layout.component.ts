@@ -73,10 +73,10 @@ export class LayoutComponent implements OnInit{
     const number = '526691164704';
     const message = 'Hola quiero inscribirme como distribuidor';
     const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-    const newWindow = window.open(url, '_blank', 'noopener');
-    if (!newWindow) {
-      window.location.href = url;
-    }
+    //const newWindow = window.open(url, '_blank', 'noopener');
+   // if (!newWindow) {
+     // window.location.href = url;
+    //}
     this.showMenu = false;
   }
 }

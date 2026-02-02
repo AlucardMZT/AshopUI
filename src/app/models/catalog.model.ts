@@ -8,4 +8,5 @@ export interface Catalog {
   fileUrl?: string;
   catalog_pdf?: string | null;
   products?: Product[];
+  loadingPdf?: boolean;
 }

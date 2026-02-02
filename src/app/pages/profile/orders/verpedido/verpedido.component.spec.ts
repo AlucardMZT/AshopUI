@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VerpedidoComponent } from './verpedido.component';
+import { VerPedidoComponent } from './verpedido.component';
 
-describe('VerpedidoComponent', () => {
-  let component: VerpedidoComponent;
-  let fixture: ComponentFixture<VerpedidoComponent>;
+describe('VerPedidoComponent', () => {
+  let component: VerPedidoComponent;
+  let fixture: ComponentFixture<VerPedidoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VerpedidoComponent]
+      imports: [VerPedidoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VerpedidoComponent);
+    fixture = TestBed.createComponent(VerPedidoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,17 +1,34 @@
 <div class="catalog-container" *ngFor="let section of categories">
   <h2 class="section-title">{{ section.title }}</h2>
+  <div class="catalog-meta">
+    <small *ngIf="section?.catalog_pdf">catalog_pdf: {{ (section.catalog_pdf | slice:0:24) + '...' }}</small>
+    <small *ngIf="section?.fileUrl"> | fileUrl: {{ (section?.fileUrl | slice:0:40) + (section.fileUrl.length > 40 ? '...' : '') }}</small>
+    <button mat-button color="accent" (click)="tryPopulateSectionFromPdf(section)">Forzar recarga</button>
+  </div>
 
-  <owl-carousel-o [options]="carouselOptions">
-    <ng-container *ngFor="let product of section.products">
-      <ng-template carouselSlide>
-        <mat-card class="product-card">
-          <img mat-card-image [src]="product.image" alt="{{ product.name }}">
-          <mat-card-content>
-            <h3>{{ product.name }}</h3>
-            <p class="price">${{ product.price }}</p>
-          </mat-card-content>
-        </mat-card>
-      </ng-template>
-    </ng-container>
-  </owl-carousel-o>
+  <ng-container *ngIf="section.products && section.products.length; else noImages">
+    <owl-carousel-o [options]="carouselOptions">
+      <ng-container *ngFor="let product of section.products">
+        <ng-template carouselSlide>
+          <mat-card class="product-card">
+            <img mat-card-image [src]="product.image" alt="{{ product.name }}">
+            <mat-card-content>
+              <h3>{{ product.name }}</h3>
+              <p class="price">${{ product.price }}</p>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </ng-container>
+
+  <ng-template #noImages>
+    <div class="catalog-placeholder">
+      <div *ngIf="section?.loadingPdf" class="loading">Cargando catálogo...</div>
+      <div *ngIf="!section?.loadingPdf">
+        <p>No hay imágenes del catálogo disponibles.</p>
+        <button mat-raised-button color="primary" (click)="tryPopulateSectionFromPdf(section)">Cargar catálogo</button>
+      </div>
+    </div>
+  </ng-template>
 </div>

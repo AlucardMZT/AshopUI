@@ -360,3 +360,47 @@ export const environment = {
 Esta guía rápida mapea las vistas del admin a acciones y endpoints backend.
 
 - Productos
+  - Lista: GET `/api/admin/products` (paginado)
+  - Crear: POST `/api/admin/products` (multipart/form-data)
+  - Editar: PUT `/api/admin/products/:id`
+  - Eliminar: DELETE `/api/admin/products/:id`
+  - Subir imágenes: POST `/api/admin/products/:id/images`
+
+- Categorías
+  - Lista: GET `/api/admin/categories`
+  - Crear/Editar/Eliminar: POST/PUT/DELETE `/api/admin/categories`
+
+- Catálogos (PDFs)
+  - Lista por sección: GET `/api/admin/catalogs?sectionId=...`
+  - Subir PDF: POST `/api/admin/catalogs` (multipart/form-data)
+  - Eliminar: DELETE `/api/admin/catalogs/:id`
+
+- Órdenes
+  - Lista: GET `/api/admin/orders` (filtros por estado/fecha/usuario)
+  - Detalle: GET `/api/admin/orders/:id`
+  - Actualizar estado: PATCH `/api/admin/orders/:id/status` `{ "status": "PROCESSING" }`
+
+- Usuarios
+  - Lista: GET `/api/admin/users`
+  - Detalle/Editar: GET/PUT `/api/admin/users/:id`
+  - Cambiar roles: PATCH `/api/admin/users/:id/roles`
+
+Recomendaciones de seguridad para admin:
+- Todas las rutas deben requerir un token JWT con rol `admin`.
+- Validar permisos en el backend (no confiar solo en el frontend).
+- Llevar un log de auditoría para cambios críticos (precios, estados de órdenes, roles de usuario).
+
+## Operaciones críticas y consideraciones
+- Pagos: usar un workflow con eventos (CREATED -> PENDING_PAYMENT -> PAID). Soporta reintentos y reconciliación con webhooks.
+- Reembolsos: exponer endpoints que permitan reembolsar parcial o totalmente y registrar la razón.
+- Sincronización de stock: operaciones que afectan stock deben ser transaccionales para evitar overselling.
+- Backups y datos sensibles: no guardar datos de tarjeta en tu base de datos si estás usando pasarelas; guarda tokens/refs seguros.
+
+---
+
+He añadido ejemplos de contrato API, modelos y una guía rápida del admin; el archivo fue validado y no presentó errores sintácticos en el repositorio local. Si quieres, puedo:
+- Generar una colección Postman/Insomnia con los endpoints de ejemplo.
+- Añadir diagramas (README en formato ASCII o vincular imagen en `docs/`).
+- Crear un `environment.prod.ts` y un archivo `.env.example` para desarrolladores.
+
+Dime cuál de estas opciones prefieres y lo implemento.
